@@ -1,0 +1,42 @@
+[
+    {
+      "id": 1,
+      "category": "Muziek",
+      "difficulty": "Easy",
+      "question": "Wie zong 'Man in the Long Black Coat'?",
+      "options": ["Bob Dylan", "Johnny Cash", "Dire Straits", "Tom Waits"],
+      "correctIndex": 0
+    },
+    {
+      "id": 2,
+      "category": "Film & Series",
+      "difficulty": "Medium",
+      "question": "Welke acteur speelde Maximus in Gladiator?",
+      "options": ["Russell Crowe", "Mel Gibson", "Joaquin Phoenix", "Tom Hardy"],
+      "correctIndex": 0
+    },
+    {
+      "id": 3,
+      "category": "Algemene kennis",
+      "difficulty": "Easy",
+      "question": "Wat is de hoofdstad van Italië?",
+      "options": ["Milaan", "Rome", "Napels", "Florence"],
+      "correctIndex": 1
+    },
+    {
+      "id": 4,
+      "category": "Sport",
+      "difficulty": "Medium",
+      "question": "Hoeveel spelers staan er tegelijk op het veld bij een voetbalteam (zonder wissels)?",
+      "options": ["9", "10", "11", "12"],
+      "correctIndex": 2
+    },
+    {
+      "id": 5,
+      "category": "Nerd / Techniek",
+      "difficulty": "Hard",
+      "question": "Waar staat MTBF voor?",
+      "options": ["Mean Time Between Failures", "Main Tool Break Frequency", "Machine Time Before Fix", "Mean Total Break Factor"],
+      "correctIndex": 0
+    }
+  ]

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Doe een sip 🍻</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Doe een sip 🍻</h1>
+      <p class="subtitle">Eén telefoon bestuurt. Fout = drinken.</p>
+    </header>
+
+    <section id="screen-setup" class="card">
+      <h2>Spelers</h2>
+      <div class="row">
+        <input id="playerNameInput" type="text" placeholder="Naam speler…" maxlength="18" />
+        <button id="addPlayerBtn">Toevoegen</button>
+      </div>
+
+      <ul id="playersList" class="list"></ul>
+
+      <div class="row row-between">
+        <label class="toggle">
+          <input type="checkbox" id="enableChaos" />
+          <span>Chaos events (af en toe)</span>
+        </label>
+        <button id="startGameBtn" class="primary" disabled>Start spel</button>
+      </div>
+
+      <p class="hint">
+        Tip: bij 6+ spelers schakelt het spel automatisch naar teams van 2.
+      </p>
+    </section>
+
+    <section id="screen-game" class="card hidden">
+      <div class="row row-between">
+        <div>
+          <div id="modeLabel" class="badge"></div>
+          <div id="turnLabel" class="turn"></div>
+        </div>
+        <button id="endGameBtn" class="ghost">Stop</button>
+      </div>
+
+      <div id="helpBanner" class="help hidden"></div>
+
+      <div class="qbox">
+        <div class="meta">
+          <span id="categoryLabel" class="pill"></span>
+          <span id="difficultyLabel" class="pill"></span>
+        </div>
+
+        <h2 id="questionText" class="question">Vraag…</h2>
+        <div id="options" class="options"></div>
+      </div>
+
+      <div id="resultBox" class="result hidden"></div>
+
+      <div class="row row-between">
+        <button id="nextBtn" class="primary" disabled>Volgende</button>
+        <button id="scoreBtn">Scorebord</button>
+      </div>
+    </section>
+
+    <section id="screen-score" class="card hidden">
+      <div class="row row-between">
+        <h2>Scorebord</h2>
+        <button id="backToGameBtn" class="ghost">Terug</button>
+      </div>
+      <div id="scoreTable"></div>
+      <div class="row">
+        <button id="resetBtn" class="danger">Reset spel</button>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <small>⚠️ Drink met mate. 18+.</small>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
