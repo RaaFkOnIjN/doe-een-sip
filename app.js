@@ -201,6 +201,10 @@ function renderQuestion() {
   let chosenCategory = null;
 
   if (help) {
+    modeLabel.textContent = mode === "solo" ? "Solo mode" : "Team mode";
+    turnLabel.textContent =
+      a.type === "player" ? `Aan de beurt: ${a.name}` : `Team aan de beurt: ${a.label}`;
+
     // Verberg de vraagbox totdat er een categorie gekozen is
     questionBox.classList.add("hidden");
   
