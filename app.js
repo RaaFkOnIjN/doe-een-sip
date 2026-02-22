@@ -7,6 +7,7 @@ const addPlayerBtn = document.getElementById("addPlayerBtn");
 const playersList = document.getElementById("playersList");
 const startGameBtn = document.getElementById("startGameBtn");
 const enableChaos = document.getElementById("enableChaos");
+const enableAdult = document.getElementById("enableAdult");
 
 const modeLabel = document.getElementById("modeLabel");
 const turnLabel = document.getElementById("turnLabel");
@@ -29,6 +30,8 @@ const endGameBtn = document.getElementById("endGameBtn");
 const SIP_BY_DIFFICULTY = { Easy: 1, Medium: 2, Hard: 3, Brutal: 5 };
 
 let questions = [];
+let activeQuestions = [];
+let adultEnabled = false;
 let players = []; // [{name}]
 let mode = "solo"; // solo | team
 let teams = []; // [[a,b], ...]
@@ -38,6 +41,7 @@ let stats = {};     // name => {correct, wrong, sips, wrongStreak}
 let teamStats = {}; // label => {correct, wrong, sips, wrongStreak}
 
 let current = null;
+let usedQuestionIds = new Set();
 let chaosEnabled = false;
 let pending = { nextPenaltyPlus: 0, rewardGive: 0 };
 
@@ -126,13 +130,25 @@ function initTeamStats() {
 }
 
 function categories() {
-  return Array.from(new Set(questions.map(q => q.category))).sort();
-}
+    return Array.from(new Set(activeQuestions.map(q => q.category))).sort();
+  }
 
-function pickQuestion(category) {
-  const pool = category ? questions.filter(q => q.category === category) : questions;
-  return pool[Math.floor(Math.random() * pool.length)];
-}
+  function pickQuestion(category) {
+    const poolAll = category
+      ? activeQuestions.filter(q => q.category === category)
+      : activeQuestions;
+  
+    let pool = poolAll.filter(q => !usedQuestionIds.has(q.id));
+  
+    if (pool.length === 0) {
+      usedQuestionIds.clear();
+      pool = poolAll;
+    }
+  
+    const q = pool[Math.floor(Math.random() * pool.length)];
+    usedQuestionIds.add(q.id);
+    return q;
+  }
 
 function actor() {
   if (mode === "solo") return { type: "player", name: players[turnIndex % players.length].name };
@@ -296,20 +312,27 @@ resetBtn.onclick = () => {
 endGameBtn.onclick = () => show(setupScreen);
 
 startGameBtn.onclick = async () => {
-  chaosEnabled = enableChaos.checked;
-  if (!questions.length) await loadQuestions();
-
-  initStats();
-  mode = players.length >= 6 ? "team" : "solo";
-  teams = [];
-  if (mode === "team") {
-    teams = makeTeams();
-    initTeamStats();
-  }
-  turnIndex = 0;
-  show(gameScreen);
-  renderQuestion();
-};
+    usedQuestionIds.clear();
+  
+    chaosEnabled = enableChaos.checked;
+    if (!questions.length) await loadQuestions();
+  
+    adultEnabled = enableAdult.checked;
+    activeQuestions = adultEnabled
+      ? questions
+      : questions.filter(q => q.category !== "18+ Party");
+  
+    initStats();
+    mode = players.length >= 6 ? "team" : "solo";
+    teams = [];
+    if (mode === "team") {
+      teams = makeTeams();
+      initTeamStats();
+    }
+    turnIndex = 0;
+    show(gameScreen);
+    renderQuestion();
+  };
 
 renderPlayers();
 startGameBtn.disabled = true;
