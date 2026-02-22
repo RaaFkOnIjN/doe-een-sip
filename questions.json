@@ -127,5 +127,55 @@
     { "id": 117, "category": "18+ Party", "difficulty": "Hard", "question": "Wie van ons is het meest waarschijnlijk om te flirten zonder het door te hebben?", "options": ["Speler links", "Speler rechts", "De stilste", "De groep stemt"], "correctIndex": 3 },
     { "id": 118, "category": "18+ Party", "difficulty": "Brutal", "question": "Team battle: wijs tegelijk naar de speler die het meest 'smooth' is. Minderheid drinkt.", "options": ["Ok", "Ok", "Ok", "Ok"], "correctIndex": 0 },
     { "id": 119, "category": "18+ Party", "difficulty": "Brutal", "question": "Kies: 2 slokken nu, of 1 persoonlijke vraag beantwoorden.", "options": ["2 slokken", "Vraag beantwoorden", "Shot (skip vraag)", "Iedereen 1 slok"], "correctIndex": 0 },
-    { "id": 120, "category": "18+ Party", "difficulty": "Brutal", "question": "Wie van ons zou het langst overleven op charme alleen?", "options": ["Speler links", "Speler rechts", "De grootste prater", "De groep stemt"], "correctIndex": 3 }
+    { "id": 120, "category": "18+ Party", "difficulty": "Brutal", "question": "Wie van ons zou het langst overleven op charme alleen?", "options": ["Speler links", "Speler rechts", "De grootste prater", "De groep stemt"], "correctIndex": 3 },
+
+    { "id": 121, "category": "Algemene kennis", "difficulty": "Easy", "question": "Hoeveel dagen heeft een schrikkeljaar?", "options": ["365", "366", "364", "360"], "correctIndex": 1 },
+    { "id": 122, "category": "Algemene kennis", "difficulty": "Medium", "question": "Wat is de hoofdstad van België?", "options": ["Antwerpen", "Brussel", "Gent", "Luik"], "correctIndex": 1 },
+    { "id": 123, "category": "Algemene kennis", "difficulty": "Hard", "question": "Wat is de vierkantswortel van 144?", "options": ["10", "11", "12", "14"], "correctIndex": 2 },
+    { "id": 124, "category": "Algemene kennis", "difficulty": "Brutal", "question": "Wat is 25% van 240?", "options": ["40", "50", "60", "70"], "correctIndex": 2 },
+    
+    { "id": 125, "category": "Muziek", "difficulty": "Easy", "question": "Hoeveel toetsen heeft een standaard piano?", "options": ["76", "88", "61", "92"], "correctIndex": 1 },
+    { "id": 126, "category": "Muziek", "difficulty": "Medium", "question": "Wat betekent BPM in muziek?", "options": ["Beats per minute", "Bass power mode", "Basic pitch meter", "Beat performance mode"], "correctIndex": 0 },
+    { "id": 127, "category": "Muziek", "difficulty": "Hard", "question": "Welke van deze is een jazzinstrument?", "options": ["Saxofoon", "Tuba", "Harp", "Banjo"], "correctIndex": 0 },
+    { "id": 128, "category": "Muziek", "difficulty": "Brutal", "question": "Wat is een 'bridge' in een lied?", "options": ["Het intro", "Een verbindend deel tussen couplet en refrein", "Het einde", "Een drumsolo"], "correctIndex": 1 },
+    
+    { "id": 129, "category": "Film & Series", "difficulty": "Easy", "question": "Welke film draait om dinosaurussen in een park?", "options": ["Avatar", "Jurassic Park", "Jumanji", "Inception"], "correctIndex": 1 },
+    { "id": 130, "category": "Film & Series", "difficulty": "Medium", "question": "Wat is een 'spin-off'?", "options": ["Een reboot", "Een aparte serie gebaseerd op een personage", "Een trailer", "Een blooper reel"], "correctIndex": 1 },
+    { "id": 131, "category": "Film & Series", "difficulty": "Hard", "question": "Welke streamingdienst maakte 'Stranger Things'?", "options": ["Disney+", "Netflix", "HBO", "Prime Video"], "correctIndex": 1 },
+    { "id": 132, "category": "Film & Series", "difficulty": "Brutal", "question": "Wat is een 'post-credit scene'?", "options": ["Scene vóór intro", "Scene tijdens film", "Scene na de aftiteling", "Scene zonder geluid"], "correctIndex": 2 },
+    
+    { "id": 133, "category": "Sport", "difficulty": "Easy", "question": "Hoeveel spelers staan er in een basketbalteam op het veld?", "options": ["4", "5", "6", "7"], "correctIndex": 1 },
+    { "id": 134, "category": "Sport", "difficulty": "Medium", "question": "Wat betekent VAR bij voetbal?", "options": ["Video Assistant Referee", "Virtual Attack Replay", "Verified Action Review", "Video Automatic Result"], "correctIndex": 0 },
+    { "id": 135, "category": "Sport", "difficulty": "Hard", "question": "Hoeveel ronden duurt een Formule 1 race ongeveer?", "options": ["20-30", "30-40", "50-70", "80-100"], "correctIndex": 2 },
+    { "id": 136, "category": "Sport", "difficulty": "Brutal", "question": "Hoe heet de slag bij tennis om de rally te starten?", "options": ["Smash", "Forehand", "Service", "Drop shot"], "correctIndex": 2 },
+    
+    { "id": 137, "category": "Wetenschap", "difficulty": "Easy", "question": "Welke planeet heeft ringen?", "options": ["Mars", "Saturnus", "Venus", "Mercurius"], "correctIndex": 1 },
+    { "id": 138, "category": "Wetenschap", "difficulty": "Medium", "question": "Wat is CO2?", "options": ["Zuurstof", "Koolstofdioxide", "Waterstof", "Stikstof"], "correctIndex": 1 },
+    { "id": 139, "category": "Wetenschap", "difficulty": "Hard", "question": "Wat is de eenheid van frequentie?", "options": ["Watt", "Volt", "Hertz", "Ampère"], "correctIndex": 2 },
+    { "id": 140, "category": "Wetenschap", "difficulty": "Brutal", "question": "Wat is absolute nul in °C?", "options": ["-100", "-200", "-273", "-300"], "correctIndex": 2 },
+    
+    { "id": 141, "category": "Games", "difficulty": "Easy", "question": "Welke console maakt Sony?", "options": ["Xbox", "Switch", "PlayStation", "SteamDeck"], "correctIndex": 2 },
+    { "id": 142, "category": "Games", "difficulty": "Medium", "question": "Wat betekent RNG in games?", "options": ["Random Number Generator", "Rapid New Game", "Real Network Game", "Random Next Gear"], "correctIndex": 0 },
+    { "id": 143, "category": "Games", "difficulty": "Hard", "question": "Wat is een 'hitbox'?", "options": ["Levensbalk", "Onzichtbare zone waar schade wordt geregistreerd", "Cheat code", "Map editor"], "correctIndex": 1 },
+    { "id": 144, "category": "Games", "difficulty": "Brutal", "question": "Wat betekent permadeath?", "options": ["Je respawnt direct", "Je personage is definitief dood", "Je verliest punten", "Je reset naar level 1"], "correctIndex": 1 },
+    
+    { "id": 145, "category": "Nerd / Techniek", "difficulty": "Easy", "question": "Wat betekent CPU?", "options": ["Central Processing Unit", "Computer Power Unit", "Control Processing Utility", "Core Power Unit"], "correctIndex": 0 },
+    { "id": 146, "category": "Nerd / Techniek", "difficulty": "Medium", "question": "Wat is 230V in Nederland?", "options": ["Waterdruk", "Netspanning", "Batterijspanning", "Motorvermogen"], "correctIndex": 1 },
+    { "id": 147, "category": "Nerd / Techniek", "difficulty": "Hard", "question": "Wat betekent 'kWh'?", "options": ["Kilowatt per uur", "Kilowattuur (energie)", "Kilo warmte", "Kracht watt"], "correctIndex": 1 },
+    { "id": 148, "category": "Nerd / Techniek", "difficulty": "Brutal", "question": "Wat doet een relais?", "options": ["Verhoogt spanning", "Schakelt een elektrisch circuit", "Meet stroom", "Koelt een motor"], "correctIndex": 1 },
+    
+    { "id": 149, "category": "Geografie", "difficulty": "Easy", "question": "Welke stad ligt in Duitsland?", "options": ["Hamburg", "Zürich", "Wenen", "Brussel"], "correctIndex": 0 },
+    { "id": 150, "category": "Geografie", "difficulty": "Medium", "question": "Welke zee grenst aan Nederland?", "options": ["Middellandse Zee", "Noordzee", "Zwarte Zee", "Adriatische Zee"], "correctIndex": 1 },
+    { "id": 151, "category": "Geografie", "difficulty": "Hard", "question": "Wat is de grootste oceaan?", "options": ["Atlantische", "Indische", "Stille", "Arctische"], "correctIndex": 2 },
+    { "id": 152, "category": "Geografie", "difficulty": "Brutal", "question": "Welke hoofdstad ligt het meest zuidelijk?", "options": ["Rome", "Madrid", "Athene", "Stockholm"], "correctIndex": 2 },
+    
+    { "id": 153, "category": "Geschiedenis", "difficulty": "Easy", "question": "Wie was Napoleon?", "options": ["Franse keizer", "Romeinse senator", "Griekse filosoof", "Engelse koning"], "correctIndex": 0 },
+    { "id": 154, "category": "Geschiedenis", "difficulty": "Medium", "question": "In welk jaar begon WOII?", "options": ["1914", "1939", "1945", "1925"], "correctIndex": 1 },
+    { "id": 155, "category": "Geschiedenis", "difficulty": "Hard", "question": "Welke beschaving bouwde de Colosseum?", "options": ["Grieken", "Romeinen", "Egyptenaren", "Maya's"], "correctIndex": 1 },
+    { "id": 156, "category": "Geschiedenis", "difficulty": "Brutal", "question": "Wie was de eerste president van de VS?", "options": ["Lincoln", "Washington", "Jefferson", "Adams"], "correctIndex": 1 },
+    
+    { "id": 157, "category": "Algemene kennis", "difficulty": "Easy", "question": "Hoeveel seconden zitten er in een minuut?", "options": ["30", "60", "90", "120"], "correctIndex": 1 },
+    { "id": 158, "category": "Sport", "difficulty": "Medium", "question": "Welke sport speel je met een puck?", "options": ["Hockey", "IJshockey", "Rugby", "Cricket"], "correctIndex": 1 },
+    { "id": 159, "category": "Games", "difficulty": "Hard", "question": "Wat betekent PvP?", "options": ["Player vs Player", "Play versus Program", "Power versus Play", "Point versus Point"], "correctIndex": 0 },
+    { "id": 160, "category": "Wetenschap", "difficulty": "Medium", "question": "Wat is de chemische formule van zuurstofgas?", "options": ["O", "O2", "CO2", "H2O"], "correctIndex": 1 }    
   ]

@@ -161,8 +161,8 @@ function actor() {
 }
 
 function needsHelp(a) {
-  if (a.type === "player") return stats[a.name].wrongStreak >= 2;
-  return teamStats[a.label].wrongStreak >= 2;
+  if (a.type === "player") return stats[a.name].wrongStreak >= 3;
+  return teamStats[a.label].wrongStreak >= 3;
 }
 
 function maybeChaos() {
@@ -217,6 +217,13 @@ function renderQuestion() {
       b.className = "smallbtn";
       b.textContent = cat;
       b.onclick = () => {
+        // ✅ Comeback used: reset streak zodat het niet meteen opnieuw triggert
+        if (a.type === "player") {
+          stats[a.name].wrongStreak = 0;
+        } else {
+          teamStats[a.label].wrongStreak = 0;
+        }
+      
         categoryChooser.classList.add("hidden");
         renderQuestionWithCategory(cat);
       };
