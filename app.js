@@ -2,6 +2,9 @@ const setupScreen = document.getElementById("screen-setup");
 const gameScreen = document.getElementById("screen-game");
 const scoreScreen = document.getElementById("screen-score");
 
+const categoryChooser = document.getElementById("categoryChooser");
+const categoryButtons = document.getElementById("categoryButtons");
+
 const playerNameInput = document.getElementById("playerNameInput");
 const addPlayerBtn = document.getElementById("addPlayerBtn");
 const playersList = document.getElementById("playersList");
@@ -188,16 +191,37 @@ function applyChaos(evt) {
 function renderQuestion() {
   nextBtn.disabled = true;
   resultBox.classList.add("hidden");
+  resultBox.textContent = "";
   optionsEl.innerHTML = "";
 
   const a = actor();
   const help = needsHelp(a);
 
   let chosenCategory = null;
+
   if (help) {
+    // show chooser UI and wait for click
     const cats = categories();
-    const choice = prompt(`Je speelt even slecht 😅\nKies categorie:\n- ${cats.join("\n- ")}`);
-    if (cats.includes((choice || "").trim())) chosenCategory = choice.trim();
+    categoryButtons.innerHTML = "";
+    categoryChooser.classList.remove("hidden");
+  
+    cats.forEach(cat => {
+      const b = document.createElement("button");
+      b.className = "smallbtn";
+      b.textContent = cat;
+      b.onclick = () => {
+        categoryChooser.classList.add("hidden");
+        resultBox.textContent = "";
+        renderQuestionWithCategory(cat);
+      };
+      categoryButtons.appendChild(b);
+    });
+  
+    // stop here, we continue after category click
+    return;
+  } else {
+    categoryChooser.classList.add("hidden");
+    resultBox.textContent = "";
   }
 
   applyChaos(maybeChaos());
@@ -220,6 +244,35 @@ function renderQuestion() {
     optionsEl.appendChild(b);
   });
 }
+
+function renderQuestionWithCategory(cat) {
+    // exact same flow as renderQuestion, but force category
+    nextBtn.disabled = true;
+    resultBox.classList.add("hidden");
+    resultBox.textContent = "";
+    optionsEl.innerHTML = "";
+  
+    const a = actor();
+    applyChaos(maybeChaos());
+  
+    const q = pickQuestion(cat);
+    current = { a, q };
+  
+    modeLabel.textContent = mode === "solo" ? "Solo mode" : "Team mode";
+    turnLabel.textContent = a.type === "player" ? `Aan de beurt: ${a.name}` : `Team aan de beurt: ${a.label}`;
+  
+    categoryLabel.textContent = `📚 ${q.category}`;
+    difficultyLabel.textContent = `${q.difficulty} • ${SIP_BY_DIFFICULTY[q.difficulty] ?? 1} slok(ken)`;
+    questionText.textContent = q.question;
+  
+    q.options.forEach((opt, idx) => {
+      const b = document.createElement("button");
+      b.className = "opt";
+      b.textContent = opt;
+      b.onclick = () => answer(idx);
+      optionsEl.appendChild(b);
+    });
+  }
 
 function answer(choiceIdx) {
   const { a, q } = current;
