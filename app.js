@@ -16,6 +16,7 @@ const modeLabel = document.getElementById("modeLabel");
 const turnLabel = document.getElementById("turnLabel");
 const helpBanner = document.getElementById("helpBanner");
 
+const questionBox = document.getElementById("questionBox");
 const categoryLabel = document.getElementById("categoryLabel");
 const difficultyLabel = document.getElementById("difficultyLabel");
 const questionText = document.getElementById("questionText");
@@ -200,7 +201,9 @@ function renderQuestion() {
   let chosenCategory = null;
 
   if (help) {
-    // show chooser UI and wait for click
+    // Verberg de vraagbox totdat er een categorie gekozen is
+    questionBox.classList.add("hidden");
+  
     const cats = categories();
     categoryButtons.innerHTML = "";
     categoryChooser.classList.remove("hidden");
@@ -211,17 +214,15 @@ function renderQuestion() {
       b.textContent = cat;
       b.onclick = () => {
         categoryChooser.classList.add("hidden");
-        resultBox.textContent = "";
         renderQuestionWithCategory(cat);
       };
       categoryButtons.appendChild(b);
     });
   
-    // stop here, we continue after category click
     return;
   } else {
     categoryChooser.classList.add("hidden");
-    resultBox.textContent = "";
+    questionBox.classList.remove("hidden"); // <- zorg dat hij weer zichtbaar is
   }
 
   applyChaos(maybeChaos());
@@ -252,6 +253,9 @@ function renderQuestionWithCategory(cat) {
     resultBox.textContent = "";
     optionsEl.innerHTML = "";
   
+    // ✅ Zorg dat de vraagbox weer zichtbaar is nadat een categorie gekozen is
+    questionBox.classList.remove("hidden");
+  
     const a = actor();
     applyChaos(maybeChaos());
   
@@ -259,7 +263,8 @@ function renderQuestionWithCategory(cat) {
     current = { a, q };
   
     modeLabel.textContent = mode === "solo" ? "Solo mode" : "Team mode";
-    turnLabel.textContent = a.type === "player" ? `Aan de beurt: ${a.name}` : `Team aan de beurt: ${a.label}`;
+    turnLabel.textContent =
+      a.type === "player" ? `Aan de beurt: ${a.name}` : `Team aan de beurt: ${a.label}`;
   
     categoryLabel.textContent = `📚 ${q.category}`;
     difficultyLabel.textContent = `${q.difficulty} • ${SIP_BY_DIFFICULTY[q.difficulty] ?? 1} slok(ken)`;
