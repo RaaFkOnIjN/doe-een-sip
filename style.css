@@ -174,3 +174,9 @@
     background: rgba(251,191,36,.35);
     transform: translateY(-2px);
   }
+    /* Ruimte tussen team kaarten */
+  #teamsWrap {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* pas aan naar smaak */
+  }
