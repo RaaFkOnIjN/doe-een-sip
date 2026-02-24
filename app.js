@@ -58,7 +58,7 @@ const endScoreBtn = document.getElementById("endScoreBtn");
 const endRematchBtn = document.getElementById("endRematchBtn");
 const endBackBtn = document.getElementById("endBackBtn");
 
-const QUESTIONS_PER_ACTOR = 2;
+const QUESTIONS_PER_ACTOR = 10;
 
 const SIP_BY_DIFFICULTY = { Easy: 1, Medium: 2, Hard: 3, Brutal: 5 };
 
