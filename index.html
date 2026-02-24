@@ -18,6 +18,7 @@
 
 <body>
   <div class="container">
+    <canvas id="confettiCanvas" class="confetti hidden"></canvas>
 
     <header>
       <h1>SipArena</h1>
@@ -26,20 +27,22 @@
 
     <!-- ================= MODE SCREEN ================= -->
     <section id="screen-mode" class="card">
-      <div class="badge">SipArena</div>
-      <h2 style="margin:10px 0 6px;">Kies een mode</h2>
-      <p style="opacity:.85;margin:0 0 14px;">Spelen met vrienden? Kies je mode hieronder.</p>
+      <h2 id="modeTitle" style="margin:0px 0 6px;">Kies een mode</h2>
 
-      <div class="row" style="gap:10px; flex-wrap:wrap;">
-        <button id="modePvpBtn" class="primary">Speler vs Speler</button>
-        <button id="modeTvTBtn" class="primary">Team vs Team</button>
+      <div class="mode-buttons">
+        <button id="modePvpBtn" class="mode-btn" data-mode="solo">
+          Speler vs Speler
+        </button>
+        <button id="modeTvTBtn" class="mode-btn" data-mode="team">
+          Team vs Team
+        </button>
       </div>
 
       <!-- Timer keuze -->
       <div class="timer-setting" style="margin-top:14px;">
-        <div class="timer-setting-title">⏱️ Timer</div>
+        <h2 id="timerLabel" class="timer-setting-title">⏱️ Timer</h2>
         <div class="timer-pills" id="timerPills">
-          <button type="button" class="pillbtn active" data-timer="10">Snel (10s)</button>
+          <button type="button" class="pillbtn" data-timer="10">Snel (10s)</button>
           <button type="button" class="pillbtn" data-timer="20">Rustig (20s)</button>
           <button type="button" class="pillbtn" data-timer="0">Geen timer</button>
         </div>
@@ -47,6 +50,12 @@
 
       <div class="help" style="margin-top:12px;">
         Speler vs Speler: tot 5 spelers • Team vs Team: tot 5 teams
+      </div>
+
+      <div class="row" style="margin-top:20px; justify-content:center;">
+        <button id="modeNextBtn" class="primary" style="padding:14px 28px; font-size:16px;">
+          Volgende →
+        </button>
       </div>
     </section>
 
@@ -113,12 +122,11 @@
 
       <!-- Timer UI -->
       <div id="timerWrap" class="timer-wrap hidden">
-        <div class="timer-top">
-          <span class="timer-label">⏱️ Tijd</span>
+        <div class="timer-row">
+          <div class="timer-bar">
+            <div id="timerFill" class="timer-fill"></div>
+          </div>
           <span id="timerText" class="timer-text">10</span>
-        </div>
-        <div class="timer-bar">
-          <div id="timerFill" class="timer-fill"></div>
         </div>
       </div>
 

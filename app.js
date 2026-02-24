@@ -38,6 +38,7 @@ const teamNamesWrap = document.getElementById("teamNamesWrap");
 const teamPlayerAssignWrap = document.getElementById("teamPlayerAssignWrap");
 const teamSetupError = document.getElementById("teamSetupError");
 const confirmTeamsBtn = document.getElementById("confirmTeamsBtn");
+const modeNextBtn = document.getElementById("modeNextBtn");
 
 /* nieuwe mode + team entry */
 const modeScreen = document.getElementById("screen-mode");
@@ -57,7 +58,7 @@ const endScoreBtn = document.getElementById("endScoreBtn");
 const endRematchBtn = document.getElementById("endRematchBtn");
 const endBackBtn = document.getElementById("endBackBtn");
 
-const QUESTIONS_PER_ACTOR = 10;
+const QUESTIONS_PER_ACTOR = 2;
 
 const SIP_BY_DIFFICULTY = { Easy: 1, Medium: 2, Hard: 3, Brutal: 5 };
 
@@ -84,12 +85,14 @@ let pending = { nextPenaltyPlus: 0, rewardGive: 0 };
 let askedCountPlayer = {}; // { [playerName]: number }
 let askedCountTeam = {};   // { [teamLabel]: number }  // label zoals "A" / "Team 1" etc.
 
+let scoreReturnScreen = null;
+
 const MAX_PLAYERS_PVP = 5;
 const MAX_TEAMS = 5;
 const DEFAULT_TEAMS = 2;
 
 // ------- timer -------
-let timerSeconds = 10;          // 10 of 20 (instelbaar)
+let timerSeconds = null;
 let timerTotalMs = 10 * 1000;
 let timerRemainingMs = 10 * 1000;
 let timerInterval = null;
@@ -127,6 +130,112 @@ function shuffle(arr) {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
+}
+
+const timerLabel = document.getElementById("timerLabel");
+
+function requireTimerSelection() {
+  if (timerSeconds === null) {
+    if (timerLabel) {
+      timerLabel.classList.remove("timer-shake");
+      void timerLabel.offsetWidth; // force reflow om animatie te herstarten
+      timerLabel.classList.add("timer-shake");
+    }
+    return false;
+  }
+  return true;
+}
+
+// ------- confetti -------
+const confettiCanvas = document.getElementById("confettiCanvas");
+let confettiCtx = null;
+let confettiParts = [];
+let confettiAnim = null;
+let confettiStopAt = 0;
+
+function resizeConfetti() {
+  if (!confettiCanvas) return;
+  const dpr = Math.max(1, window.devicePixelRatio || 1);
+  confettiCanvas.width = Math.floor(window.innerWidth * dpr);
+  confettiCanvas.height = Math.floor(window.innerHeight * dpr);
+  confettiCanvas.style.width = "100vw";
+  confettiCanvas.style.height = "100vh";
+  confettiCtx = confettiCanvas.getContext("2d");
+  confettiCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+window.addEventListener("resize", resizeConfetti);
+
+function launchConfetti(durationMs = 4000, count = 200) {
+  if (!confettiCanvas) return;
+
+  resizeConfetti();
+  confettiCanvas.classList.remove("hidden");
+
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+
+  confettiParts = Array.from({ length: count }).map(() => {
+    return {
+      x: Math.random() * W,
+      y: -20 - Math.random() * H * 0.5, // start boven scherm
+      vx: -1 + Math.random() * 2,       // lichte zijwaartse drift
+      vy: 1 + Math.random() * 2.5,      // naar beneden
+      g: 0.02 + Math.random() * 0.03,   // lichte gravity
+      w: 6 + Math.random() * 8,
+      h: 8 + Math.random() * 12,
+      rot: Math.random() * Math.PI,
+      vr: (-0.05 + Math.random() * 0.1),
+      color: ["#7c5cff", "#22c55e", "#ff4d6d", "#fbbf24", "#aab0d6"]
+      [Math.floor(Math.random() * 5)],
+      alpha: 0.9
+    };
+  });
+
+  confettiStopAt = performance.now() + durationMs;
+
+  if (confettiAnim) cancelAnimationFrame(confettiAnim);
+  confettiAnim = requestAnimationFrame(tickConfetti);
+}
+
+function tickConfetti(t) {
+  if (!confettiCanvas || !confettiCtx) return;
+
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+
+  confettiCtx.clearRect(0, 0, W, H);
+
+  confettiParts.forEach(p => {
+    p.vy += p.g;
+    p.x += p.vx;
+    p.y += p.vy;
+    p.rot += p.vr;
+
+    confettiCtx.globalAlpha = p.alpha;
+    confettiCtx.save();
+    confettiCtx.translate(p.x, p.y);
+    confettiCtx.rotate(p.rot);
+    confettiCtx.fillStyle = p.color;
+    confettiCtx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+    confettiCtx.restore();
+  });
+
+  // filter uit beeld
+  confettiParts = confettiParts.filter(p => p.y < H + 40);
+
+  if (t < confettiStopAt && confettiParts.length) {
+    confettiAnim = requestAnimationFrame(tickConfetti);
+  } else {
+    stopConfetti();
+  }
+}
+
+function stopConfetti() {
+  if (confettiAnim) cancelAnimationFrame(confettiAnim);
+  confettiAnim = null;
+  confettiParts = [];
+  if (confettiCanvas) confettiCanvas.classList.add("hidden");
 }
 
 function setTimerSeconds(sec) {
@@ -411,7 +520,28 @@ function renderQuestion() {
   difficultyLabel.textContent = `${q.difficulty} • ${SIP_BY_DIFFICULTY[q.difficulty] ?? 1} slok(ken)`;
   questionText.textContent = q.question;
 
-  q.options.forEach((opt, idx) => {
+  // Shuffle antwoorden maar behoud correctIndex
+  const shuffled = q.options
+    .map((text, index) => ({
+      text,
+      isCorrect: index === q.correctIndex
+    }));
+
+  // gebruik je bestaande shuffle helper
+  const shuffledOptions = shuffle(shuffled);
+
+  // bepaal nieuwe correctIndex
+  const newCorrectIndex = shuffledOptions.findIndex(o => o.isCorrect);
+
+  // update current.q tijdelijk met nieuwe correctIndex
+  current.q = {
+    ...q,
+    options: shuffledOptions.map(o => o.text),
+    correctIndex: newCorrectIndex
+  };
+
+  // render buttons
+  current.q.options.forEach((opt, idx) => {
     const b = document.createElement("button");
     b.className = "opt";
     b.textContent = opt;
@@ -448,7 +578,28 @@ function renderQuestionWithCategory(cat) {
   difficultyLabel.textContent = `${q.difficulty} • ${SIP_BY_DIFFICULTY[q.difficulty] ?? 1} slok(ken)`;
   questionText.textContent = q.question;
 
-  q.options.forEach((opt, idx) => {
+  // Shuffle antwoorden maar behoud correctIndex
+  const shuffled = q.options
+    .map((text, index) => ({
+      text,
+      isCorrect: index === q.correctIndex
+    }));
+
+  // gebruik je bestaande shuffle helper
+  const shuffledOptions = shuffle(shuffled);
+
+  // bepaal nieuwe correctIndex
+  const newCorrectIndex = shuffledOptions.findIndex(o => o.isCorrect);
+
+  // update current.q tijdelijk met nieuwe correctIndex
+  current.q = {
+    ...q,
+    options: shuffledOptions.map(o => o.text),
+    correctIndex: newCorrectIndex
+  };
+
+  // render buttons
+  current.q.options.forEach((opt, idx) => {
     const b = document.createElement("button");
     b.className = "opt";
     b.textContent = opt;
@@ -557,8 +708,10 @@ nextBtn.onclick = () => {
 };
 
 // ------- score -------
-scoreBtn.onclick = () => {
+function openScoreboard(returnTo) {
+  scoreReturnScreen = returnTo || gameScreen; // fallback
   pauseTimer();
+
   const rows = Object.entries(stats).map(([name, s]) => ({ name, ...s }))
     .sort((a, b) => b.sips - a.sips);
 
@@ -588,8 +741,11 @@ scoreBtn.onclick = () => {
       </table>
     </div>
   `;
+
   show(scoreScreen);
-};
+}
+
+scoreBtn.onclick = () => openScoreboard(gameScreen);
 
 function topBy(obj, key, dir = "max") {
   const entries = Object.entries(obj);
@@ -639,62 +795,72 @@ function showEndScreen() {
 
   if (!endScreen) {
     console.error('End screen ontbreekt: id="screen-end" niet gevonden in index.html');
-    show(modeScreen); // fallback i.p.v. lege pagina
+    show(modeScreen);
     return;
   }
 
   show(endScreen);
+  launchConfetti(); // 🎉
 }
 
 if (endScoreBtn) {
-  endScoreBtn.onclick = () => {
-    scoreBtn.click();
-  };
+  endScoreBtn.onclick = () => openScoreboard(endScreen);
 }
 
 if (endBackBtn) {
-endBackBtn.onclick = () => {
-  stopTimer();
-  show(modeScreen);
+  endBackBtn.onclick = () => {
+    stopConfetti();
+    stopTimer();
+    show(modeScreen);
   };
 };
 
 if (endRematchBtn) {
-endRematchBtn.onclick = async () => {
-  stopTimer();
+  endRematchBtn.onclick = async () => {
+    stopConfetti();
+    stopTimer();
 
-  // nieuwe pot met dezelfde spelers/teams (setup blijft)
-  usedQuestionIds.clear();
+    // nieuwe pot met dezelfde spelers/teams (setup blijft)
+    usedQuestionIds.clear();
 
-  if (!questions.length) await loadQuestions();
-  rebuildActiveQuestions();
+    if (!questions.length) await loadQuestions();
+    rebuildActiveQuestions();
 
-  initStats();
-  if (mode === "team") initTeamStats();
+    initStats();
+    if (mode === "team") initTeamStats();
 
-  pending.nextPenaltyPlus = 0;
-  pending.rewardGive = 0;
+    pending.nextPenaltyPlus = 0;
+    pending.rewardGive = 0;
 
-  turnIndex = 0;
+    turnIndex = 0;
 
-  askedCountPlayer = {};
-  Object.keys(stats).forEach(name => askedCountPlayer[name] = 0);
+    askedCountPlayer = {};
+    Object.keys(stats).forEach(name => askedCountPlayer[name] = 0);
 
-  askedCountTeam = {};
-  if (mode === "team") Object.keys(teamStats).forEach(label => askedCountTeam[label] = 0);
+    askedCountTeam = {};
+    if (mode === "team") Object.keys(teamStats).forEach(label => askedCountTeam[label] = 0);
 
-  show(gameScreen);
-  renderQuestion();
- };
+    show(gameScreen);
+    renderQuestion();
+  };
 };
 
 backToGameBtn.onclick = () => {
-  show(gameScreen);
-  resumeTimer();
+  const target = scoreReturnScreen || gameScreen;
+  scoreReturnScreen = null;
+
+  if (target === endScreen) {
+    show(endScreen);
+    // geen resumeTimer hier, want game is voorbij
+  } else {
+    show(gameScreen);
+    resumeTimer();
+  }
 };
 
 // ------- reset / end -------
 resetBtn.onclick = () => {
+  stopConfetti();
   stopTimer();
   players = [];
   teams = [];
@@ -741,7 +907,7 @@ playerNameInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") addPlayerBtn.click();
 });
 
-// ------- start PvP game -------
+// ------- start Player/Team setup -------
 startGameBtn.onclick = async () => {
   usedQuestionIds.clear();
   chaosEnabled = !!enableChaos?.checked;
@@ -762,38 +928,46 @@ startGameBtn.onclick = async () => {
   renderQuestion();
 };
 
+modeNextBtn.onclick = () => {
+  if (!selectedMode || timerSeconds === null) {
+    if (!selectedMode) {
+      // kleine shake op Kies een mode
+      const modeTitle = document.getElementById("modeTitle");
+
+      if (modeTitle) {
+        modeTitle.classList.remove("timer-shake");
+        void modeTitle.offsetWidth;
+        modeTitle.classList.add("timer-shake");
+      }
+    }
+
+    if (timerSeconds === null) {
+      requireTimerSelection();
+    }
+
+    return;
+  }
+
+  mode = selectedMode;
+
+  if (mode === "solo") {
+    show(setupScreen);
+  } else {
+    show(teamEntryScreen);
+  }
+};
+
 // ------- MODE SCREEN -------
-modePvpBtn.onclick = () => {
-  selectedMode = "pvp";
-  // reset PVP setup state
-  players = [];
-  teams = [];
-  teamNames = {};
-  stats = {};
-  teamStats = {};
-  turnIndex = 0;
+[modePvpBtn, modeTvTBtn].forEach(btn => {
+  btn.onclick = () => {
+    selectedMode = btn.getAttribute("data-mode");
 
-  playerNameInput.value = "";
-  renderPlayers();
-  startGameBtn.disabled = true;
-  addPlayerBtn.disabled = false;
+    document.querySelectorAll(".mode-btn")
+      .forEach(b => b.classList.remove("active"));
 
-  show(setupScreen);
-};
-
-modeTvTBtn.onclick = () => {
-  selectedMode = "tvt";
-  // reset TVT state
-  players = [];
-  teams = [];
-  teamNames = {};
-  stats = {};
-  teamStats = {};
-  turnIndex = 0;
-
-  show(teamEntryScreen);
-  initTeamEntryUI();
-};
+    btn.classList.add("active");
+  };
+});
 
 backToModeBtn.onclick = () => show(modeScreen);
 
@@ -1112,9 +1286,6 @@ if (timerPills) {
       .forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
   });
-
-  // default (matcht met "Snel (10s)" active)
-  setTimerSeconds(10);
 }
 
 function isGameComplete() {
