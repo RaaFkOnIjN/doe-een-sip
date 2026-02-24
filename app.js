@@ -91,7 +91,7 @@ let selectedCategories = new Set();
 const categoryWrap = document.getElementById("categoryWrap");
 
 // categorieën die standaard UIT staan
-const nicheCategories = ["Nerd / Techniek"]; // uitbreidbaar
+const nicheCategories = ["Nerd / Techniek", "Games"]; // uitbreidbaar
 
 const MAX_PLAYERS_PVP = 5;
 const MAX_TEAMS = 5;
