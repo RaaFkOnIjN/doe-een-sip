@@ -494,3 +494,24 @@ button:disabled {
   font-weight: 700;
   font-size: 14px;
 }
+
+.category-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.category-pill {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.06);
+  cursor: pointer;
+  font-size: 13px;
+  transition: all .15s ease;
+}
+
+.category-pill.active {
+  border-color: rgba(124,92,255,.55);
+  background: rgba(124,92,255,.22);
+}

@@ -87,6 +87,12 @@ let askedCountTeam = {};   // { [teamLabel]: number }  // label zoals "A" / "Tea
 
 let scoreReturnScreen = null;
 
+let selectedCategories = new Set();
+const categoryWrap = document.getElementById("categoryWrap");
+
+// categorieën die standaard UIT staan
+const nicheCategories = ["Nerd / Techniek"]; // uitbreidbaar
+
 const MAX_PLAYERS_PVP = 5;
 const MAX_TEAMS = 5;
 const DEFAULT_TEAMS = 2;
@@ -144,6 +150,44 @@ function requireTimerSelection() {
     return false;
   }
   return true;
+}
+
+function renderCategorySelector() {
+  if (!questions.length || !categoryWrap) return;
+
+  const uniqueCategories = [...new Set(
+  questions
+    .map(q => q.category)
+    .filter(cat => cat !== "18+") // 👈 hier filteren
+)];
+
+  categoryWrap.innerHTML = "";
+
+  uniqueCategories.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "category-pill";
+    btn.textContent = cat;
+
+    // standaard aan tenzij niche
+    const isActive = !nicheCategories.includes(cat);
+    if (isActive) {
+      btn.classList.add("active");
+      selectedCategories.add(cat);
+    }
+
+    btn.onclick = () => {
+      btn.classList.toggle("active");
+
+      if (selectedCategories.has(cat)) {
+        selectedCategories.delete(cat);
+      } else {
+        selectedCategories.add(cat);
+      }
+    };
+
+    categoryWrap.appendChild(btn);
+  });
 }
 
 // ------- confetti -------
@@ -402,13 +446,29 @@ function initTeamStats() {
 }
 
 function categories() {
-  return Array.from(new Set(activeQuestions.map(q => q.category))).sort();
+  let cats = Array.from(new Set(activeQuestions.map(q => q.category)));
+
+  // filter op geselecteerde categorieën
+  if (selectedCategories.size > 0) {
+    cats = cats.filter(cat => selectedCategories.has(cat));
+  }
+
+  return cats.sort();
 }
 
 function pickQuestion(category) {
+
+  // Eerst filteren op geselecteerde categorieën
+  let poolBase = activeQuestions;
+
+  if (selectedCategories.size > 0) {
+    poolBase = poolBase.filter(q => selectedCategories.has(q.category));
+  }
+
+  // Daarna eventueel specifieke categorie (comeback keuze)
   const poolAll = category
-    ? activeQuestions.filter(q => q.category === category)
-    : activeQuestions;
+    ? poolBase.filter(q => q.category === category)
+    : poolBase;
 
   let pool = poolAll.filter(q => !usedQuestionIds.has(q.id));
 
@@ -568,6 +628,11 @@ function renderQuestionWithCategory(cat) {
   applyChaos(maybeChaos());
 
   const q = pickQuestion(cat);
+  // 🔒 Safety: als er geen vraag is (lege pool)
+  if (!q) {
+    renderQuestion(); // fallback naar normale vraag
+  return;
+  }
   current = { a, q };
 
   modeLabel.textContent = mode === "solo" ? "Solo mode" : "Team mode";
@@ -825,6 +890,7 @@ if (endRematchBtn) {
 
     if (!questions.length) await loadQuestions();
     rebuildActiveQuestions();
+    renderCategorySelector();
 
     initStats();
     if (mode === "team") initTeamStats();
@@ -914,6 +980,7 @@ startGameBtn.onclick = async () => {
 
   if (!questions.length) await loadQuestions();
   rebuildActiveQuestions();
+  renderCategorySelector();
 
   initStats();
   teams = [];
@@ -1200,6 +1267,7 @@ startTeamGameBtn.onclick = async () => {
 
   if (!questions.length) await loadQuestions();
   rebuildActiveQuestions();
+  renderCategorySelector();
 
   const teamCards = Array.from(teamsWrap.querySelectorAll("[data-team-card]"));
 
@@ -1299,6 +1367,11 @@ function isGameComplete() {
 }
 
 // initial
-renderPlayers();
-startGameBtn.disabled = true;
-show(modeScreen);
+(async function init() {
+  await loadQuestions();       // 👈 vragen meteen laden
+  renderCategorySelector();    // 👈 categorieën direct renderen
+
+  renderPlayers();
+  startGameBtn.disabled = true;
+  show(modeScreen);
+})();
