@@ -446,5 +446,3322 @@
     { "id": 382, "category": "Nerd / Techniek", "difficulty": "Hard", "question": "Wat is latency bij audio?", "options": ["Volumeverschil", "Vertraging tussen input en output", "Frequentieverschuiving", "Ruis"], "correctIndex": 1 },
     { "id": 383, "category": "Nerd / Techniek", "difficulty": "Medium", "question": "Wat betekent CLI?", "options": ["Command Line Interface", "Central Logic Input", "Core Link Interface", "Control Level Index"], "correctIndex": 0 },
     { "id": 384, "category": "Nerd / Techniek", "difficulty": "Hard", "question": "Wat doet een load balancer?", "options": ["Serververkeer verdelen", "CPU koelen", "Data comprimeren", "Firewall vervangen"], "correctIndex": 0 },
-    { "id": 385, "category": "Nerd / Techniek", "difficulty": "Brutal", "question": "Wat is de binaire waarde van 255?", "options": ["11111111", "10101010", "10000000", "11110000"], "correctIndex": 0 }
+    { "id": 385, "category": "Nerd / Techniek", "difficulty": "Brutal", "question": "Wat is de binaire waarde van 255?", "options": ["11111111", "10101010", "10000000", "11110000"], "correctIndex": 0 },
+
+    {
+    "id": 386,
+    "category": "Algemene kennis",
+    "difficulty": "Hard",
+    "question": "Waarvoor staat 'WWW'?",
+    "options": [
+      "World War Winner",
+      "Web World Wide",
+      "World Wide Web",
+      "Wide World Web"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 387,
+    "category": "Algemene kennis",
+    "difficulty": "Easy",
+    "question": "Hoeveel zijden heeft een octagon?",
+    "options": [
+      "10",
+      "8",
+      "6",
+      "7"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 388,
+    "category": "Algemene kennis",
+    "difficulty": "Medium",
+    "question": "Hoeveel minuten zitten er in één dag?",
+    "options": [
+      "24",
+      "1000",
+      "1440",
+      "720"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 389,
+    "category": "Algemene kennis",
+    "difficulty": "Hard",
+    "question": "Wat is het tegenovergestelde van 'transparant'?",
+    "options": [
+      "Ondoorzichtig",
+      "Mat",
+      "Vloeibaar",
+      "Kleurrijk"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 390,
+    "category": "Algemene kennis",
+    "difficulty": "Brutal",
+    "question": "Hoeveel uur zit er in een week?",
+    "options": [
+      "120",
+      "168",
+      "144",
+      "200"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 391,
+    "category": "Algemene kennis",
+    "difficulty": "Hard",
+    "question": "Welke oceaan is de grootste?",
+    "options": [
+      "Indische Oceaan",
+      "Atlantische Oceaan",
+      "Stille Oceaan",
+      "Noordelijke IJszee"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 392,
+    "category": "Algemene kennis",
+    "difficulty": "Hard",
+    "question": "Wat is de chemische afkorting voor zilver?",
+    "options": [
+      "Au",
+      "Ag",
+      "Sn",
+      "Fe"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 393,
+    "category": "Algemene kennis",
+    "difficulty": "Hard",
+    "question": "Wat is de hoofdstad van Italië?",
+    "options": [
+      "Milaan",
+      "Florence",
+      "Napels",
+      "Rome"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 394,
+    "category": "Algemene kennis",
+    "difficulty": "Medium",
+    "question": "Welke taal wordt het meest gesproken in Brazilië?",
+    "options": [
+      "Spaans",
+      "Engels",
+      "Frans",
+      "Portugees"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 395,
+    "category": "Algemene kennis",
+    "difficulty": "Easy",
+    "question": "Wat is de bijnaam van New York City?",
+    "options": [
+      "The Big Apple",
+      "City of Angels",
+      "Windy City",
+      "Sin City"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 396,
+    "category": "Algemene kennis",
+    "difficulty": "Hard",
+    "question": "Welke dag komt na donderdag?",
+    "options": [
+      "Maandag",
+      "Woensdag",
+      "Vrijdag",
+      "Zaterdag"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 397,
+    "category": "Algemene kennis",
+    "difficulty": "Medium",
+    "question": "Welke kleur krijg je door geel en blauw te mengen?",
+    "options": [
+      "Paars",
+      "Bruin",
+      "Oranje",
+      "Groen"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 398,
+    "category": "Algemene kennis",
+    "difficulty": "Medium",
+    "question": "Welke feestdag valt op 25 december?",
+    "options": [
+      "Koningsdag",
+      "Sinterklaas",
+      "Kerstmis",
+      "Pasen"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 399,
+    "category": "Algemene kennis",
+    "difficulty": "Hard",
+    "question": "Hoeveel milliliter zit er in 1 liter?",
+    "options": [
+      "1000",
+      "1500",
+      "10",
+      "100"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 400,
+    "category": "Algemene kennis",
+    "difficulty": "Hard",
+    "question": "Hoeveel seconden zitten er in één uur?",
+    "options": [
+      "600",
+      "60",
+      "7200",
+      "3600"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 401,
+    "category": "Algemene kennis",
+    "difficulty": "Easy",
+    "question": "Hoeveel graden heeft een rechte hoek?",
+    "options": [
+      "180",
+      "90",
+      "45",
+      "360"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 402,
+    "category": "Algemene kennis",
+    "difficulty": "Medium",
+    "question": "Welke vorm heeft een stopbord?",
+    "options": [
+      "Cirkel",
+      "Vierkant",
+      "Achthoek",
+      "Driehoek"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 403,
+    "category": "Algemene kennis",
+    "difficulty": "Easy",
+    "question": "Welke kleur heeft een standaard verkeersbord voor 'verbod' als rand?",
+    "options": [
+      "Groen",
+      "Blauw",
+      "Rood",
+      "Geel"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 404,
+    "category": "Algemene kennis",
+    "difficulty": "Brutal",
+    "question": "Welk dier staat bekend als 'koning van de jungle'?",
+    "options": [
+      "Leeuw",
+      "Tijger",
+      "Giraffe",
+      "Olifant"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 405,
+    "category": "Algemene kennis",
+    "difficulty": "Brutal",
+    "question": "Hoeveel letters heeft het Nederlandse alfabet?",
+    "options": [
+      "25",
+      "26",
+      "24",
+      "28"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 406,
+    "category": "Algemene kennis",
+    "difficulty": "Easy",
+    "question": "Welke maand heeft normaal 28 dagen?",
+    "options": [
+      "Februari",
+      "Juni",
+      "April",
+      "Januari"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 407,
+    "category": "Algemene kennis",
+    "difficulty": "Hard",
+    "question": "Hoe heet de bekendste muis van Disney?",
+    "options": [
+      "Jerry",
+      "Pikachu",
+      "Sonic",
+      "Mickey Mouse"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 408,
+    "category": "Algemene kennis",
+    "difficulty": "Medium",
+    "question": "Hoeveel continenten zijn er?",
+    "options": [
+      "5",
+      "7",
+      "6",
+      "8"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 409,
+    "category": "Algemene kennis",
+    "difficulty": "Brutal",
+    "question": "Welke richting is tegenovergesteld aan 'noord'?",
+    "options": [
+      "Zuid",
+      "Oost",
+      "West",
+      "Noordoost"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 410,
+    "category": "Algemene kennis",
+    "difficulty": "Hard",
+    "question": "Wat is de munteenheid van Japan?",
+    "options": [
+      "Won",
+      "Rupee",
+      "Yuan",
+      "Yen"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 411,
+    "category": "Algemene kennis",
+    "difficulty": "Easy",
+    "question": "Hoeveel vakjes heeft een schaakbord?",
+    "options": [
+      "64",
+      "32",
+      "81",
+      "48"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 412,
+    "category": "Algemene kennis",
+    "difficulty": "Easy",
+    "question": "Welke kleur krijg je door rood en wit te mengen?",
+    "options": [
+      "Oranje",
+      "Paars",
+      "Roze",
+      "Bruin"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 413,
+    "category": "Algemene kennis",
+    "difficulty": "Medium",
+    "question": "Welke planeet is de grootste in ons zonnestelsel?",
+    "options": [
+      "Mars",
+      "Jupiter",
+      "Neptunus",
+      "Saturnus"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 414,
+    "category": "Algemene kennis",
+    "difficulty": "Hard",
+    "question": "Wat is 12 x 12?",
+    "options": [
+      "124",
+      "132",
+      "156",
+      "144"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 415,
+    "category": "Algemene kennis",
+    "difficulty": "Hard",
+    "question": "Wat is het grootste orgaan van de mens?",
+    "options": [
+      "Hart",
+      "Longen",
+      "Huid",
+      "Lever"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 416,
+    "category": "Film & Series",
+    "difficulty": "Brutal",
+    "question": "Welke film heeft de pratende ezel Donkey?",
+    "options": [
+      "Shrek",
+      "Cars",
+      "Madagascar",
+      "Toy Story"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 417,
+    "category": "Film & Series",
+    "difficulty": "Medium",
+    "question": "Welke film speelt zich af op een zinkend schip RMS?",
+    "options": [
+      "Titanic",
+      "Cast Away",
+      "Pearl Harbor",
+      "Poseidon"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 418,
+    "category": "Film & Series",
+    "difficulty": "Easy",
+    "question": "Hoe heet de stad waar Batman woont?",
+    "options": [
+      "Gotham",
+      "Central City",
+      "Metropolis",
+      "Star City"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 419,
+    "category": "Film & Series",
+    "difficulty": "Easy",
+    "question": "In welke film zegt iemand: 'I'll be back'?",
+    "options": [
+      "Die Hard",
+      "Rambo",
+      "The Terminator",
+      "Rocky"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 420,
+    "category": "Film & Series",
+    "difficulty": "Easy",
+    "question": "Welke film draait om dromen met een draaiende tol?",
+    "options": [
+      "Shutter Island",
+      "Inception",
+      "Tenet",
+      "Memento"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 421,
+    "category": "Film & Series",
+    "difficulty": "Brutal",
+    "question": "Welke serie volgt het leven van Michael Scott?",
+    "options": [
+      "Parks and Recreation",
+      "Scrubs",
+      "Modern Family",
+      "The Office"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 422,
+    "category": "Film & Series",
+    "difficulty": "Easy",
+    "question": "Welke serie gaat over een groep overlevenden na een zombie-apocalyps?",
+    "options": [
+      "Lost",
+      "The Boys",
+      "The Walking Dead",
+      "Vikings"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 423,
+    "category": "Film & Series",
+    "difficulty": "Hard",
+    "question": "Hoe heet de AI in Iron Man's pak?",
+    "options": [
+      "Siri",
+      "Cortana",
+      "J.A.R.V.I.S.",
+      "HAL 9000"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 424,
+    "category": "Film & Series",
+    "difficulty": "Hard",
+    "question": "Hoe heet het fictieve continent in 'Game of Thrones' waar Winterfell ligt?",
+    "options": [
+      "Narnia",
+      "Middle-earth",
+      "Westeros",
+      "Pandora"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 425,
+    "category": "Film & Series",
+    "difficulty": "Hard",
+    "question": "Hoe heet de prinses in 'Frozen' die ijsmagie heeft?",
+    "options": [
+      "Ariel",
+      "Moana",
+      "Elsa",
+      "Anna"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 426,
+    "category": "Film & Series",
+    "difficulty": "Medium",
+    "question": "Welke film gaat over een ring die in een vulkaan moet?",
+    "options": [
+      "The Lord of the Rings",
+      "Pirates of the Caribbean",
+      "Harry Potter",
+      "Hunger Games"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 427,
+    "category": "Film & Series",
+    "difficulty": "Easy",
+    "question": "Welke serie heeft de koffiebar 'Central Perk'?",
+    "options": [
+      "How I Met Your Mother",
+      "Brooklyn Nine-Nine",
+      "The Office",
+      "Friends"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 428,
+    "category": "Film & Series",
+    "difficulty": "Easy",
+    "question": "Welke serie draait om een scheikundeleraar die drugs maakt?",
+    "options": [
+      "Suits",
+      "Friends",
+      "Breaking Bad",
+      "Sherlock"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 429,
+    "category": "Film & Series",
+    "difficulty": "Easy",
+    "question": "Welke serie gaat over een schaaktalent genaamd Beth Harmon?",
+    "options": [
+      "The Crown",
+      "Succession",
+      "The Queen's Gambit",
+      "Black Mirror"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 430,
+    "category": "Film & Series",
+    "difficulty": "Medium",
+    "question": "In welke film zie je 'Wakanda'?",
+    "options": [
+      "Thor",
+      "Doctor Strange",
+      "Black Panther",
+      "Ant-Man"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 431,
+    "category": "Film & Series",
+    "difficulty": "Brutal",
+    "question": "Welke serie speelt zich af in Hawkins, Indiana?",
+    "options": [
+      "Dark",
+      "The 100",
+      "Euphoria",
+      "Stranger Things"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 432,
+    "category": "Film & Series",
+    "difficulty": "Medium",
+    "question": "Welke serie speelt zich af in Albuquerque met Saul Goodman?",
+    "options": [
+      "Narcos",
+      "Dexter",
+      "Better Call Saul",
+      "Ozark"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 433,
+    "category": "Film & Series",
+    "difficulty": "Easy",
+    "question": "Welke film is bekend om de quote 'May the Force be with you'?",
+    "options": [
+      "Dune",
+      "Star Wars",
+      "Blade Runner",
+      "Star Trek"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 434,
+    "category": "Film & Series",
+    "difficulty": "Brutal",
+    "question": "Wat is de naam van de school in 'Wednesday'?",
+    "options": [
+      "Starcourt",
+      "Xavier Institute",
+      "Hogwarts",
+      "Nevermore Academy"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 435,
+    "category": "Film & Series",
+    "difficulty": "Hard",
+    "question": "Welke film heeft de quote 'Here's looking at you, kid'?",
+    "options": [
+      "Casablanca",
+      "Psycho",
+      "Citizen Kane",
+      "Jaws"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 436,
+    "category": "Film & Series",
+    "difficulty": "Easy",
+    "question": "Wie is de hoofdschurk in 'The Dark Knight'?",
+    "options": [
+      "Bane",
+      "Two-Face",
+      "The Joker",
+      "Scarecrow"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 437,
+    "category": "Film & Series",
+    "difficulty": "Hard",
+    "question": "Wie is de regisseur van 'Pulp Fiction'?",
+    "options": [
+      "Christopher Nolan",
+      "James Cameron",
+      "Steven Spielberg",
+      "Quentin Tarantino"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 438,
+    "category": "Film & Series",
+    "difficulty": "Medium",
+    "question": "Wie speelt 'Jack Sparrow'?",
+    "options": [
+      "Leonardo DiCaprio",
+      "Orlando Bloom",
+      "Brad Pitt",
+      "Johnny Depp"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 439,
+    "category": "Film & Series",
+    "difficulty": "Brutal",
+    "question": "In welke film reist Marty McFly door de tijd?",
+    "options": [
+      "Looper",
+      "Inception",
+      "Back to the Future",
+      "The Matrix"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 440,
+    "category": "Film & Series",
+    "difficulty": "Hard",
+    "question": "Wie is de maker van 'The Simpsons'?",
+    "options": [
+      "Seth MacFarlane",
+      "Dan Harmon",
+      "Trey Parker",
+      "Matt Groening"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 441,
+    "category": "Muziek",
+    "difficulty": "Medium",
+    "question": "Welke artiest wordt vaak 'Queen of Pop' genoemd?",
+    "options": [
+      "Rihanna",
+      "Lady Gaga",
+      "Madonna",
+      "Beyoncé"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 442,
+    "category": "Muziek",
+    "difficulty": "Medium",
+    "question": "Welke band maakte 'Seven Nation Army'?",
+    "options": [
+      "Arctic Monkeys",
+      "The Killers",
+      "Muse",
+      "The White Stripes"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 443,
+    "category": "Muziek",
+    "difficulty": "Brutal",
+    "question": "Welke artiest zong 'Bad Guy'?",
+    "options": [
+      "Ariana Grande",
+      "Billie Eilish",
+      "Taylor Swift",
+      "Dua Lipa"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 444,
+    "category": "Muziek",
+    "difficulty": "Medium",
+    "question": "Wat is een 'drop' in EDM?",
+    "options": [
+      "Gitaarbridge",
+      "Climax na opbouw",
+      "Langzaam einde",
+      "Vocale intro"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 445,
+    "category": "Muziek",
+    "difficulty": "Hard",
+    "question": "Wat is een 'mixtape' meestal?",
+    "options": [
+      "Enkel live album",
+      "Verzameling tracks",
+      "Klassiek concerto",
+      "Instrumentale EP"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 446,
+    "category": "Muziek",
+    "difficulty": "Brutal",
+    "question": "Welke term betekent 'sneller worden' in tempo?",
+    "options": [
+      "Ritardando",
+      "Accelerando",
+      "Vibrato",
+      "Legato"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 447,
+    "category": "Muziek",
+    "difficulty": "Brutal",
+    "question": "Wie zong 'Poker Face'?",
+    "options": [
+      "Pink",
+      "Lady Gaga",
+      "Christina Aguilera",
+      "Kesha"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 448,
+    "category": "Muziek",
+    "difficulty": "Hard",
+    "question": "Wie is 'The Boss'?",
+    "options": [
+      "Bruce Springsteen",
+      "Elton John",
+      "Prince",
+      "Bob Dylan"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 449,
+    "category": "Muziek",
+    "difficulty": "Medium",
+    "question": "Wat is 'autotune' vooral?",
+    "options": [
+      "Mixmaster",
+      "Drumcomputer",
+      "Pitch-correctie effect",
+      "Gitaarpedaal"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 450,
+    "category": "Muziek",
+    "difficulty": "Hard",
+    "question": "Wat betekent 'feat.' in een songtitel?",
+    "options": [
+      "Remix",
+      "Instrumentaal",
+      "Met/Featuring",
+      "Live"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 451,
+    "category": "Muziek",
+    "difficulty": "Medium",
+    "question": "Wie zong 'Blinding Lights'?",
+    "options": [
+      "Drake",
+      "Travis Scott",
+      "The Weeknd",
+      "Post Malone"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 452,
+    "category": "Muziek",
+    "difficulty": "Easy",
+    "question": "Welke band maakte 'Enter Sandman'?",
+    "options": [
+      "Metallica",
+      "Guns N' Roses",
+      "Iron Maiden",
+      "AC/DC"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 453,
+    "category": "Muziek",
+    "difficulty": "Medium",
+    "question": "Wie zong 'Shape of You'?",
+    "options": [
+      "Ed Sheeran",
+      "Justin Bieber",
+      "Shawn Mendes",
+      "Harry Styles"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 454,
+    "category": "Muziek",
+    "difficulty": "Medium",
+    "question": "Wat betekent 'BPM'?",
+    "options": [
+      "Bass per meter",
+      "Beats per melody",
+      "Bars per minute",
+      "Beats per minute"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 455,
+    "category": "Muziek",
+    "difficulty": "Medium",
+    "question": "Welke Nederlandse DJ staat bekend om 'Animals'?",
+    "options": [
+      "Tiësto",
+      "Martin Garrix",
+      "Hardwell",
+      "Armin van Buuren"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 456,
+    "category": "Muziek",
+    "difficulty": "Brutal",
+    "question": "Welke artiest zong 'Levitating'?",
+    "options": [
+      "Katy Perry",
+      "Olivia Rodrigo",
+      "Doja Cat",
+      "Dua Lipa"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 457,
+    "category": "Muziek",
+    "difficulty": "Hard",
+    "question": "Welke artiest is bekend van 'Thriller'?",
+    "options": [
+      "George Michael",
+      "Usher",
+      "Prince",
+      "Michael Jackson"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 458,
+    "category": "Muziek",
+    "difficulty": "Brutal",
+    "question": "Welke band staat achter 'Smells Like Teen Spirit'?",
+    "options": [
+      "Green Day",
+      "Metallica",
+      "Pearl Jam",
+      "Nirvana"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 459,
+    "category": "Muziek",
+    "difficulty": "Brutal",
+    "question": "Welke band maakte 'Stairway to Heaven'?",
+    "options": [
+      "Queen",
+      "The Rolling Stones",
+      "Led Zeppelin",
+      "Pink Floyd"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 460,
+    "category": "Muziek",
+    "difficulty": "Easy",
+    "question": "Wie won Eurovision 2019?",
+    "options": [
+      "Lordi",
+      "Duncan Laurence",
+      "Lena",
+      "Måneskin"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 461,
+    "category": "Muziek",
+    "difficulty": "Easy",
+    "question": "Wat betekent 'acapella'?",
+    "options": [
+      "Zonder zang",
+      "Zonder instrumenten",
+      "Sneller tempo",
+      "Met gitaar"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 462,
+    "category": "Muziek",
+    "difficulty": "Brutal",
+    "question": "Welke band maakte 'Mr. Brightside'?",
+    "options": [
+      "Imagine Dragons",
+      "Foo Fighters",
+      "Kings of Leon",
+      "The Killers"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 463,
+    "category": "Muziek",
+    "difficulty": "Medium",
+    "question": "Welke artiest zong 'Rolling in the Deep'?",
+    "options": [
+      "Lorde",
+      "Katy Perry",
+      "Adele",
+      "Sia"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 464,
+    "category": "Muziek",
+    "difficulty": "Hard",
+    "question": "Welke artiest zong 'Hallelujah' (origineel bekend)?",
+    "options": [
+      "Sting",
+      "Prince",
+      "Leonard Cohen",
+      "David Bowie"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 465,
+    "category": "Muziek",
+    "difficulty": "Brutal",
+    "question": "Welke band maakte 'Wonderwall'?",
+    "options": [
+      "Oasis",
+      "Radiohead",
+      "Blur",
+      "The Verve"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 466,
+    "category": "Sport",
+    "difficulty": "Easy",
+    "question": "Welke sport heeft een 'free throw'?",
+    "options": [
+      "Hockey",
+      "Voetbal",
+      "Basketbal",
+      "Tennis"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 467,
+    "category": "Sport",
+    "difficulty": "Easy",
+    "question": "In welke sport zijn er 'grand slams'?",
+    "options": [
+      "Tennis",
+      "Voetbal",
+      "F1",
+      "Basketbal"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 468,
+    "category": "Sport",
+    "difficulty": "Hard",
+    "question": "Hoe lang duurt een voetbalwedstrijd (zonder extra tijd)?",
+    "options": [
+      "90 minuten",
+      "60 minuten",
+      "100 minuten",
+      "80 minuten"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 469,
+    "category": "Sport",
+    "difficulty": "Medium",
+    "question": "Hoeveel sets win je meestal om een tenniswedstrijd te winnen (best-of-3)?",
+    "options": [
+      "4",
+      "1",
+      "3",
+      "2"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 470,
+    "category": "Sport",
+    "difficulty": "Hard",
+    "question": "Hoeveel spelers staan er bij handbal op het veld per team?",
+    "options": [
+      "7",
+      "8",
+      "6",
+      "11"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 471,
+    "category": "Sport",
+    "difficulty": "Hard",
+    "question": "Hoeveel spelers heeft een honkbalteam in het veld?",
+    "options": [
+      "10",
+      "11",
+      "9",
+      "7"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 472,
+    "category": "Sport",
+    "difficulty": "Hard",
+    "question": "Welke sport heeft het onderdeel '100 meter'?",
+    "options": [
+      "Turnen",
+      "Atletiek",
+      "Roeien",
+      "Judo"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 473,
+    "category": "Sport",
+    "difficulty": "Medium",
+    "question": "Wat betekent 'KO' in boksen?",
+    "options": [
+      "Keep-on",
+      "Knock-out",
+      "Kick-off",
+      "Knock-over"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 474,
+    "category": "Sport",
+    "difficulty": "Medium",
+    "question": "Hoeveel spelers heeft een basketbalteam op het veld?",
+    "options": [
+      "5",
+      "7",
+      "11",
+      "6"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 475,
+    "category": "Sport",
+    "difficulty": "Medium",
+    "question": "Welke kleur kaart betekent 'van het veld' bij voetbal?",
+    "options": [
+      "Geel",
+      "Rood",
+      "Groen",
+      "Blauw"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 476,
+    "category": "Sport",
+    "difficulty": "Easy",
+    "question": "Wat is de term voor 3 doelpunten door 1 speler in 1 wedstrijd?",
+    "options": [
+      "Bonus goal",
+      "Hat-trick",
+      "Clean sweep",
+      "Triple"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 477,
+    "category": "Sport",
+    "difficulty": "Hard",
+    "question": "Hoeveel punten is een touchdown waard (zonder extra punt)?",
+    "options": [
+      "3",
+      "10",
+      "6",
+      "7"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 478,
+    "category": "Sport",
+    "difficulty": "Easy",
+    "question": "Welke sport gebruikt een 'shuttle'?",
+    "options": [
+      "Tennis",
+      "Tafeltennis",
+      "Badminton",
+      "Squash"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 479,
+    "category": "Sport",
+    "difficulty": "Medium",
+    "question": "Wat is de maximale score in één beurt bij darts?",
+    "options": [
+      "200",
+      "180",
+      "210",
+      "150"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 480,
+    "category": "Sport",
+    "difficulty": "Medium",
+    "question": "Wat is een 'penalty' bij voetbal vanaf welke afstand?",
+    "options": [
+      "11 meter",
+      "13 meter",
+      "7 meter",
+      "9 meter"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 481,
+    "category": "Sport",
+    "difficulty": "Brutal",
+    "question": "In welke sport is Wimbledon een groot toernooi?",
+    "options": [
+      "Rugby",
+      "Cricket",
+      "Tennis",
+      "Golf"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 482,
+    "category": "Sport",
+    "difficulty": "Easy",
+    "question": "Wat is de afstand van een marathon?",
+    "options": [
+      "21,1 km",
+      "50 km",
+      "40 km",
+      "42,195 km"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 483,
+    "category": "Sport",
+    "difficulty": "Brutal",
+    "question": "Welke sport wordt op de Tour de France beoefend?",
+    "options": [
+      "Hardlopen",
+      "Schaatsen",
+      "Wielrennen",
+      "Zwemmen"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 484,
+    "category": "Sport",
+    "difficulty": "Hard",
+    "question": "Hoeveel spelers staan er in een volleybalteam op het veld?",
+    "options": [
+      "7",
+      "8",
+      "5",
+      "6"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 485,
+    "category": "Sport",
+    "difficulty": "Hard",
+    "question": "Welke sport heeft een 'scrum'?",
+    "options": [
+      "Rugby",
+      "Honkbal",
+      "Basketbal",
+      "Tennis"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 486,
+    "category": "Sport",
+    "difficulty": "Medium",
+    "question": "In welke sport kan je een 'slam dunk' doen?",
+    "options": [
+      "Handbal",
+      "Volleybal",
+      "Basketbal",
+      "Hockey"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 487,
+    "category": "Sport",
+    "difficulty": "Hard",
+    "question": "Welke sport gebruikt een 'scrimmage'?",
+    "options": [
+      "American football",
+      "Hockey",
+      "Basketbal",
+      "Rugby"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 488,
+    "category": "Sport",
+    "difficulty": "Easy",
+    "question": "In welke sport rijdt Max Verstappen?",
+    "options": [
+      "MotoGP",
+      "Formule 1",
+      "WRC",
+      "IndyCar"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 489,
+    "category": "Sport",
+    "difficulty": "Easy",
+    "question": "Welke sport gebruikt een 'green'?",
+    "options": [
+      "Cricket",
+      "Tennis",
+      "Hockey",
+      "Golf"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 490,
+    "category": "Sport",
+    "difficulty": "Easy",
+    "question": "Welke sport heeft een 'spare' en 'strike'?",
+    "options": [
+      "Korfbal",
+      "Bowlen",
+      "Darts",
+      "Biljart"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 491,
+    "category": "Geschiedenis",
+    "difficulty": "Hard",
+    "question": "Wat was de naam van het schip van de Pilgrim Fathers (1620)?",
+    "options": [
+      "Titanic",
+      "Endeavour",
+      "Santa Maria",
+      "Mayflower"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 492,
+    "category": "Geschiedenis",
+    "difficulty": "Medium",
+    "question": "Wat was de Koude Oorlog vooral?",
+    "options": [
+      "Oorlog in Antarctica",
+      "Spanning VS vs USSR",
+      "Burgeroorlog in VS",
+      "Oorlog tussen China en Japan"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 493,
+    "category": "Geschiedenis",
+    "difficulty": "Easy",
+    "question": "Welke revolutie begon in 1789?",
+    "options": [
+      "Franse Revolutie",
+      "Russische Revolutie",
+      "Industriële Revolutie",
+      "Amerikaanse Revolutie"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 494,
+    "category": "Geschiedenis",
+    "difficulty": "Hard",
+    "question": "Wie schilderde de Mona Lisa?",
+    "options": [
+      "Leonardo da Vinci",
+      "Michelangelo",
+      "Van Gogh",
+      "Rembrandt"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 495,
+    "category": "Geschiedenis",
+    "difficulty": "Brutal",
+    "question": "Wie was de eerste man op de maan?",
+    "options": [
+      "Buzz Aldrin",
+      "Yuri Gagarin",
+      "Neil Armstrong",
+      "Michael Collins"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 496,
+    "category": "Geschiedenis",
+    "difficulty": "Easy",
+    "question": "Welke gebeurtenis was op 14 juli 1789?",
+    "options": [
+      "Vrede van Versailles",
+      "Slag bij Waterloo",
+      "Val van Rome",
+      "Bestorming van de Bastille"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 497,
+    "category": "Geschiedenis",
+    "difficulty": "Easy",
+    "question": "Welke periode heet ook wel 'de Middeleeuwen'?",
+    "options": [
+      "0-500",
+      "1500-1800",
+      "ca. 500-1500",
+      "1800-2000"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 498,
+    "category": "Geschiedenis",
+    "difficulty": "Medium",
+    "question": "Welke pandemie woedde in 1918?",
+    "options": [
+      "Cholera",
+      "Zwarte Dood",
+      "Spaanse griep",
+      "SARS"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 499,
+    "category": "Geschiedenis",
+    "difficulty": "Easy",
+    "question": "Wie was Julius Caesar?",
+    "options": [
+      "Romeins leider",
+      "Griekse filosoof",
+      "Egyptische farao",
+      "Vikingkoning"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 500,
+    "category": "Geschiedenis",
+    "difficulty": "Hard",
+    "question": "Wie was de eerste president van de VS?",
+    "options": [
+      "Thomas Jefferson",
+      "John Adams",
+      "Abraham Lincoln",
+      "George Washington"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 501,
+    "category": "Geschiedenis",
+    "difficulty": "Hard",
+    "question": "Wie was Martin Luther (16e eeuw)?",
+    "options": [
+      "Viking",
+      "Franse generaal",
+      "Romeinse keizer",
+      "Hervormer"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 502,
+    "category": "Geschiedenis",
+    "difficulty": "Easy",
+    "question": "In welk jaar begon de Tweede Wereldoorlog?",
+    "options": [
+      "1914",
+      "1941",
+      "1945",
+      "1939"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 503,
+    "category": "Geschiedenis",
+    "difficulty": "Easy",
+    "question": "Welke stad werd in 79 na Chr. bedolven onder as?",
+    "options": [
+      "Rome",
+      "Carthago",
+      "Athene",
+      "Pompeï"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 504,
+    "category": "Geschiedenis",
+    "difficulty": "Medium",
+    "question": "Welke ontdekkingsreiziger maakte de eerste wereldomzeiling (expeditie)?",
+    "options": [
+      "Columbus",
+      "Magellaan",
+      "Da Gama",
+      "Marco Polo"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 505,
+    "category": "Geschiedenis",
+    "difficulty": "Hard",
+    "question": "In welk jaar viel het Romeinse Rijk (West) ongeveer?",
+    "options": [
+      "476",
+      "1492",
+      "1815",
+      "1066"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 506,
+    "category": "Geschiedenis",
+    "difficulty": "Hard",
+    "question": "Welke oorlog eindigde met de vrede van 1648?",
+    "options": [
+      "Honderdjarige Oorlog",
+      "Dertigjarige Oorlog",
+      "Napoleontische oorlogen",
+      "Kruistochten"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 507,
+    "category": "Geschiedenis",
+    "difficulty": "Medium",
+    "question": "Welke stad was in de Oudheid bekend om haar bibliotheek?",
+    "options": [
+      "Troje",
+      "Alexandrië",
+      "Pompeï",
+      "Sparta"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 508,
+    "category": "Geschiedenis",
+    "difficulty": "Medium",
+    "question": "Welke stad werd in WOII zwaar gebombardeerd in NL (1940)?",
+    "options": [
+      "Rotterdam",
+      "Utrecht",
+      "Maastricht",
+      "Groningen"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 509,
+    "category": "Geschiedenis",
+    "difficulty": "Easy",
+    "question": "Wie was 'de Zonnekoning'?",
+    "options": [
+      "Hendrik VIII",
+      "Karel de Grote",
+      "Lodewijk XIV",
+      "Napoleon"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 510,
+    "category": "Geschiedenis",
+    "difficulty": "Hard",
+    "question": "Welke muur viel in 1989?",
+    "options": [
+      "Chinese Muur",
+      "Berlijnse Muur",
+      "Klaagmuur",
+      "Hadrian's Wall"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 511,
+    "category": "Geografie",
+    "difficulty": "Medium",
+    "question": "Wat is de hoofdstad van Portugal?",
+    "options": [
+      "Lissabon",
+      "Porto",
+      "Coimbra",
+      "Faro"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 512,
+    "category": "Geografie",
+    "difficulty": "Hard",
+    "question": "Welke rivier stroomt door Londen?",
+    "options": [
+      "Donau",
+      "Theems",
+      "Seine",
+      "Rijn"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 513,
+    "category": "Geografie",
+    "difficulty": "Easy",
+    "question": "Welke eilandengroep hoort bij Spanje in de Atlantische Oceaan?",
+    "options": [
+      "Madeira",
+      "Azoren",
+      "Balearen",
+      "Canarische Eilanden"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 514,
+    "category": "Geografie",
+    "difficulty": "Medium",
+    "question": "Welke hoofdstad ligt in België?",
+    "options": [
+      "Brussel",
+      "Antwerpen",
+      "Gent",
+      "Luik"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 515,
+    "category": "Geografie",
+    "difficulty": "Medium",
+    "question": "Wat is de hoofdstad van Nieuw-Zeeland?",
+    "options": [
+      "Christchurch",
+      "Wellington",
+      "Auckland",
+      "Hamilton"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 516,
+    "category": "Geografie",
+    "difficulty": "Easy",
+    "question": "Welke stad staat bekend om het Opera House?",
+    "options": [
+      "Sydney",
+      "Melbourne",
+      "Auckland",
+      "Perth"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 517,
+    "category": "Geografie",
+    "difficulty": "Medium",
+    "question": "Welke continent is het grootste?",
+    "options": [
+      "Afrika",
+      "Azië",
+      "Zuid-Amerika",
+      "Europa"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 518,
+    "category": "Geografie",
+    "difficulty": "Hard",
+    "question": "Welke woestijn is de grootste warme woestijn?",
+    "options": [
+      "Atacama",
+      "Kalahari",
+      "Sahara",
+      "Gobi"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 519,
+    "category": "Geografie",
+    "difficulty": "Hard",
+    "question": "Welke oceaan ligt tussen Afrika en Australië?",
+    "options": [
+      "Atlantische Oceaan",
+      "Indische Oceaan",
+      "Stille Oceaan",
+      "Noordelijke IJszee"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 520,
+    "category": "Geografie",
+    "difficulty": "Easy",
+    "question": "Wat is de hoofdstad van Brazilië?",
+    "options": [
+      "São Paulo",
+      "Brasília",
+      "Rio de Janeiro",
+      "Salvador"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 521,
+    "category": "Geografie",
+    "difficulty": "Medium",
+    "question": "Wat is de hoofdstad van Canada?",
+    "options": [
+      "Vancouver",
+      "Ottawa",
+      "Montreal",
+      "Toronto"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 522,
+    "category": "Geografie",
+    "difficulty": "Medium",
+    "question": "Welke zee grenst aan Nederland?",
+    "options": [
+      "Noordzee",
+      "Rode Zee",
+      "Zwarte Zee",
+      "Adriatische Zee"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 523,
+    "category": "Geografie",
+    "difficulty": "Easy",
+    "question": "Wat is het grootste land ter wereld qua oppervlakte?",
+    "options": [
+      "Rusland",
+      "VS",
+      "Canada",
+      "China"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 524,
+    "category": "Geografie",
+    "difficulty": "Hard",
+    "question": "Welke bergketen ligt tussen Frankrijk en Spanje?",
+    "options": [
+      "Alpen",
+      "Karpaten",
+      "Pyreneeën",
+      "Apennijnen"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 525,
+    "category": "Geografie",
+    "difficulty": "Easy",
+    "question": "Welke berg is het hoogst ter wereld?",
+    "options": [
+      "K2",
+      "Kilimanjaro",
+      "Mount Everest",
+      "Mont Blanc"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 526,
+    "category": "Geografie",
+    "difficulty": "Brutal",
+    "question": "Wat is de hoofdstad van Australië?",
+    "options": [
+      "Canberra",
+      "Melbourne",
+      "Sydney",
+      "Perth"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 527,
+    "category": "Geografie",
+    "difficulty": "Medium",
+    "question": "Wat is de hoofdstad van Noorwegen?",
+    "options": [
+      "Helsinki",
+      "Oslo",
+      "Kopenhagen",
+      "Stockholm"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 528,
+    "category": "Geografie",
+    "difficulty": "Easy",
+    "question": "Welke rivier stroomt door Parijs?",
+    "options": [
+      "Rijn",
+      "Loire",
+      "Seine",
+      "Po"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 529,
+    "category": "Geografie",
+    "difficulty": "Hard",
+    "question": "In welk land ligt de stad Marrakech?",
+    "options": [
+      "Tunesië",
+      "Egypte",
+      "Turkije",
+      "Marokko"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 530,
+    "category": "Geografie",
+    "difficulty": "Easy",
+    "question": "In welk land ligt Transsylvanië?",
+    "options": [
+      "Roemenië",
+      "Servië",
+      "Hongarije",
+      "Bulgarije"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 531,
+    "category": "Wetenschap",
+    "difficulty": "Easy",
+    "question": "Wat is de chemische formule van keukenzout?",
+    "options": [
+      "H2O",
+      "KCl",
+      "NaCl",
+      "CO2"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 532,
+    "category": "Wetenschap",
+    "difficulty": "Hard",
+    "question": "Hoeveel tanden heeft een volwassen mens meestal?",
+    "options": [
+      "28",
+      "32",
+      "30",
+      "36"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 533,
+    "category": "Wetenschap",
+    "difficulty": "Easy",
+    "question": "Wat is de pH van puur water ongeveer?",
+    "options": [
+      "7",
+      "5",
+      "1",
+      "14"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 534,
+    "category": "Wetenschap",
+    "difficulty": "Hard",
+    "question": "Hoe heet het grootste zoogdier?",
+    "options": [
+      "Orka",
+      "Blauwe vinvis",
+      "Olifant",
+      "Giraffe"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 535,
+    "category": "Wetenschap",
+    "difficulty": "Easy",
+    "question": "Welke bloedgroep is de universele donor?",
+    "options": [
+      "AB positief",
+      "A positief",
+      "B negatief",
+      "O negatief"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 536,
+    "category": "Wetenschap",
+    "difficulty": "Easy",
+    "question": "Welke eenheid hoort bij vermogen?",
+    "options": [
+      "Volt",
+      "Ohm",
+      "Newton",
+      "Watt"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 537,
+    "category": "Wetenschap",
+    "difficulty": "Medium",
+    "question": "Wat is het kookpunt van water bij zeeniveau?",
+    "options": [
+      "90°C",
+      "80°C",
+      "110°C",
+      "100°C"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 538,
+    "category": "Wetenschap",
+    "difficulty": "Easy",
+    "question": "Hoe heet het proces waarbij planten suiker maken met licht?",
+    "options": [
+      "Osmose",
+      "Fotosynthese",
+      "Fermentatie",
+      "Verdamping"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 539,
+    "category": "Wetenschap",
+    "difficulty": "Easy",
+    "question": "Welke planeet heeft de meeste manen (algemeen bekend)?",
+    "options": [
+      "Jupiter",
+      "Mars",
+      "Mercurius",
+      "Aarde"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 540,
+    "category": "Wetenschap",
+    "difficulty": "Medium",
+    "question": "Welk gas ademen mensen vooral uit?",
+    "options": [
+      "N2",
+      "CO2",
+      "H2",
+      "O2"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 541,
+    "category": "Wetenschap",
+    "difficulty": "Brutal",
+    "question": "Wat meet een barometer?",
+    "options": [
+      "Snelheid",
+      "Luchtdruk",
+      "Vochtigheid",
+      "Temperatuur"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 542,
+    "category": "Wetenschap",
+    "difficulty": "Easy",
+    "question": "Welke planeet wordt de 'Rode Planeet' genoemd?",
+    "options": [
+      "Mercurius",
+      "Jupiter",
+      "Mars",
+      "Venus"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 543,
+    "category": "Wetenschap",
+    "difficulty": "Medium",
+    "question": "Wat is het symbool voor natrium?",
+    "options": [
+      "Na",
+      "N",
+      "Ni",
+      "S"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 544,
+    "category": "Wetenschap",
+    "difficulty": "Hard",
+    "question": "Welke deeltje heeft een negatieve lading?",
+    "options": [
+      "Elektron",
+      "Proton",
+      "Neutron",
+      "Foton"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 545,
+    "category": "Wetenschap",
+    "difficulty": "Medium",
+    "question": "Wat is de eenheid van elektrische stroom?",
+    "options": [
+      "Ampère",
+      "Volt",
+      "Watt",
+      "Ohm"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 546,
+    "category": "Wetenschap",
+    "difficulty": "Hard",
+    "question": "Welke kracht houdt ons op aarde?",
+    "options": [
+      "Centrifugaal",
+      "Wrijving",
+      "Magnetisme",
+      "Zwaartekracht"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 547,
+    "category": "Wetenschap",
+    "difficulty": "Brutal",
+    "question": "Wat is de naam van ons sterrenstelsel?",
+    "options": [
+      "Andromeda",
+      "Orion",
+      "Sombrero",
+      "Melkweg"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 548,
+    "category": "Wetenschap",
+    "difficulty": "Medium",
+    "question": "Wat is de kleinste eenheid van leven?",
+    "options": [
+      "Weefsel",
+      "Atoom",
+      "Molecuul",
+      "Cel"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 549,
+    "category": "Wetenschap",
+    "difficulty": "Brutal",
+    "question": "Wat is de snelheid van licht (ongeveer)?",
+    "options": [
+      "300.000 km/s",
+      "3.000 km/s",
+      "3.000.000 km/s",
+      "30.000 km/s"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 550,
+    "category": "Wetenschap",
+    "difficulty": "Hard",
+    "question": "Wat is een atoomkern opgebouwd uit?",
+    "options": [
+      "Protonen en neutronen",
+      "Quarks en leptonen",
+      "Ionen en elektronen",
+      "Elektronen en fotonen"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 551,
+    "category": "Games",
+    "difficulty": "Brutal",
+    "question": "Welke game heeft een 'Ender Dragon'?",
+    "options": [
+      "Valheim",
+      "Minecraft",
+      "Terraria",
+      "Roblox"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 552,
+    "category": "Games",
+    "difficulty": "Hard",
+    "question": "Wat betekent 'GG' in online games?",
+    "options": [
+      "Go go",
+      "Good game",
+      "Great grief",
+      "Get good"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 553,
+    "category": "Games",
+    "difficulty": "Easy",
+    "question": "Welke game heeft 'Kratos'?",
+    "options": [
+      "Diablo",
+      "God of War",
+      "Assassin's Creed",
+      "Doom"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 554,
+    "category": "Games",
+    "difficulty": "Hard",
+    "question": "Welke gamefranchise heeft 'Summoner's Rift'?",
+    "options": [
+      "League of Legends",
+      "Dota 2",
+      "Overwatch",
+      "Smite"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 555,
+    "category": "Games",
+    "difficulty": "Medium",
+    "question": "Wat betekent 'PvE'?",
+    "options": [
+      "Play vs Engine",
+      "Player vs Everyone",
+      "Power vs Enemy",
+      "Player vs Environment"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 556,
+    "category": "Games",
+    "difficulty": "Easy",
+    "question": "Wat betekent 'AFK'?",
+    "options": [
+      "Away From Keyboard",
+      "Auto Frame Keep",
+      "Always For Kills",
+      "Aim For Knockout"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 557,
+    "category": "Games",
+    "difficulty": "Medium",
+    "question": "In welke game land je vaak op 'Erangel'?",
+    "options": [
+      "Warzone",
+      "PUBG",
+      "Apex Legends",
+      "Fortnite"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 558,
+    "category": "Games",
+    "difficulty": "Easy",
+    "question": "Wat betekent 'RNG'?",
+    "options": [
+      "Random Next Gear",
+      "Real Network Gameplay",
+      "Rapid New Game",
+      "Random Number Generator"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 559,
+    "category": "Games",
+    "difficulty": "Hard",
+    "question": "Welke gamefranchise heeft 'Master Chief'?",
+    "options": [
+      "Destiny",
+      "Gears of War",
+      "Call of Duty",
+      "Halo"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 560,
+    "category": "Games",
+    "difficulty": "Medium",
+    "question": "Wat betekent 'speedrun'?",
+    "options": [
+      "Game zo snel mogelijk uitspelen",
+      "Cheat aanzetten",
+      "Online rank",
+      "Alle levels verzamelen"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 561,
+    "category": "Games",
+    "difficulty": "Brutal",
+    "question": "Welke game is bekend om 'Soulslike' moeilijkheid?",
+    "options": [
+      "Dark Souls",
+      "Forza",
+      "Skyrim",
+      "FIFA"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 562,
+    "category": "Games",
+    "difficulty": "Medium",
+    "question": "Welke game heeft de map 'Dust II'?",
+    "options": [
+      "Overwatch",
+      "Counter-Strike",
+      "Fortnite",
+      "Valorant"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 563,
+    "category": "Games",
+    "difficulty": "Hard",
+    "question": "Welke console is van Nintendo?",
+    "options": [
+      "Xbox",
+      "Steam Deck",
+      "Switch",
+      "PlayStation"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 564,
+    "category": "Games",
+    "difficulty": "Hard",
+    "question": "Welke game heeft 'Creeper, aw man' als meme?",
+    "options": [
+      "Minecraft",
+      "Roblox",
+      "Among Us",
+      "CS:GO"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 565,
+    "category": "Games",
+    "difficulty": "Hard",
+    "question": "Wat betekent 'DLC'?",
+    "options": [
+      "Downloadable Content",
+      "Direct Level Command",
+      "Dual Light Control",
+      "Dynamic Link Cache"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 566,
+    "category": "Games",
+    "difficulty": "Medium",
+    "question": "Welke studio maakte 'The Witcher 3'?",
+    "options": [
+      "Rockstar",
+      "Bethesda",
+      "CD Projekt Red",
+      "Ubisoft"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 567,
+    "category": "Games",
+    "difficulty": "Medium",
+    "question": "Waar staat 'NPC' voor?",
+    "options": [
+      "Non-Playable Character",
+      "Non-Programmed Code",
+      "New Player Challenge",
+      "Next Play Controller"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 568,
+    "category": "Games",
+    "difficulty": "Medium",
+    "question": "Wie is de mascotte van SEGA?",
+    "options": [
+      "Mario",
+      "Spyro",
+      "Sonic",
+      "Crash"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 569,
+    "category": "Games",
+    "difficulty": "Medium",
+    "question": "Welke game speelt zich af in Hyrule?",
+    "options": [
+      "Elden Ring",
+      "The Legend of Zelda",
+      "Minecraft",
+      "Final Fantasy"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 570,
+    "category": "Games",
+    "difficulty": "Medium",
+    "question": "In welke game bouw je met blokken?",
+    "options": [
+      "Minecraft",
+      "Terraria",
+      "Roblox",
+      "The Sims"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 571,
+    "category": "Nerd / Techniek",
+    "difficulty": "Hard",
+    "question": "Wat betekent '2FA'?",
+    "options": [
+      "Twee-frames animatie",
+      "Twee-frequentie audio",
+      "Twee-factor authenticatie",
+      "Twee-fasen adapter"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 572,
+    "category": "Nerd / Techniek",
+    "difficulty": "Hard",
+    "question": "Welke toetscombinatie kopieert meestal?",
+    "options": [
+      "Ctrl+C",
+      "Ctrl+Z",
+      "Ctrl+V",
+      "Ctrl+X"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 573,
+    "category": "Nerd / Techniek",
+    "difficulty": "Brutal",
+    "question": "Wat betekent 'URL'?",
+    "options": [
+      "Uniform Resource Locator",
+      "Universal Route Link",
+      "Unified Remote Layer",
+      "User Ready Login"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 574,
+    "category": "Nerd / Techniek",
+    "difficulty": "Hard",
+    "question": "Welke eenheid hoort bij weerstand?",
+    "options": [
+      "Volt",
+      "Ohm",
+      "Ampère",
+      "Watt"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 575,
+    "category": "Nerd / Techniek",
+    "difficulty": "Brutal",
+    "question": "Wat betekent 'VPN'?",
+    "options": [
+      "Virtual Private Network",
+      "Virtual Public Node",
+      "Video Processing Node",
+      "Very Public Network"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 576,
+    "category": "Nerd / Techniek",
+    "difficulty": "Hard",
+    "question": "Wat is 'open source'?",
+    "options": [
+      "Alleen Windows",
+      "Verborgen code",
+      "Gratis hardware",
+      "Code is openbaar"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 577,
+    "category": "Nerd / Techniek",
+    "difficulty": "Hard",
+    "question": "Wat doet een firewall?",
+    "options": [
+      "Maakt backups",
+      "Verhoogt wifi",
+      "Koelt CPU",
+      "Filtert netwerkverkeer"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 578,
+    "category": "Nerd / Techniek",
+    "difficulty": "Hard",
+    "question": "Wat betekent 'HTML'?",
+    "options": [
+      "HyperTool Multi Layout",
+      "High Transfer Media Link",
+      "Host Text Machine Language",
+      "HyperText Markup Language"
+    ],
+    "correctIndex": 3
+  },
+  {
+    "id": 579,
+    "category": "Nerd / Techniek",
+    "difficulty": "Medium",
+    "question": "Welke poort is standaard voor HTTPS?",
+    "options": [
+      "443",
+      "25",
+      "80",
+      "21"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 580,
+    "category": "Nerd / Techniek",
+    "difficulty": "Medium",
+    "question": "Wat is 'phishing'?",
+    "options": [
+      "Nepbericht om data te stelen",
+      "Encryptie",
+      "Firewall update",
+      "DDoS"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 581,
+    "category": "Nerd / Techniek",
+    "difficulty": "Easy",
+    "question": "Wat is 'cloud storage'?",
+    "options": [
+      "Cache wissen",
+      "CD branden",
+      "Opslag via internet",
+      "Opslag op USB"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 582,
+    "category": "Nerd / Techniek",
+    "difficulty": "Medium",
+    "question": "Waar staat 'CPU' voor?",
+    "options": [
+      "Core Power Utility",
+      "Central Processing Unit",
+      "Control Program Unit",
+      "Central Performance User"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 583,
+    "category": "Nerd / Techniek",
+    "difficulty": "Hard",
+    "question": "Waarvoor gebruik je een QR-code?",
+    "options": [
+      "Wifi versterken",
+      "GPS fix",
+      "Snel info/link scannen",
+      "Batterij opladen"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 584,
+    "category": "Nerd / Techniek",
+    "difficulty": "Brutal",
+    "question": "Wat doet een 'router'?",
+    "options": [
+      "Slaat data op",
+      "Verbindt netwerken",
+      "Meet temperatuur",
+      "Maakt screenshots"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 585,
+    "category": "Nerd / Techniek",
+    "difficulty": "Easy",
+    "question": "Wat is 'RAM'?",
+    "options": [
+      "Processor",
+      "Werkgeheugen",
+      "Opslag",
+      "Videokaart"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 586,
+    "category": "Algemene kennis",
+    "difficulty": "Easy",
+    "question": "Hoeveel minuten zitten er in 2 uur?",
+    "options": [
+      "60",
+      "90",
+      "120",
+      "180"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 587,
+    "category": "Algemene kennis",
+    "difficulty": "Hard",
+    "question": "Wat is de hoofdstad van Portugal?",
+    "options": [
+      "Lissabon",
+      "Porto",
+      "Madrid",
+      "Valencia"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 588,
+    "category": "Algemene kennis",
+    "difficulty": "Easy",
+    "question": "Hoeveel zijden heeft een driehoek?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 589,
+    "category": "Algemene kennis",
+    "difficulty": "Brutal",
+    "question": "Wat is 9 x 8?",
+    "options": [
+      "72",
+      "81",
+      "64",
+      "69"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 590,
+    "category": "Algemene kennis",
+    "difficulty": "Brutal",
+    "question": "Welke kleur ontstaat uit rood en geel?",
+    "options": [
+      "Groen",
+      "Oranje",
+      "Paars",
+      "Bruin"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 591,
+    "category": "Algemene kennis",
+    "difficulty": "Hard",
+    "question": "Hoeveel maanden hebben 31 dagen?",
+    "options": [
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 592,
+    "category": "Algemene kennis",
+    "difficulty": "Medium",
+    "question": "Wat betekent 'etc.'?",
+    "options": [
+      "En zo verder",
+      "Bijvoorbeeld",
+      "En dus",
+      "En toch"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 593,
+    "category": "Algemene kennis",
+    "difficulty": "Medium",
+    "question": "Hoeveel centimeter is 1 meter?",
+    "options": [
+      "10",
+      "50",
+      "100",
+      "1000"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 594,
+    "category": "Algemene kennis",
+    "difficulty": "Medium",
+    "question": "Welke planeet is het dichtst bij de zon?",
+    "options": [
+      "Venus",
+      "Mars",
+      "Mercurius",
+      "Aarde"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 595,
+    "category": "Algemene kennis",
+    "difficulty": "Hard",
+    "question": "Hoeveel graden heeft een rechte hoek?",
+    "options": [
+      "45",
+      "90",
+      "180",
+      "360"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 596,
+    "category": "Algemene kennis",
+    "difficulty": "Brutal",
+    "question": "Wat is de hoofdstad van Zweden?",
+    "options": [
+      "Oslo",
+      "Stockholm",
+      "Helsinki",
+      "Kopenhagen"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 597,
+    "category": "Algemene kennis",
+    "difficulty": "Medium",
+    "question": "Hoeveel seconden heeft een minuut?",
+    "options": [
+      "30",
+      "45",
+      "60",
+      "90"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 598,
+    "category": "Algemene kennis",
+    "difficulty": "Hard",
+    "question": "Wat is het grootste orgaan van het menselijk lichaam?",
+    "options": [
+      "Hart",
+      "Huid",
+      "Lever",
+      "Longen"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 599,
+    "category": "Algemene kennis",
+    "difficulty": "Hard",
+    "question": "Welke taal spreekt men in Brazilië?",
+    "options": [
+      "Spaans",
+      "Portugees",
+      "Frans",
+      "Italiaans"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 600,
+    "category": "Algemene kennis",
+    "difficulty": "Medium",
+    "question": "Wat is 100 gedeeld door 4?",
+    "options": [
+      "20",
+      "25",
+      "30",
+      "40"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 601,
+    "category": "Algemene kennis",
+    "difficulty": "Medium",
+    "question": "Hoeveel letters telt het alfabet?",
+    "options": [
+      "24",
+      "25",
+      "26",
+      "27"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 602,
+    "category": "Algemene kennis",
+    "difficulty": "Easy",
+    "question": "Wat is de hoofdstad van Oostenrijk?",
+    "options": [
+      "Wenen",
+      "Graz",
+      "Zürich",
+      "Praag"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 603,
+    "category": "Algemene kennis",
+    "difficulty": "Easy",
+    "question": "Welke vorm heeft een voetbal?",
+    "options": [
+      "Kubus",
+      "Bol",
+      "Cilinder",
+      "Piramide"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 604,
+    "category": "Algemene kennis",
+    "difficulty": "Easy",
+    "question": "Wat is 7²?",
+    "options": [
+      "14",
+      "21",
+      "49",
+      "56"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 605,
+    "category": "Algemene kennis",
+    "difficulty": "Brutal",
+    "question": "Hoeveel dagen telt een week?",
+    "options": [
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 606,
+    "category": "Algemene kennis",
+    "difficulty": "Medium",
+    "question": "Wat betekent WWW?",
+    "options": [
+      "World Wide Web",
+      "Web World Wide",
+      "Wide World Web",
+      "World Web Wide"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 607,
+    "category": "Algemene kennis",
+    "difficulty": "Hard",
+    "question": "Hoeveel poten heeft een spin?",
+    "options": [
+      "6",
+      "8",
+      "10",
+      "12"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 608,
+    "category": "Algemene kennis",
+    "difficulty": "Medium",
+    "question": "Wat is de hoofdstad van Noorwegen?",
+    "options": [
+      "Stockholm",
+      "Oslo",
+      "Reykjavik",
+      "Helsinki"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 609,
+    "category": "Algemene kennis",
+    "difficulty": "Easy",
+    "question": "Hoeveel gram is een kilogram?",
+    "options": [
+      "100",
+      "500",
+      "1000",
+      "2000"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 610,
+    "category": "Algemene kennis",
+    "difficulty": "Easy",
+    "question": "Wat is het tegenovergestelde van 'warm'?",
+    "options": [
+      "Heet",
+      "Koud",
+      "Lauw",
+      "Koel"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 611,
+    "category": "Algemene kennis",
+    "difficulty": "Medium",
+    "question": "Welke kleur heeft een stoplicht bovenaan?",
+    "options": [
+      "Groen",
+      "Oranje",
+      "Rood",
+      "Blauw"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 612,
+    "category": "Algemene kennis",
+    "difficulty": "Medium",
+    "question": "Hoeveel uur telt een dag?",
+    "options": [
+      "12",
+      "18",
+      "24",
+      "30"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 613,
+    "category": "Algemene kennis",
+    "difficulty": "Medium",
+    "question": "Wat is de hoofdstad van Griekenland?",
+    "options": [
+      "Athene",
+      "Rome",
+      "Istanbul",
+      "Sofia"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 614,
+    "category": "Algemene kennis",
+    "difficulty": "Easy",
+    "question": "Wat is 5 x 12?",
+    "options": [
+      "50",
+      "55",
+      "60",
+      "65"
+    ],
+    "correctIndex": 2
+  },
+  {
+    "id": 615,
+    "category": "Algemene kennis",
+    "difficulty": "Medium",
+    "question": "Welke richting wijst een kompasnaald naar?",
+    "options": [
+      "Noord",
+      "Zuid",
+      "Oost",
+      "West"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 616,
+    "category": "Film & Series",
+    "difficulty": "Easy",
+    "question": "Wie speelde Iron Man in de MCU?",
+    "options": [
+      "Chris Evans",
+      "Robert Downey Jr.",
+      "Mark Ruffalo",
+      "Tom Holland"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 617,
+    "category": "Film & Series",
+    "difficulty": "Medium",
+    "question": "Welke film bevat het schip Titanic?",
+    "options": [
+      "Titanic",
+      "Poseidon",
+      "The Abyss",
+      "Inception"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 618,
+    "category": "Film & Series",
+    "difficulty": "Medium",
+    "question": "Wie is de moeder van dragons in GoT?",
+    "options": [
+      "Cersei",
+      "Daenerys",
+      "Arya",
+      "Sansa"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 619,
+    "category": "Film & Series",
+    "difficulty": "Medium",
+    "question": "Welke film speelt zich af in Wakanda?",
+    "options": [
+      "Black Panther",
+      "Thor",
+      "Avengers",
+      "Ant-Man"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 620,
+    "category": "Film & Series",
+    "difficulty": "Hard",
+    "question": "Wie speelde Harry Potter?",
+    "options": [
+      "Elijah Wood",
+      "Daniel Radcliffe",
+      "Rupert Grint",
+      "Tom Felton"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 621,
+    "category": "Film & Series",
+    "difficulty": "Hard",
+    "question": "Welke serie gaat over een schaakgenie?",
+    "options": [
+      "The Crown",
+      "The Queen’s Gambit",
+      "Suits",
+      "Sherlock"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 622,
+    "category": "Film & Series",
+    "difficulty": "Easy",
+    "question": "Wie regisseerde Avatar?",
+    "options": [
+      "Nolan",
+      "Cameron",
+      "Spielberg",
+      "Scott"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 623,
+    "category": "Film & Series",
+    "difficulty": "Easy",
+    "question": "Welke film draait om dromen binnen dromen?",
+    "options": [
+      "Interstellar",
+      "Inception",
+      "Tenet",
+      "Memento"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 624,
+    "category": "Film & Series",
+    "difficulty": "Hard",
+    "question": "Wat is een prequel?",
+    "options": [
+      "Vervolg",
+      "Voorafgaand verhaal",
+      "Remake",
+      "Spin-off"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 625,
+    "category": "Film & Series",
+    "difficulty": "Easy",
+    "question": "Welke serie speelt zich af in Hawkins?",
+    "options": [
+      "Stranger Things",
+      "Dark",
+      "Lost",
+      "Riverdale"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 626,
+    "category": "Film & Series",
+    "difficulty": "Hard",
+    "question": "Wie speelde Wolverine?",
+    "options": [
+      "Hugh Jackman",
+      "Ryan Reynolds",
+      "Ben Affleck",
+      "Christian Bale"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 627,
+    "category": "Film & Series",
+    "difficulty": "Hard",
+    "question": "Welke film gaat over Pandora?",
+    "options": [
+      "Avatar",
+      "Gravity",
+      "Dune",
+      "Prometheus"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 628,
+    "category": "Film & Series",
+    "difficulty": "Brutal",
+    "question": "Welke film bevat de quote 'I am your father'?",
+    "options": [
+      "Star Wars",
+      "Star Trek",
+      "Matrix",
+      "Blade Runner"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 629,
+    "category": "Film & Series",
+    "difficulty": "Brutal",
+    "question": "Wie speelde The Joker in Joker (2019)?",
+    "options": [
+      "Ledger",
+      "Phoenix",
+      "Leto",
+      "Nicholson"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 630,
+    "category": "Film & Series",
+    "difficulty": "Medium",
+    "question": "Welke serie bevat 'Winter is coming'?",
+    "options": [
+      "Vikings",
+      "GoT",
+      "Rome",
+      "The Witcher"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 631,
+    "category": "Film & Series",
+    "difficulty": "Medium",
+    "question": "Welke film draait om een zinkend schip in 1912?",
+    "options": [
+      "Titanic",
+      "Waterworld",
+      "Pearl Harbor",
+      "Dunkirk"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 632,
+    "category": "Film & Series",
+    "difficulty": "Easy",
+    "question": "Wie regisseerde Pulp Fiction?",
+    "options": [
+      "Tarantino",
+      "Nolan",
+      "Scorsese",
+      "Kubrick"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 633,
+    "category": "Film & Series",
+    "difficulty": "Medium",
+    "question": "Welke serie speelt zich af in een papieren geldroof?",
+    "options": [
+      "Narcos",
+      "Money Heist",
+      "Ozark",
+      "Breaking Bad"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 634,
+    "category": "Film & Series",
+    "difficulty": "Brutal",
+    "question": "Welke film gaat over een clown in Gotham?",
+    "options": [
+      "Joker",
+      "Batman Begins",
+      "The Dark Knight",
+      "Suicide Squad"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 635,
+    "category": "Film & Series",
+    "difficulty": "Hard",
+    "question": "Welke film bevat dinosaurs in een park?",
+    "options": [
+      "Jurassic Park",
+      "King Kong",
+      "Avatar",
+      "Godzilla"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 636,
+    "category": "Film & Series",
+    "difficulty": "Medium",
+    "question": "Wie speelde Captain America?",
+    "options": [
+      "Chris Evans",
+      "Chris Hemsworth",
+      "Chris Pratt",
+      "Chris Pine"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 637,
+    "category": "Film & Series",
+    "difficulty": "Medium",
+    "question": "Welke serie draait om meth-productie?",
+    "options": [
+      "Ozark",
+      "Breaking Bad",
+      "The Wire",
+      "Dexter"
+    ],
+    "correctIndex": 1
+  },
+  {
+    "id": 638,
+    "category": "Film & Series",
+    "difficulty": "Brutal",
+    "question": "Welke film bevat het personage Jack Sparrow?",
+    "options": [
+      "Pirates of the Caribbean",
+      "Treasure Island",
+      "Hook",
+      "Peter Pan"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 639,
+    "category": "Film & Series",
+    "difficulty": "Medium",
+    "question": "Welke serie speelt zich af in de jaren 80 met monsters?",
+    "options": [
+      "Stranger Things",
+      "Dark",
+      "Lost",
+      "The 100"
+    ],
+    "correctIndex": 0
+  },
+  {
+    "id": 640,
+    "category": "Film & Series",
+    "difficulty": "Medium",
+    "question": "Wie regisseerde The Dark Knight?",
+    "options": [
+      "Nolan",
+      "Tarantino",
+      "Fincher",
+      "Bay"
+    ],
+    "correctIndex": 0
+  }
+    
   ]
