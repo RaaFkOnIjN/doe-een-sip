@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="nl">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -16,134 +17,170 @@
 </head>
 
 <body>
-<div class="container">
+  <div class="container">
 
-<header>
-  <h1>SipArena</h1>
-  <p class="subtitle">Eén telefoon bestuurt. Fout = drinken.</p>
-</header>
+    <header>
+      <h1>SipArena</h1>
+      <p class="subtitle">Eén telefoon bestuurt. Fout = drinken.</p>
+    </header>
 
-<!-- ================= MODE SCREEN ================= -->
-<section id="screen-mode" class="card">
-  <div class="badge">SipArena</div>
-  <h2 style="margin:10px 0 6px;">Kies een mode</h2>
-  <p style="opacity:.85;margin:0 0 14px;">Spelen met vrienden? Kies je mode hieronder.</p>
+    <!-- ================= MODE SCREEN ================= -->
+    <section id="screen-mode" class="card">
+      <div class="badge">SipArena</div>
+      <h2 style="margin:10px 0 6px;">Kies een mode</h2>
+      <p style="opacity:.85;margin:0 0 14px;">Spelen met vrienden? Kies je mode hieronder.</p>
 
-  <div class="row" style="gap:10px; flex-wrap:wrap;">
-    <button id="modePvpBtn" class="primary">Speler vs Speler</button>
-    <button id="modeTvTBtn" class="primary">Team vs Team</button>
+      <div class="row" style="gap:10px; flex-wrap:wrap;">
+        <button id="modePvpBtn" class="primary">Speler vs Speler</button>
+        <button id="modeTvTBtn" class="primary">Team vs Team</button>
+      </div>
+
+      <!-- Timer keuze -->
+      <div class="timer-setting" style="margin-top:14px;">
+        <div class="timer-setting-title">⏱️ Timer</div>
+        <div class="timer-pills" id="timerPills">
+          <button type="button" class="pillbtn active" data-timer="10">Snel (10s)</button>
+          <button type="button" class="pillbtn" data-timer="20">Rustig (20s)</button>
+          <button type="button" class="pillbtn" data-timer="0">Geen timer</button>
+        </div>
+      </div>
+
+      <div class="help" style="margin-top:12px;">
+        Speler vs Speler: tot 5 spelers • Team vs Team: tot 5 teams
+      </div>
+    </section>
+
+
+    <!-- ================= PVP SETUP ================= -->
+    <section id="screen-setup" class="card hidden">
+      <h2>Spelers (max 5)</h2>
+
+      <div class="row">
+        <input id="playerNameInput" type="text" placeholder="Naam speler…" maxlength="18" />
+        <button id="addPlayerBtn">Toevoegen</button>
+      </div>
+
+      <ul id="playersList" class="list"></ul>
+
+      <div class="row row-between">
+        <label class="toggle">
+          <input type="checkbox" id="enableChaos" />
+          <span>Chaos events</span>
+        </label>
+
+        <label class="toggle">
+          <input type="checkbox" id="enableAdult" />
+          <span>18+ vragen</span>
+        </label>
+
+        <button id="startGameBtn" class="primary" disabled>Start spel</button>
+      </div>
+    </section>
+
+
+    <!-- ================= TEAM ENTRY ================= -->
+    <section id="screen-teamentry" class="card hidden">
+      <div class="row row-between">
+        <div>
+          <div class="badge">Team vs Team</div>
+          <div class="turn">Vul teams in (max 5)</div>
+        </div>
+        <button id="backToModeBtn" class="ghost">Terug</button>
+      </div>
+
+      <div id="teamsWrap" style="margin-top:12px;"></div>
+
+      <div class="row row-between" style="margin-top:14px; gap:10px; flex-wrap:wrap;">
+        <button id="addTeamBtn" class="ghost">+ Team</button>
+        <button id="startTeamGameBtn" class="primary">Start</button>
+      </div>
+
+      <div id="teamEntryError" class="help hidden" style="margin-top:12px;"></div>
+    </section>
+
+
+    <!-- ================= GAME ================= -->
+    <section id="screen-game" class="card hidden">
+      <div class="row row-between">
+        <div>
+          <div id="modeLabel" class="badge"></div>
+          <div id="turnLabel" class="turn"></div>
+        </div>
+        <button id="endGameBtn" class="ghost">Stop</button>
+      </div>
+
+      <div id="helpBanner" class="help hidden"></div>
+
+      <!-- Timer UI -->
+      <div id="timerWrap" class="timer-wrap hidden">
+        <div class="timer-top">
+          <span class="timer-label">⏱️ Tijd</span>
+          <span id="timerText" class="timer-text">10</span>
+        </div>
+        <div class="timer-bar">
+          <div id="timerFill" class="timer-fill"></div>
+        </div>
+      </div>
+
+      <div id="categoryChooser" class="comeback hidden">
+        <div class="comeback-title">⚠️ Comeback Mode</div>
+        <div class="comeback-sub">Je hebt 3× fout geantwoord. Kies je categorie:</div>
+        <div id="categoryButtons" class="comeback-buttons"></div>
+      </div>
+
+      <div id="questionBox" class="qbox">
+        <div class="meta">
+          <span id="categoryLabel" class="pill"></span>
+          <span id="difficultyLabel" class="pill"></span>
+        </div>
+
+        <h2 id="questionText" class="question">Vraag…</h2>
+        <div id="options" class="options"></div>
+      </div>
+
+      <div id="resultBox" class="result hidden"></div>
+
+      <div class="row row-between">
+        <button id="nextBtn" class="primary" disabled>Volgende</button>
+        <button id="scoreBtn">Scorebord</button>
+      </div>
+    </section>
+
+
+    <!-- ================= SCORE ================= -->
+    <section id="screen-score" class="card hidden">
+      <div class="row row-between">
+        <h2>Scorebord</h2>
+        <button id="backToGameBtn" class="ghost">Terug</button>
+      </div>
+      <div id="scoreTable"></div>
+      <div class="row">
+        <button id="resetBtn" class="danger">Reset spel</button>
+      </div>
+    </section>
+
+    <!-- ================= END SCREEN ================= -->
+    <section id="screen-end" class="card hidden">
+      <div class="badge">Game over</div>
+      <h2 style="margin:10px 0 6px;">Eindresultaat</h2>
+      <p style="opacity:.85;margin:0 0 14px;">Highlights van deze pot:</p>
+
+      <div id="endHighlights" style="display:grid; gap:10px;"></div>
+
+      <div class="row" style="gap:10px; flex-wrap:wrap; margin-top:14px;">
+        <button id="endScoreBtn" class="ghost">📊 Scoreboard</button>
+        <button id="endRematchBtn" class="primary">🔁 Nog een potje (10 rondes)</button>
+        <button id="endBackBtn" class="ghost">⬅️ Terug naar begin</button>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <small>⚠️ Drink met mate. 18+.</small>
+    </footer>
+
   </div>
 
-  <div class="help" style="margin-top:12px;">
-    Speler vs Speler: tot 5 spelers • Team vs Team: tot 5 teams
-  </div>
-</section>
-
-
-<!-- ================= PVP SETUP ================= -->
-<section id="screen-setup" class="card hidden">
-  <h2>Spelers (max 5)</h2>
-
-  <div class="row">
-    <input id="playerNameInput" type="text" placeholder="Naam speler…" maxlength="18" />
-    <button id="addPlayerBtn">Toevoegen</button>
-  </div>
-
-  <ul id="playersList" class="list"></ul>
-
-  <div class="row row-between">
-    <label class="toggle">
-      <input type="checkbox" id="enableChaos" />
-      <span>Chaos events</span>
-    </label>
-
-    <label class="toggle">
-      <input type="checkbox" id="enableAdult" />
-      <span>18+ vragen</span>
-    </label>
-
-    <button id="startGameBtn" class="primary" disabled>Start spel</button>
-  </div>
-</section>
-
-
-<!-- ================= TEAM ENTRY ================= -->
-<section id="screen-teamentry" class="card hidden">
-  <div class="row row-between">
-    <div>
-      <div class="badge">Team vs Team</div>
-      <div class="turn">Vul teams in (max 5)</div>
-    </div>
-    <button id="backToModeBtn" class="ghost">Terug</button>
-  </div>
-
-  <div id="teamsWrap" style="margin-top:12px;"></div>
-
-  <div class="row row-between" style="margin-top:14px; gap:10px; flex-wrap:wrap;">
-    <button id="addTeamBtn" class="ghost">+ Team</button>
-    <button id="startTeamGameBtn" class="primary">Start</button>
-  </div>
-
-  <div id="teamEntryError" class="help hidden" style="margin-top:12px;"></div>
-</section>
-
-
-<!-- ================= GAME ================= -->
-<section id="screen-game" class="card hidden">
-  <div class="row row-between">
-    <div>
-      <div id="modeLabel" class="badge"></div>
-      <div id="turnLabel" class="turn"></div>
-    </div>
-    <button id="endGameBtn" class="ghost">Stop</button>
-  </div>
-
-  <div id="helpBanner" class="help hidden"></div>
-
-  <div id="categoryChooser" class="comeback hidden">
-    <div class="comeback-title">⚠️ Comeback Mode</div>
-    <div class="comeback-sub">Je hebt 3× fout geantwoord. Kies je categorie:</div>
-    <div id="categoryButtons" class="comeback-buttons"></div>
-  </div>
-
-  <div id="questionBox" class="qbox">
-    <div class="meta">
-      <span id="categoryLabel" class="pill"></span>
-      <span id="difficultyLabel" class="pill"></span>
-    </div>
-
-    <h2 id="questionText" class="question">Vraag…</h2>
-    <div id="options" class="options"></div>
-  </div>
-
-  <div id="resultBox" class="result hidden"></div>
-
-  <div class="row row-between">
-    <button id="nextBtn" class="primary" disabled>Volgende</button>
-    <button id="scoreBtn">Scorebord</button>
-  </div>
-</section>
-
-
-<!-- ================= SCORE ================= -->
-<section id="screen-score" class="card hidden">
-  <div class="row row-between">
-    <h2>Scorebord</h2>
-    <button id="backToGameBtn" class="ghost">Terug</button>
-  </div>
-  <div id="scoreTable"></div>
-  <div class="row">
-    <button id="resetBtn" class="danger">Reset spel</button>
-  </div>
-</section>
-
-
-<footer class="footer">
-  <small>⚠️ Drink met mate. 18+.</small>
-</footer>
-
-</div>
-
-<script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
+
 </html>

@@ -51,6 +51,14 @@ const addTeamBtn = document.getElementById("addTeamBtn");
 const startTeamGameBtn = document.getElementById("startTeamGameBtn");
 const teamEntryError = document.getElementById("teamEntryError");
 
+const endScreen = document.getElementById("screen-end");
+const endHighlights = document.getElementById("endHighlights");
+const endScoreBtn = document.getElementById("endScoreBtn");
+const endRematchBtn = document.getElementById("endRematchBtn");
+const endBackBtn = document.getElementById("endBackBtn");
+
+const QUESTIONS_PER_ACTOR = 10;
+
 const SIP_BY_DIFFICULTY = { Easy: 1, Medium: 2, Hard: 3, Brutal: 5 };
 
 let questions = [];
@@ -73,14 +81,42 @@ let usedQuestionIds = new Set();
 let chaosEnabled = false;
 let pending = { nextPenaltyPlus: 0, rewardGive: 0 };
 
+let askedCountPlayer = {}; // { [playerName]: number }
+let askedCountTeam = {};   // { [teamLabel]: number }  // label zoals "A" / "Team 1" etc.
+
 const MAX_PLAYERS_PVP = 5;
 const MAX_TEAMS = 5;
 const DEFAULT_TEAMS = 2;
 
+// ------- timer -------
+let timerSeconds = 10;          // 10 of 20 (instelbaar)
+let timerTotalMs = 10 * 1000;
+let timerRemainingMs = 10 * 1000;
+let timerInterval = null;
+let timerPaused = false;
+
+const timerPills = document.getElementById("timerPills");
+const timerWrap = document.getElementById("timerWrap");
+const timerText = document.getElementById("timerText");
+const timerFill = document.getElementById("timerFill");
+
 // ------- helpers -------
 function show(screen) {
-  const all = [modeScreen, setupScreen, teamEntryScreen, gameScreen, scoreScreen, teamSetupScreen];
+  const all = [
+    modeScreen,
+    setupScreen,
+    teamEntryScreen,
+    gameScreen,
+    scoreScreen,
+    teamSetupScreen,
+    endScreen
+  ];
+
   all.forEach(s => s && s.classList.add("hidden"));
+
+  // extra veiligheid (voorkomt crash als screen null is)
+  if (!screen) return;
+
   screen.classList.remove("hidden");
 }
 
@@ -91,6 +127,114 @@ function shuffle(arr) {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
+}
+
+function setTimerSeconds(sec) {
+  timerSeconds = sec;
+
+  // ⛔ Geen timer
+  if (sec === 0) {
+    timerTotalMs = 0;
+    timerRemainingMs = 0;
+    stopTimer();
+    if (timerWrap) timerWrap.classList.add("hidden");
+    return;
+  }
+
+  // ✅ Wel timer
+  timerTotalMs = sec * 1000;
+  timerRemainingMs = timerTotalMs;
+
+  if (timerText) timerText.textContent = String(sec);
+  if (timerFill) timerFill.style.width = "100%";
+  if (timerWrap) timerWrap.classList.remove("panic");
+}
+
+function stopTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = null;
+  timerPaused = false;
+  if (timerWrap) {
+    timerWrap.classList.remove("panic");
+    timerWrap.classList.add("hidden");
+  }
+}
+
+function pauseTimer() {
+  if (!timerInterval) return;
+  clearInterval(timerInterval);
+  timerInterval = null;
+  timerPaused = true;
+}
+
+function resumeTimer() {
+  if (!timerPaused) return;
+  timerPaused = false;
+  startTimer(false); // resume met remaining
+}
+
+function startTimer(reset = true) {
+  stopTimer();
+  // Timer uit
+  if (timerSeconds === 0) {
+    if (timerWrap) timerWrap.classList.add("hidden");
+    return;
+  }
+
+  if (!timerWrap || !timerText || !timerFill) return;
+
+  timerWrap.classList.remove("hidden");
+
+  if (reset) {
+    timerRemainingMs = timerTotalMs;
+    timerFill.style.width = "100%";
+    timerWrap.classList.remove("panic");
+    timerText.textContent = String(Math.ceil(timerRemainingMs / 1000));
+  }
+
+  const tickMs = 100;
+  timerInterval = setInterval(() => {
+    timerRemainingMs -= tickMs;
+    if (timerRemainingMs < 0) timerRemainingMs = 0;
+
+    const secsLeft = Math.ceil(timerRemainingMs / 1000);
+    timerText.textContent = String(secsLeft);
+
+    const pct = (timerRemainingMs / timerTotalMs) * 100;
+    timerFill.style.width = `${pct}%`;
+
+    // panic mode laatste 3 seconden
+    if (secsLeft <= 3 && secsLeft > 0) timerWrap.classList.add("panic");
+    else timerWrap.classList.remove("panic");
+
+    if (timerRemainingMs <= 0) {
+      stopTimer();
+      timeoutAnswer();
+    }
+  }, tickMs);
+}
+
+function timeoutAnswer() {
+  // Alleen als er een actieve vraag is
+  if (!current) return;
+
+  const buttons = Array.from(optionsEl.querySelectorAll("button"));
+  if (buttons.length === 0) return;
+
+  // ✅ Als alles al disabled is, is de vraag al beantwoord/afgelopen → voorkom dubbel straffen
+  const anyEnabled = buttons.some(b => !b.disabled);
+  if (!anyEnabled) return;
+
+  // Disable knoppen en highlight correct
+  buttons.forEach((b, idx) => {
+    b.disabled = true;
+    if (idx === current.q.correctIndex) b.classList.add("correct");
+  });
+
+  // Forceer fout-afhandeling zonder "gekozen" antwoord
+  applyWrongForActor(current.a, current.q, true);
+
+  nextBtn.disabled = false;
 }
 
 async function loadQuestions() {
@@ -208,6 +352,9 @@ function applyChaos(evt) {
 
 // ------- render question -------
 function renderQuestion() {
+  // ⏱️ altijd eerst timer stoppen (belangrijk bij Next/Score/Stop etc.)
+  stopTimer();
+
   nextBtn.disabled = true;
   resultBox.classList.add("hidden");
   resultBox.textContent = "";
@@ -229,6 +376,7 @@ function renderQuestion() {
     categoryButtons.innerHTML = "";
     categoryChooser.classList.remove("hidden");
 
+    // ⏱️ hier géén timer starten (want je kiest nog een categorie)
     cats.forEach(cat => {
       const b = document.createElement("button");
       b.className = "smallbtn";
@@ -239,7 +387,7 @@ function renderQuestion() {
         else teamStats[a.label].wrongStreak = 0;
 
         categoryChooser.classList.add("hidden");
-        renderQuestionWithCategory(cat);
+        renderQuestionWithCategory(cat); // deze start straks z'n eigen timer
       };
       categoryButtons.appendChild(b);
     });
@@ -270,9 +418,15 @@ function renderQuestion() {
     b.onclick = () => answer(idx);
     optionsEl.appendChild(b);
   });
+
+  // ⏱️ timer pas starten als de vraag + antwoorden er echt staan
+  startTimer(true);
 }
 
 function renderQuestionWithCategory(cat) {
+  // ⏱️ altijd eerst timer stoppen/resetten
+  stopTimer();
+
   nextBtn.disabled = true;
   resultBox.classList.add("hidden");
   resultBox.textContent = "";
@@ -301,9 +455,43 @@ function renderQuestionWithCategory(cat) {
     b.onclick = () => answer(idx);
     optionsEl.appendChild(b);
   });
+
+  // ⏱️ timer pas starten als alles gerenderd is
+  startTimer(true);
+}
+
+function applyWrongForActor(a, q, isTimeout = false) {
+  const base = SIP_BY_DIFFICULTY[q.difficulty] ?? 1;
+  const penalty = base + pending.nextPenaltyPlus;
+
+  // reset pending
+  pending.nextPenaltyPlus = 0;
+  pending.rewardGive = 0;
+
+  if (a.type === "player") {
+    stats[a.name].wrong++;
+    stats[a.name].wrongStreak++;
+    stats[a.name].sips += penalty;
+  } else {
+    teamStats[a.label].wrong++;
+    teamStats[a.label].wrongStreak++;
+    teamStats[a.label].sips += penalty;
+    a.team.forEach(n => stats[n].sips += penalty);
+  }
+
+  resultBox.classList.remove("hidden");
+  resultBox.classList.remove("good");
+  resultBox.classList.add("bad");
+  resultBox.textContent = isTimeout
+    ? `⏱️ Tijd op! ${a.type === "player" ? a.name : `Team ${a.label}`} drinkt ${penalty} slok(ken).`
+    : (a.type === "player"
+      ? `❌ Fout! ${a.name} drinkt ${penalty} slok(ken).`
+      : `❌ Fout! Team drinkt ${penalty} slok(ken).`);
 }
 
 function answer(choiceIdx) {
+  stopTimer();
+
   const { a, q } = current;
   const correct = choiceIdx === q.correctIndex;
 
@@ -311,52 +499,66 @@ function answer(choiceIdx) {
   buttons.forEach((b, idx) => {
     b.disabled = true;
     if (idx === q.correctIndex) b.classList.add("correct");
-    if (idx === choiceIdx && !correct) b.classList.add("wrong");
+    if (choiceIdx !== null && choiceIdx !== undefined && idx === choiceIdx && !correct) {
+      b.classList.add("wrong");
+    }
   });
 
-  const base = SIP_BY_DIFFICULTY[q.difficulty] ?? 1;
-  const penalty = correct ? 0 : base + pending.nextPenaltyPlus;
   const give = correct ? pending.rewardGive : 0;
-  pending.nextPenaltyPlus = 0;
+
+  // reset pending rewardGive altijd na antwoord
   pending.rewardGive = 0;
 
-  if (a.type === "player") {
-    if (correct) {
+  if (correct) {
+    pending.nextPenaltyPlus = 0;
+
+    if (a.type === "player") {
       stats[a.name].correct++;
       stats[a.name].wrongStreak = 0;
     } else {
-      stats[a.name].wrong++;
-      stats[a.name].wrongStreak++;
-      stats[a.name].sips += penalty;
-    }
-  } else {
-    if (correct) {
       teamStats[a.label].correct++;
       teamStats[a.label].wrongStreak = 0;
-    } else {
-      teamStats[a.label].wrong++;
-      teamStats[a.label].wrongStreak++;
-      teamStats[a.label].sips += penalty;
-      a.team.forEach(n => stats[n].sips += penalty);
     }
+
+    resultBox.classList.remove("hidden");
+    resultBox.classList.add("good");
+    resultBox.classList.remove("bad");
+    resultBox.textContent = `✅ Correct! Safe. ${give ? `Je mag ${give} slok uitdelen!` : ""}`;
+
+    nextBtn.disabled = false;
+    return;
   }
 
-  resultBox.classList.remove("hidden");
-  resultBox.classList.toggle("good", correct);
-  resultBox.classList.toggle("bad", !correct);
-  resultBox.textContent = correct
-    ? `✅ Correct! Safe. ${give ? `Je mag ${give} slok uitdelen!` : ""}`
-    : (a.type === "player"
-      ? `❌ Fout! ${a.name} drinkt ${penalty} slok(ken).`
-      : `❌ Fout! Team drinkt ${penalty} slok(ken).`);
-
+  // fout pad
+  applyWrongForActor(a, q, false);
   nextBtn.disabled = false;
 }
 
-nextBtn.onclick = () => { turnIndex++; renderQuestion(); };
+nextBtn.onclick = () => {
+  // Tel de vraag die net gespeeld is voor de huidige actor
+  if (current?.a) {
+    if (current.a.type === "player") {
+      askedCountPlayer[current.a.name] = (askedCountPlayer[current.a.name] ?? 0) + 1;
+    } else {
+      askedCountTeam[current.a.label] = (askedCountTeam[current.a.label] ?? 0) + 1;
+    }
+  }
+
+  // Als iedereen z'n 10 beurten heeft gehad: einde
+  if (isGameComplete()) {
+    stopTimer();
+    showEndScreen();
+    return;
+  }
+
+  // Anders volgende beurt
+  turnIndex++;
+  renderQuestion();
+};
 
 // ------- score -------
 scoreBtn.onclick = () => {
+  pauseTimer();
   const rows = Object.entries(stats).map(([name, s]) => ({ name, ...s }))
     .sort((a, b) => b.sips - a.sips);
 
@@ -389,10 +591,111 @@ scoreBtn.onclick = () => {
   show(scoreScreen);
 };
 
-backToGameBtn.onclick = () => show(gameScreen);
+function topBy(obj, key, dir = "max") {
+  const entries = Object.entries(obj);
+  if (!entries.length) return null;
+
+  let best = entries[0];
+  for (const e of entries) {
+    const v = e[1][key] ?? 0;
+    const bestV = best[1][key] ?? 0;
+    if (dir === "max" ? v > bestV : v < bestV) best = e;
+  }
+  return { name: best[0], ...best[1] };
+}
+
+function renderEndHighlights() {
+  if (!endHighlights) return;
+
+  endHighlights.innerHTML = "";
+
+  const mostSips = topBy(stats, "sips", "max");
+  const mostCorrect = topBy(stats, "correct", "max");
+  const mostWrong = topBy(stats, "wrong", "max");
+
+  const lines = [];
+  if (mostSips) lines.push(`🍺 <b>${mostSips.name}</b> heeft de meeste slokken: <b>${mostSips.sips}</b>`);
+  if (mostCorrect) lines.push(`✅ <b>${mostCorrect.name}</b> had de meeste goed: <b>${mostCorrect.correct}</b>`);
+  if (mostWrong) lines.push(`❌ <b>${mostWrong.name}</b> had de meeste fout: <b>${mostWrong.wrong}</b>`);
+
+  // Team highlight (alleen in team mode)
+  if (mode === "team" && teamStats && Object.keys(teamStats).length) {
+    const bestTeam = topBy(teamStats, "correct", "max");
+    const mostTeamSips = topBy(teamStats, "sips", "max");
+    if (bestTeam) lines.push(`🏆 Beste team (meeste goed): <b>${bestTeam.name}</b> met <b>${bestTeam.correct}</b>`);
+    if (mostTeamSips) lines.push(`🥴 Team met meeste slokken: <b>${mostTeamSips.name}</b> met <b>${mostTeamSips.sips}</b>`);
+  }
+
+  lines.forEach(html => {
+    const div = document.createElement("div");
+    div.className = "help";
+    div.innerHTML = html;
+    endHighlights.appendChild(div);
+  });
+}
+
+function showEndScreen() {
+  renderEndHighlights();
+
+  if (!endScreen) {
+    console.error('End screen ontbreekt: id="screen-end" niet gevonden in index.html');
+    show(modeScreen); // fallback i.p.v. lege pagina
+    return;
+  }
+
+  show(endScreen);
+}
+
+if (endScoreBtn) {
+  endScoreBtn.onclick = () => {
+    scoreBtn.click();
+  };
+}
+
+if (endBackBtn) {
+endBackBtn.onclick = () => {
+  stopTimer();
+  show(modeScreen);
+  };
+};
+
+if (endRematchBtn) {
+endRematchBtn.onclick = async () => {
+  stopTimer();
+
+  // nieuwe pot met dezelfde spelers/teams (setup blijft)
+  usedQuestionIds.clear();
+
+  if (!questions.length) await loadQuestions();
+  rebuildActiveQuestions();
+
+  initStats();
+  if (mode === "team") initTeamStats();
+
+  pending.nextPenaltyPlus = 0;
+  pending.rewardGive = 0;
+
+  turnIndex = 0;
+
+  askedCountPlayer = {};
+  Object.keys(stats).forEach(name => askedCountPlayer[name] = 0);
+
+  askedCountTeam = {};
+  if (mode === "team") Object.keys(teamStats).forEach(label => askedCountTeam[label] = 0);
+
+  show(gameScreen);
+  renderQuestion();
+ };
+};
+
+backToGameBtn.onclick = () => {
+  show(gameScreen);
+  resumeTimer();
+};
 
 // ------- reset / end -------
 resetBtn.onclick = () => {
+  stopTimer();
   players = [];
   teams = [];
   teamNames = {};
@@ -408,7 +711,10 @@ resetBtn.onclick = () => {
   show(modeScreen);
 };
 
-endGameBtn.onclick = () => show(modeScreen);
+endGameBtn.onclick = () => {
+  stopTimer();
+  show(modeScreen);
+};
 
 // ------- setup: add players (PvP) -------
 addPlayerBtn.onclick = () => {
@@ -448,6 +754,9 @@ startGameBtn.onclick = async () => {
   teamNames = {};
   mode = "solo";
   turnIndex = 0;
+  askedCountPlayer = {};
+  players.forEach(p => askedCountPlayer[p.name] = 0);
+  askedCountTeam = {};
 
   show(gameScreen);
   renderQuestion();
@@ -526,7 +835,7 @@ function addTeamCard() {
     </div>
 
     <label style="display:block; font-size:13px; opacity:.85; margin-bottom:4px;">Teamnaam</label>
-    <input class="input" id="teamName_${i}" value="Team ${i + 1}" />
+    <input class="input" id="teamName_${i}" value="" placeholder="Teamnaam..." autocomplete="off" />
 
     <div style="height:12px;"></div>
 
@@ -546,9 +855,12 @@ function addTeamCard() {
   addPlayerField(i, playersContainer);
   addPlayerField(i, playersContainer);
 
-  // teamname input -> live validate
+  // teamnaam input -> placeholder + live validate
   const teamNameEl = card.querySelector(`#teamName_${i}`);
   teamNameEl.addEventListener("input", validateTeamEntryLive);
+
+  // UX: focus meteen op teamnaam (alleen bij nieuwe teams)
+  teamNameEl.focus();
 
   // remove team
   const removeBtn = card.querySelector(`[data-remove-team="${i}"]`);
@@ -634,61 +946,48 @@ function validateTeamEntryLive() {
   if (teamCards.length < 2) valid = false;
 
   teamCards.forEach(card => {
-  // reset visuals
-  card.style.outline = "";
-  card.style.outlineOffset = "";
+    // reset visuals
+    card.style.outline = "";
+    card.style.outlineOffset = "";
 
-  const idx = Number(card.getAttribute("data-team-id"));
-  const teamNameEl = document.getElementById(`teamName_${idx}`);
-  const teamName = (teamNameEl?.value || "").trim();
+    const idx = Number(card.getAttribute("data-team-id"));
+    const teamNameEl = document.getElementById(`teamName_${idx}`);
+    const teamName = (teamNameEl?.value || "").trim();
 
-  // inputs binnen dit team
-  const inputs = Array.from(card.querySelectorAll('input[data-team-player][data-team-id]'));
+    // inputs binnen dit team
+    const inputs = Array.from(card.querySelectorAll('input[data-team-player][data-team-id]'));
 
-  // reset input styling
-  if (teamNameEl) {
-    teamNameEl.style.outline = "";
-    teamNameEl.style.outlineOffset = "";
-  }
-  inputs.forEach(inp => {
-    inp.style.outline = "";
-    inp.style.outlineOffset = "";
-  });
-
-  const names = inputs.map(inp => inp.value.trim()).filter(Boolean);
-
-  // --- per veld markeren ---
-  let teamOk = true;
-
-  // teamnaam verplicht
-  if (!teamName) {
-    teamOk = false;
+    // reset input styling
     if (teamNameEl) {
-      teamNameEl.style.outline = "2px solid rgba(255, 77, 77, .85)";
-      teamNameEl.style.outlineOffset = "2px";
+      teamNameEl.style.outline = "";
+      teamNameEl.style.outlineOffset = "";
     }
-  }
-
-  // minimaal 2 spelersnamen: markeer lege inputs rood als er nog te weinig namen zijn
-  if (names.length < 2) {
-    teamOk = false;
     inputs.forEach(inp => {
-      if (!inp.value.trim()) {
-        inp.style.outline = "2px solid rgba(255, 77, 77, .85)";
-        inp.style.outlineOffset = "2px";
-      }
+      inp.style.outline = "";
+      inp.style.outlineOffset = "";
     });
-  }
 
-  // team kaart ook rood als team niet ok is (extra duidelijk)
-  if (!teamOk) {
-    valid = false;
-    card.style.outline = "2px solid rgba(255, 77, 77, .55)";
-    card.style.outlineOffset = "4px";
-  }
+    const names = inputs.map(inp => inp.value.trim()).filter(Boolean);
 
-  allNames.push(...names);
-});
+    // --- per veld markeren ---
+    let teamOk = true
+
+    if (!teamName || names.length < 2) {
+      teamOk = false;
+    }
+
+    // team kaart ook rood als team niet ok is (extra duidelijk)
+    // eerst altijd resetten
+    card.classList.remove("team-error");
+
+    // als team niet ok is → kaart rood maken
+    if (!teamOk) {
+      valid = false;
+      card.classList.add("team-error");
+    }
+
+    allNames.push(...names);
+  });
 
   // duplicates check (case-insensitive)
   const lower = allNames.map(n => n.toLowerCase());
@@ -737,16 +1036,21 @@ startTeamGameBtn.onclick = async () => {
     const idx = Number(card.getAttribute("data-team-id"));
 
     const teamNameEl = document.getElementById(`teamName_${idx}`);
-    const teamName = (teamNameEl?.value || "").trim() || `Team ${idx + 1}`;
+    const teamName = (teamNameEl?.value || "").trim();
 
     const memberNames = [];
     const playerInputs = card.querySelectorAll("input[data-team-player][data-team-id]");
-playerInputs.forEach(input => {
-  const nm = input.value.trim();
-  if (nm) memberNames.push(nm);
-});
+    playerInputs.forEach(input => {
+      const nm = input.value.trim();
+      if (nm) memberNames.push(nm);
+    });
 
-    if (memberNames.length === 0) continue; // leeg team negeren
+    if (memberNames.length === 0) continue;
+    if (!teamName) {
+      teamEntryError.classList.remove("hidden");
+      teamEntryError.textContent = "Alle teams moeten een naam hebben.";
+      return;
+    }
     if (memberNames.length === 1) {
       teamEntryError.classList.remove("hidden");
       teamEntryError.textContent = `Team "${teamName}" heeft maar 1 speler. Maak er minimaal 2.`;
@@ -787,9 +1091,41 @@ playerInputs.forEach(input => {
   initTeamStats();
 
   turnIndex = 0;
+
+  askedCountTeam = {};
+  Object.keys(teamStats).forEach(label => askedCountTeam[label] = 0); // teamStats bestaat na initTeamStats()
+  askedCountPlayer = {}; // mag leeg, of ook initialiseren als je wilt
   show(gameScreen);
   renderQuestion();
 };
+
+if (timerPills) {
+  timerPills.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-timer]");
+    if (!btn) return;
+
+    const raw = btn.getAttribute("data-timer");
+    const sec = Number(raw);
+    setTimerSeconds(Number.isNaN(sec) ? 10 : sec);
+
+    Array.from(timerPills.querySelectorAll("button[data-timer]"))
+      .forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+  });
+
+  // default (matcht met "Snel (10s)" active)
+  setTimerSeconds(10);
+}
+
+function isGameComplete() {
+  if (mode === "solo") {
+    const names = Object.keys(stats);
+    return names.length > 0 && names.every(n => (askedCountPlayer[n] ?? 0) >= QUESTIONS_PER_ACTOR);
+  }
+  // team mode
+  const labels = Object.keys(teamStats);
+  return labels.length > 0 && labels.every(l => (askedCountTeam[l] ?? 0) >= QUESTIONS_PER_ACTOR);
+}
 
 // initial
 renderPlayers();
