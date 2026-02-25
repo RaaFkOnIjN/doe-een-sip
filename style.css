@@ -515,3 +515,44 @@ button:disabled {
   border-color: rgba(124,92,255,.55);
   background: rgba(124,92,255,.22);
 }
+
+.chaos-banner {
+  font-size: 30px;
+  font-weight: 900;
+  text-align: center;
+  padding: 28px;
+  border-radius: 20px;
+  margin: 30px 0;
+  background: linear-gradient(135deg, #ff4d6d, #7c5cff);
+  color: white;
+  box-shadow: 0 0 40px rgba(124, 92, 255, 0.6);
+
+  animation: chaosLoop 2.4s infinite;
+}
+
+@keyframes chaosLoop {
+  /* tril fase (0% – 15%) */
+  0%   { transform: translateX(0); }
+  3%   { transform: translateX(-6px); }
+  6%   { transform: translateX(6px); }
+  9%   { transform: translateX(-6px); }
+  12%  { transform: translateX(6px); }
+  15%  { transform: translateX(0); }
+
+  /* rust fase (15% – 100%) */
+  100% { transform: translateX(0); }
+}
+
+.badge-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.chaos-pill {
+  border-color: rgba(255, 77, 109, .6);
+  background: rgba(255, 77, 109, .15);
+  color: #ff9fb0;
+  font-weight: 700;
+}

@@ -47,6 +47,7 @@ const modeTvTBtn = document.getElementById("modeTvTBtn");
 
 const teamEntryScreen = document.getElementById("screen-teamentry");
 const backToModeBtn = document.getElementById("backToModeBtn");
+const backToModeBtnPvp = document.getElementById("backToModeBtnPvp");
 const teamsWrap = document.getElementById("teamsWrap");
 const addTeamBtn = document.getElementById("addTeamBtn");
 const startTeamGameBtn = document.getElementById("startTeamGameBtn");
@@ -60,7 +61,7 @@ const endBackBtn = document.getElementById("endBackBtn");
 
 const QUESTIONS_PER_ACTOR = 10;
 
-const SIP_BY_DIFFICULTY = { Easy: 1, Medium: 2, Hard: 3, Brutal: 5 };
+const SIP_BY_DIFFICULTY = { Easy: 4, Medium: 3, Hard: 2, Brutal: 1 };
 
 let questions = [];
 let activeQuestions = [];
@@ -80,10 +81,15 @@ let teamStats = {}; // label => {correct, wrong, sips, wrongStreak}
 let current = null;
 let usedQuestionIds = new Set();
 let chaosEnabled = false;
-let pending = { nextPenaltyPlus: 0, rewardGive: 0 };
+let pending = { sipMultiplier: 1 };
 
 let askedCountPlayer = {}; // { [playerName]: number }
 let askedCountTeam = {};   // { [teamLabel]: number }  // label zoals "A" / "Team 1" etc.
+
+let pendingChaosEvent = null;
+let awaitingChaosConfirm = false;
+
+let activeChaosBadge = null; // bv. "Double Sips"
 
 let scoreReturnScreen = null;
 
@@ -108,6 +114,7 @@ const timerPills = document.getElementById("timerPills");
 const timerWrap = document.getElementById("timerWrap");
 const timerText = document.getElementById("timerText");
 const timerFill = document.getElementById("timerFill");
+const chaosBadge = document.getElementById("chaosBadge");
 
 // ------- helpers -------
 function show(screen) {
@@ -156,10 +163,10 @@ function renderCategorySelector() {
   if (!questions.length || !categoryWrap) return;
 
   const uniqueCategories = [...new Set(
-  questions
-    .map(q => q.category)
-    .filter(cat => cat !== "18+") // 👈 hier filteren
-)];
+    questions
+      .map(q => q.category)
+      .filter(cat => cat !== "18+") // 👈 hier filteren
+  )];
 
   categoryWrap.innerHTML = "";
 
@@ -496,27 +503,34 @@ function needsHelp(a) {
 }
 
 function maybeChaos() {
+  if (turnIndex === 0) return null;
   if (!chaosEnabled) return null;
-  if (Math.random() > 0.12) return null;
-  const events = [
-    { text: "🧨 Chaos: Iedereen drinkt 1 slok!", all: 1 },
-    { text: "🔁 Chaos: Volgende fout = +1 slok.", plus: 1 },
-    { text: "🎯 Chaos: Bij goed antwoord mag je 1 slok uitdelen!", give: 1 }
-  ];
-  return events[Math.floor(Math.random() * events.length)];
+  if (Math.random() > 0.5) return null;
+
+  return { text: "⚡ Chaos: Double Sips! Volgende straf telt dubbel.", badge: "Double Sips", mult: 2 };
 }
 
 function applyChaos(evt) {
   helpBanner.classList.add("hidden");
   helpBanner.textContent = "";
+
+  // reset default elke ronde
+  pending.sipMultiplier = 1;
+  activeChaosBadge = null; // 👈 NEW
+
   if (!evt) return;
 
-  if (evt.all) Object.keys(stats).forEach(n => stats[n].sips += evt.all);
-  if (evt.plus) pending.nextPenaltyPlus += evt.plus;
-  if (evt.give) pending.rewardGive += evt.give;
+  if (evt.mult) pending.sipMultiplier = evt.mult;
+  activeChaosBadge = evt.badge || "Chaos"; // 👈 NEW
 
   helpBanner.textContent = evt.text;
+
+  // reset animatie
+  helpBanner.classList.remove("chaos-banner");
+  void helpBanner.offsetWidth; // force reflow
+
   helpBanner.classList.remove("hidden");
+  helpBanner.classList.add("chaos-banner");
 }
 
 // ------- render question -------
@@ -535,7 +549,9 @@ function renderQuestion() {
   let chosenCategory = null;
 
   if (help) {
-    modeLabel.textContent = mode === "solo" ? "Solo mode" : "Team mode";
+    if (modeLabel) {
+      modeLabel.textContent = mode === "solo" ? "Solo mode" : "Team mode";
+    }
     turnLabel.textContent =
       a.type === "player" ? `Aan de beurt: ${a.name}` : `Team aan de beurt: ${a.label}`;
 
@@ -567,17 +583,31 @@ function renderQuestion() {
     questionBox.classList.remove("hidden");
   }
 
-  applyChaos(maybeChaos());
-
   const q = pickQuestion(chosenCategory);
   current = { a, q };
 
-  modeLabel.textContent = mode === "solo" ? "Solo mode" : "Team mode";
+  if (modeLabel) {
+    modeLabel.textContent = mode === "solo" ? "Solo mode" : "Team mode";
+  }
   turnLabel.textContent =
     a.type === "player" ? `Aan de beurt: ${a.name}` : `Team aan de beurt: ${a.label}`;
 
   categoryLabel.textContent = `📚 ${q.category}`;
-  difficultyLabel.textContent = `${q.difficulty} • ${SIP_BY_DIFFICULTY[q.difficulty] ?? 1} slok(ken)`;
+  const baseSips = SIP_BY_DIFFICULTY[q.difficulty] ?? 1;
+  const mult = pending.sipMultiplier ?? 1;
+
+  const diffText = `${q.difficulty} • ${baseSips} slok(ken)${mult > 1 ? " ✖︎2" : ""}`;
+  const chaosHtml = activeChaosBadge ? ` <span class="pill chaos-pill">⚡ ${activeChaosBadge}</span>` : "";
+
+  difficultyLabel.textContent = diffText;
+
+  if (activeChaosBadge) {
+    chaosBadge.textContent = `⚡ ${activeChaosBadge}`;
+    chaosBadge.classList.remove("hidden");
+  } else {
+    chaosBadge.classList.add("hidden");
+  }
+
   questionText.textContent = q.question;
 
   // Shuffle antwoorden maar behoud correctIndex
@@ -613,6 +643,193 @@ function renderQuestion() {
   startTimer(true);
 }
 
+function renderQuestionNoChaos() {
+  // zelfde als renderQuestion(), maar:
+  // - GEEN applyChaos(maybeChaos())
+  // - GEEN nieuwe chaos bepalen
+  // - wél startTimer(true) op het einde
+
+  stopTimer();
+
+  nextBtn.disabled = true;
+  resultBox.classList.add("hidden");
+  resultBox.textContent = "";
+  optionsEl.innerHTML = "";
+
+  const a = actor();
+  const help = needsHelp(a);
+
+  let chosenCategory = null;
+
+  if (help) {
+    turnLabel.textContent =
+      a.type === "player" ? `Aan de beurt: ${a.name}` : `Team aan de beurt: ${a.label}`;
+
+    questionBox.classList.add("hidden");
+
+    const cats = categories();
+    categoryButtons.innerHTML = "";
+    categoryChooser.classList.remove("hidden");
+
+    cats.forEach(cat => {
+      const b = document.createElement("button");
+      b.className = "smallbtn";
+      b.textContent = cat;
+      b.onclick = () => {
+        if (a.type === "player") stats[a.name].wrongStreak = 0;
+        else teamStats[a.label].wrongStreak = 0;
+
+        categoryChooser.classList.add("hidden");
+        renderQuestionWithCategoryNoChaos(cat);
+      };
+      categoryButtons.appendChild(b);
+    });
+
+    return;
+  } else {
+    categoryChooser.classList.add("hidden");
+    questionBox.classList.remove("hidden");
+  }
+
+  const q = pickQuestion(chosenCategory);
+  current = { a, q };
+
+  turnLabel.textContent =
+    a.type === "player" ? `Aan de beurt: ${a.name}` : `Team aan de beurt: ${a.label}`;
+
+  categoryLabel.textContent = `📚 ${q.category}`;
+
+  const baseSips = SIP_BY_DIFFICULTY[q.difficulty] ?? 1;
+  const mult = pending.sipMultiplier ?? 1;
+
+  const diffText = `${q.difficulty} • ${baseSips} slok(ken)${mult > 1 ? " ✖︎2" : ""}`;
+  const chaosHtml = activeChaosBadge ? ` <span class="pill chaos-pill">⚡ ${activeChaosBadge}</span>` : "";
+
+  difficultyLabel.textContent = diffText;
+
+  if (activeChaosBadge) {
+    chaosBadge.textContent = `⚡ ${activeChaosBadge}`;
+    chaosBadge.classList.remove("hidden");
+  } else {
+    chaosBadge.classList.add("hidden");
+  }
+
+  questionText.textContent = q.question;
+
+  const shuffled = q.options.map((text, index) => ({ text, isCorrect: index === q.correctIndex }));
+  const shuffledOptions = shuffle(shuffled);
+  const newCorrectIndex = shuffledOptions.findIndex(o => o.isCorrect);
+
+  current.q = {
+    ...q,
+    options: shuffledOptions.map(o => o.text),
+    correctIndex: newCorrectIndex
+  };
+
+  current.q.options.forEach((opt, idx) => {
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.textContent = opt;
+    b.onclick = () => answer(idx);
+    optionsEl.appendChild(b);
+  });
+
+  startTimer(true);
+}
+
+function renderQuestionWithCategoryNoChaos(cat) {
+  stopTimer();
+
+  nextBtn.disabled = true;
+  resultBox.classList.add("hidden");
+  resultBox.textContent = "";
+  optionsEl.innerHTML = "";
+  questionBox.classList.remove("hidden");
+
+  const a = actor();
+
+  const q = pickQuestion(cat);
+  if (!q) { renderQuestionNoChaos(); return; }
+
+  current = { a, q };
+
+  turnLabel.textContent =
+    a.type === "player" ? `Aan de beurt: ${a.name}` : `Team aan de beurt: ${a.label}`;
+
+  categoryLabel.textContent = `📚 ${q.category}`;
+
+  const baseSips = SIP_BY_DIFFICULTY[q.difficulty] ?? 1;
+  const mult = pending.sipMultiplier ?? 1;
+
+  const diffText = `${q.difficulty} • ${baseSips} slok(ken)${mult > 1 ? " ✖︎2" : ""}`;
+  const chaosHtml = activeChaosBadge ? ` <span class="pill chaos-pill">⚡ ${activeChaosBadge}</span>` : "";
+
+  difficultyLabel.textContent = diffText;
+
+  if (activeChaosBadge) {
+    chaosBadge.textContent = `⚡ ${activeChaosBadge}`;
+    chaosBadge.classList.remove("hidden");
+  } else {
+    chaosBadge.classList.add("hidden");
+  }
+
+  questionText.textContent = q.question;
+
+  const shuffled = q.options.map((text, index) => ({ text, isCorrect: index === q.correctIndex }));
+  const shuffledOptions = shuffle(shuffled);
+  const newCorrectIndex = shuffledOptions.findIndex(o => o.isCorrect);
+
+  current.q = {
+    ...q,
+    options: shuffledOptions.map(o => o.text),
+    correctIndex: newCorrectIndex
+  };
+
+  current.q.options.forEach((opt, idx) => {
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.textContent = opt;
+    b.onclick = () => answer(idx);
+    optionsEl.appendChild(b);
+  });
+
+  startTimer(true);
+}
+
+function announceChaosThenWait() {
+  // reset banner altijd
+  helpBanner.classList.add("hidden");
+  helpBanner.textContent = "";
+
+  // 🔥 Reset oude resultaat tekst volledig
+  resultBox.classList.add("hidden");
+  resultBox.classList.remove("good", "bad");
+  resultBox.textContent = "";
+
+  // reset multiplier standaard
+  pending.sipMultiplier = 1;
+
+  pendingChaosEvent = maybeChaos();
+  if (!pendingChaosEvent) return false;
+
+  // 🔥 Verberg turn label ALLEEN tijdens chaos aankondiging
+  turnLabel.classList.add("hidden");
+
+  // effect alvast klaarzetten, maar nog geen vraag starten
+  applyChaos(pendingChaosEvent);
+
+  // verberg vraag UI zodat niemand alvast leest / timer-pressured is
+  questionBox.classList.add("hidden");
+  categoryChooser.classList.add("hidden");
+  stopTimer();
+
+  awaitingChaosConfirm = true;
+
+  nextBtn.disabled = false;
+  nextBtn.textContent = "Start vraag →";
+  return true;
+}
+
 function renderQuestionWithCategory(cat) {
   // ⏱️ altijd eerst timer stoppen/resetten
   stopTimer();
@@ -625,22 +842,37 @@ function renderQuestionWithCategory(cat) {
   questionBox.classList.remove("hidden");
 
   const a = actor();
-  applyChaos(maybeChaos());
 
   const q = pickQuestion(cat);
   // 🔒 Safety: als er geen vraag is (lege pool)
   if (!q) {
     renderQuestion(); // fallback naar normale vraag
-  return;
+    return;
   }
   current = { a, q };
 
-  modeLabel.textContent = mode === "solo" ? "Solo mode" : "Team mode";
+  if (modeLabel) {
+    modeLabel.textContent = mode === "solo" ? "Solo mode" : "Team mode";
+  }
   turnLabel.textContent =
     a.type === "player" ? `Aan de beurt: ${a.name}` : `Team aan de beurt: ${a.label}`;
 
   categoryLabel.textContent = `📚 ${q.category}`;
-  difficultyLabel.textContent = `${q.difficulty} • ${SIP_BY_DIFFICULTY[q.difficulty] ?? 1} slok(ken)`;
+  const baseSips = SIP_BY_DIFFICULTY[q.difficulty] ?? 1;
+  const mult = pending.sipMultiplier ?? 1;
+
+  const diffText = `${q.difficulty} • ${baseSips} slok(ken)${mult > 1 ? " ✖︎2" : ""}`;
+  const chaosHtml = activeChaosBadge ? ` <span class="pill chaos-pill">⚡ ${activeChaosBadge}</span>` : "";
+
+  difficultyLabel.textContent = diffText;
+
+  if (activeChaosBadge) {
+    chaosBadge.textContent = `⚡ ${activeChaosBadge}`;
+    chaosBadge.classList.remove("hidden");
+  } else {
+    chaosBadge.classList.add("hidden");
+  }
+
   questionText.textContent = q.question;
 
   // Shuffle antwoorden maar behoud correctIndex
@@ -678,11 +910,11 @@ function renderQuestionWithCategory(cat) {
 
 function applyWrongForActor(a, q, isTimeout = false) {
   const base = SIP_BY_DIFFICULTY[q.difficulty] ?? 1;
-  const penalty = base + pending.nextPenaltyPlus;
+  const penalty = base * (pending.sipMultiplier ?? 1);
 
-  // reset pending
-  pending.nextPenaltyPlus = 0;
-  pending.rewardGive = 0;
+  // reset na gebruik
+  pending.sipMultiplier = 1;
+
 
   if (a.type === "player") {
     stats[a.name].wrong++;
@@ -720,13 +952,7 @@ function answer(choiceIdx) {
     }
   });
 
-  const give = correct ? pending.rewardGive : 0;
-
-  // reset pending rewardGive altijd na antwoord
-  pending.rewardGive = 0;
-
   if (correct) {
-    pending.nextPenaltyPlus = 0;
 
     if (a.type === "player") {
       stats[a.name].correct++;
@@ -739,7 +965,7 @@ function answer(choiceIdx) {
     resultBox.classList.remove("hidden");
     resultBox.classList.add("good");
     resultBox.classList.remove("bad");
-    resultBox.textContent = `✅ Correct! Safe. ${give ? `Je mag ${give} slok uitdelen!` : ""}`;
+    resultBox.textContent = `✅ Correct! Safe.`;
 
     nextBtn.disabled = false;
     return;
@@ -751,7 +977,21 @@ function answer(choiceIdx) {
 }
 
 nextBtn.onclick = () => {
-  // Tel de vraag die net gespeeld is voor de huidige actor
+  // 1) Als we in chaos-confirm fase zitten → start nu pas de vraag
+  if (awaitingChaosConfirm) {
+    awaitingChaosConfirm = false;
+
+    helpBanner.classList.remove("chaos-banner");
+    helpBanner.classList.add("hidden");
+
+    turnLabel.classList.remove("hidden");
+
+    nextBtn.textContent = "Volgende →";
+    renderQuestionNoChaos();
+    return;
+  }
+
+  // 2) Normale flow: tel beurt, check end, turnIndex++, en dan:
   if (current?.a) {
     if (current.a.type === "player") {
       askedCountPlayer[current.a.name] = (askedCountPlayer[current.a.name] ?? 0) + 1;
@@ -760,16 +1000,19 @@ nextBtn.onclick = () => {
     }
   }
 
-  // Als iedereen z'n 10 beurten heeft gehad: einde
   if (isGameComplete()) {
     stopTimer();
     showEndScreen();
     return;
   }
 
-  // Anders volgende beurt
   turnIndex++;
-  renderQuestion();
+
+  // 👇 Eerst chaos aankondigen (zonder timer), anders direct vraag
+  const announced = announceChaosThenWait();
+  if (!announced) {
+    renderQuestionNoChaos();
+  }
 };
 
 // ------- score -------
@@ -895,9 +1138,6 @@ if (endRematchBtn) {
     initStats();
     if (mode === "team") initTeamStats();
 
-    pending.nextPenaltyPlus = 0;
-    pending.rewardGive = 0;
-
     turnIndex = 0;
 
     askedCountPlayer = {};
@@ -907,7 +1147,7 @@ if (endRematchBtn) {
     if (mode === "team") Object.keys(teamStats).forEach(label => askedCountTeam[label] = 0);
 
     show(gameScreen);
-    renderQuestion();
+    startNextTurnFlow();
   };
 };
 
@@ -973,6 +1213,14 @@ playerNameInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") addPlayerBtn.click();
 });
 
+function startNextTurnFlow() {
+  // reset knoptekst standaard
+  if (nextBtn) nextBtn.textContent = "Volgende →";
+
+  const announced = announceChaosThenWait();
+  if (!announced) renderQuestionNoChaos();
+}
+
 // ------- start Player/Team setup -------
 startGameBtn.onclick = async () => {
   usedQuestionIds.clear();
@@ -992,7 +1240,7 @@ startGameBtn.onclick = async () => {
   askedCountTeam = {};
 
   show(gameScreen);
-  renderQuestion();
+  startNextTurnFlow();
 };
 
 modeNextBtn.onclick = () => {
@@ -1021,6 +1269,7 @@ modeNextBtn.onclick = () => {
     show(setupScreen);
   } else {
     show(teamEntryScreen);
+    initTeamEntryUI(); // ✅ standaard 2 teams laden
   }
 };
 
@@ -1037,6 +1286,10 @@ modeNextBtn.onclick = () => {
 });
 
 backToModeBtn.onclick = () => show(modeScreen);
+
+if (backToModeBtnPvp) {
+  backToModeBtnPvp.onclick = () => show(modeScreen);
+}
 
 // ------- TEAM ENTRY UI (Team vs Team) -------
 let teamCardCount = 0;
@@ -1338,7 +1591,7 @@ startTeamGameBtn.onclick = async () => {
   Object.keys(teamStats).forEach(label => askedCountTeam[label] = 0); // teamStats bestaat na initTeamStats()
   askedCountPlayer = {}; // mag leeg, of ook initialiseren als je wilt
   show(gameScreen);
-  renderQuestion();
+  startNextTurnFlow();
 };
 
 if (timerPills) {

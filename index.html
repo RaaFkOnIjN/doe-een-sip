@@ -67,7 +67,10 @@
 
     <!-- ================= PVP SETUP ================= -->
     <section id="screen-setup" class="card hidden">
-      <h2>Spelers (max 5)</h2>
+      <div class="row row-between">
+        <h2 style="margin:0;">Spelers (max 5)</h2>
+        <button id="backToModeBtnPvp" class="ghost">Terug</button>
+      </div>
 
       <div class="row">
         <input id="playerNameInput" type="text" placeholder="Naam speler…" maxlength="18" />
@@ -96,7 +99,6 @@
     <section id="screen-teamentry" class="card hidden">
       <div class="row row-between">
         <div>
-          <div class="badge">Team vs Team</div>
           <div class="turn">Vul teams in (max 5)</div>
         </div>
         <button id="backToModeBtn" class="ghost">Terug</button>
@@ -117,7 +119,6 @@
     <section id="screen-game" class="card hidden">
       <div class="row row-between">
         <div>
-          <div id="modeLabel" class="badge"></div>
           <div id="turnLabel" class="turn"></div>
         </div>
         <button id="endGameBtn" class="ghost">Stop</button>
@@ -144,8 +145,11 @@
       <div id="questionBox" class="qbox">
         <div class="meta">
           <span id="categoryLabel" class="pill"></span>
-          <span id="difficultyLabel" class="pill"></span>
-        </div>
+          <div class="badge-row">
+            <div id="difficultyLabel" class="pill"></div>
+            <div id="chaosBadge" class="pill chaos-pill hidden"></div>
+          </div>
+          </div>
 
         <h2 id="questionText" class="question">Vraag…</h2>
         <div id="options" class="options"></div>
