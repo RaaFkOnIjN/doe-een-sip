@@ -543,16 +543,38 @@ button:disabled {
   100% { transform: translateX(0); }
 }
 
+/* badges netjes centreren (vooral mobiel) */
 .badge-row {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
   align-items: center;
 }
 
+/* elke pill wordt een mini-flexbox zodat tekst altijd mooi gecentreerd staat */
+.badge-row .pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;          /* voorkomt verticale “zweem” */
+  white-space: nowrap;     /* voorkomt rare breaks */
+}
+
+/* chaos pill mag nooit wrappen */
 .chaos-pill {
   border-color: rgba(255, 77, 109, .6);
   background: rgba(255, 77, 109, .15);
   color: #ff9fb0;
   font-weight: 700;
+  white-space: nowrap;
+}
+
+/* mobiele sizing iets strakker */
+@media (max-width: 600px) {
+  .badge-row { gap: 6px; }
+
+  .badge-row .pill {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
 }

@@ -505,7 +505,7 @@ function needsHelp(a) {
 function maybeChaos() {
   if (turnIndex === 0) return null;
   if (!chaosEnabled) return null;
-  if (Math.random() > 0.5) return null;
+  if (Math.random() > 0.1) return null;
 
   return { text: "⚡ Chaos: Double Sips! Volgende straf telt dubbel.", badge: "Double Sips", mult: 2 };
 }
