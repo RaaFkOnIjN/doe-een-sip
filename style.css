@@ -578,3 +578,12 @@ button:disabled {
     padding: 6px 10px;
   }
 }
+
+/* zorg dat hidden altijd wint, ook tegen .badge-row .pill */
+.pill.hidden { display: none !important; }
+
+/* FIX: category pill niet meer stretchen als badge-row wrapt */
+.meta{
+  align-items: center;
+  flex-wrap: wrap;
+}

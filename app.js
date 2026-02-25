@@ -516,7 +516,14 @@ function applyChaos(evt) {
 
   // reset default elke ronde
   pending.sipMultiplier = 1;
-  activeChaosBadge = null; // 👈 NEW
+  activeChaosBadge = null;
+
+  if (chaosBadge) {
+    chaosBadge.textContent = "";
+    chaosBadge.classList.add("hidden");
+  }
+
+  if (!evt) return;
 
   if (!evt) return;
 
@@ -597,7 +604,6 @@ function renderQuestion() {
   const mult = pending.sipMultiplier ?? 1;
 
   const diffText = `${q.difficulty} • ${baseSips} slok(ken)${mult > 1 ? " ✖︎2" : ""}`;
-  const chaosHtml = activeChaosBadge ? ` <span class="pill chaos-pill">⚡ ${activeChaosBadge}</span>` : "";
 
   difficultyLabel.textContent = diffText;
 
@@ -605,6 +611,7 @@ function renderQuestion() {
     chaosBadge.textContent = `⚡ ${activeChaosBadge}`;
     chaosBadge.classList.remove("hidden");
   } else {
+    chaosBadge.textContent = "";
     chaosBadge.classList.add("hidden");
   }
 
@@ -711,6 +718,7 @@ function renderQuestionNoChaos() {
     chaosBadge.textContent = `⚡ ${activeChaosBadge}`;
     chaosBadge.classList.remove("hidden");
   } else {
+    chaosBadge.textContent = "";
     chaosBadge.classList.add("hidden");
   }
 
@@ -770,6 +778,7 @@ function renderQuestionWithCategoryNoChaos(cat) {
     chaosBadge.textContent = `⚡ ${activeChaosBadge}`;
     chaosBadge.classList.remove("hidden");
   } else {
+    chaosBadge.textContent = "";
     chaosBadge.classList.add("hidden");
   }
 
@@ -810,7 +819,14 @@ function announceChaosThenWait() {
   pending.sipMultiplier = 1;
 
   pendingChaosEvent = maybeChaos();
-  if (!pendingChaosEvent) return false;
+  if (!pendingChaosEvent) {
+    activeChaosBadge = null;
+    if (chaosBadge) {
+      chaosBadge.textContent = "";
+      chaosBadge.classList.add("hidden");
+    }
+    return false;
+  }
 
   // 🔥 Verberg turn label ALLEEN tijdens chaos aankondiging
   turnLabel.classList.add("hidden");
@@ -870,6 +886,7 @@ function renderQuestionWithCategory(cat) {
     chaosBadge.textContent = `⚡ ${activeChaosBadge}`;
     chaosBadge.classList.remove("hidden");
   } else {
+    chaosBadge.textContent = "";
     chaosBadge.classList.add("hidden");
   }
 
