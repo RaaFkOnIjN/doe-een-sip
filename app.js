@@ -12,7 +12,6 @@ const startGameBtn = document.getElementById("startGameBtn");
 const enableChaos = document.getElementById("enableChaos");
 const enableAdult = document.getElementById("enableAdult");
 
-const modeLabel = document.getElementById("modeLabel");
 const turnLabel = document.getElementById("turnLabel");
 const helpBanner = document.getElementById("helpBanner");
 
@@ -31,13 +30,6 @@ const scoreTable = document.getElementById("scoreTable");
 const resetBtn = document.getElementById("resetBtn");
 const endGameBtn = document.getElementById("endGameBtn");
 
-/* (oude teamsetup refs mogen blijven staan; we gebruiken ze niet meer) */
-const teamSetupScreen = document.getElementById("screen-teamsetup");
-const backToSetupBtn = document.getElementById("backToSetupBtn");
-const teamNamesWrap = document.getElementById("teamNamesWrap");
-const teamPlayerAssignWrap = document.getElementById("teamPlayerAssignWrap");
-const teamSetupError = document.getElementById("teamSetupError");
-const confirmTeamsBtn = document.getElementById("confirmTeamsBtn");
 const modeNextBtn = document.getElementById("modeNextBtn");
 
 /* nieuwe mode + team entry */
@@ -60,6 +52,7 @@ const endRematchBtn = document.getElementById("endRematchBtn");
 const endBackBtn = document.getElementById("endBackBtn");
 
 const QUESTIONS_PER_ACTOR = 10;
+const ADULT_CATEGORY = "18+";
 
 const SIP_BY_DIFFICULTY = { Easy: 4, Medium: 3, Hard: 2, Brutal: 1 };
 
@@ -124,7 +117,6 @@ function show(screen) {
     teamEntryScreen,
     gameScreen,
     scoreScreen,
-    teamSetupScreen,
     endScreen
   ];
 
@@ -143,6 +135,22 @@ function shuffle(arr) {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>'"]/g, char => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;",
+    "'": "&#39;", '"': "&quot;"
+  })[char]);
+}
+
+function questionKey(q) {
+  return JSON.stringify([q.question, q.options, q.correctIndex]);
+}
+
+function isCategoryEnabled(category) {
+  if (category === ADULT_CATEGORY) return adultEnabled;
+  return selectedCategories.size === 0 || selectedCategories.has(category);
 }
 
 const timerLabel = document.getElementById("timerLabel");
@@ -165,10 +173,11 @@ function renderCategorySelector() {
   const uniqueCategories = [...new Set(
     questions
       .map(q => q.category)
-      .filter(cat => cat !== "18+") // 👈 hier filteren
+      .filter(cat => cat !== ADULT_CATEGORY)
   )];
 
   categoryWrap.innerHTML = "";
+  selectedCategories.clear();
 
   uniqueCategories.forEach(cat => {
     const btn = document.createElement("button");
@@ -399,21 +408,31 @@ function timeoutAnswer() {
 
 async function loadQuestions() {
   const res = await fetch("questions.json");
-  questions = await res.json();
+  if (!res.ok) throw new Error(`Vragen laden mislukt (${res.status})`);
+  const data = await res.json();
+  if (!Array.isArray(data) || data.length === 0) throw new Error("De vragenlijst is leeg of ongeldig.");
+
+  questions = data.filter(q => q && typeof q.question === "string" &&
+    typeof q.category === "string" && Array.isArray(q.options) && q.options.length >= 2 &&
+    Number.isInteger(q.correctIndex) && q.correctIndex >= 0 && q.correctIndex < q.options.length);
+
+  if (!questions.length) throw new Error("Er zijn geen geldige vragen gevonden.");
 }
 
 function rebuildActiveQuestions() {
   adultEnabled = !!enableAdult?.checked;
   activeQuestions = adultEnabled
     ? questions
-    : questions.filter(q => q.category !== "18+ Party");
+    : questions.filter(q => q.category !== ADULT_CATEGORY);
 }
 
 function renderPlayers() {
   playersList.innerHTML = "";
   players.forEach((p, idx) => {
     const li = document.createElement("li");
-    li.innerHTML = `<span>${p.name}</span>`;
+    const name = document.createElement("span");
+    name.textContent = p.name;
+    li.appendChild(name);
     const btn = document.createElement("button");
     btn.textContent = "Verwijder";
     btn.className = "smallbtn";
@@ -453,14 +472,7 @@ function initTeamStats() {
 }
 
 function categories() {
-  let cats = Array.from(new Set(activeQuestions.map(q => q.category)));
-
-  // filter op geselecteerde categorieën
-  if (selectedCategories.size > 0) {
-    cats = cats.filter(cat => selectedCategories.has(cat));
-  }
-
-  return cats.sort();
+  return Array.from(new Set(activeQuestions.map(q => q.category).filter(isCategoryEnabled))).sort();
 }
 
 function pickQuestion(category) {
@@ -468,24 +480,23 @@ function pickQuestion(category) {
   // Eerst filteren op geselecteerde categorieën
   let poolBase = activeQuestions;
 
-  if (selectedCategories.size > 0) {
-    poolBase = poolBase.filter(q => selectedCategories.has(q.category));
-  }
+  poolBase = poolBase.filter(q => isCategoryEnabled(q.category));
 
   // Daarna eventueel specifieke categorie (comeback keuze)
   const poolAll = category
     ? poolBase.filter(q => q.category === category)
     : poolBase;
 
-  let pool = poolAll.filter(q => !usedQuestionIds.has(q.id));
+  let pool = poolAll.filter(q => !usedQuestionIds.has(questionKey(q)));
 
   if (pool.length === 0) {
     usedQuestionIds.clear();
     pool = poolAll;
   }
 
+  if (!pool.length) return null;
   const q = pool[Math.floor(Math.random() * pool.length)];
-  usedQuestionIds.add(q.id);
+  usedQuestionIds.add(questionKey(q));
   return q;
 }
 
@@ -525,8 +536,6 @@ function applyChaos(evt) {
 
   if (!evt) return;
 
-  if (!evt) return;
-
   if (evt.mult) pending.sipMultiplier = evt.mult;
   activeChaosBadge = evt.badge || "Chaos"; // 👈 NEW
 
@@ -556,9 +565,6 @@ function renderQuestion() {
   let chosenCategory = null;
 
   if (help) {
-    if (modeLabel) {
-      modeLabel.textContent = mode === "solo" ? "Solo mode" : "Team mode";
-    }
     turnLabel.textContent =
       a.type === "player" ? `Aan de beurt: ${a.name}` : `Team aan de beurt: ${a.label}`;
 
@@ -591,11 +597,13 @@ function renderQuestion() {
   }
 
   const q = pickQuestion(chosenCategory);
+  if (!q) {
+    resultBox.textContent = "Geen vragen beschikbaar voor deze categorieën.";
+    resultBox.classList.remove("hidden");
+    return;
+  }
   current = { a, q };
 
-  if (modeLabel) {
-    modeLabel.textContent = mode === "solo" ? "Solo mode" : "Team mode";
-  }
   turnLabel.textContent =
     a.type === "player" ? `Aan de beurt: ${a.name}` : `Team aan de beurt: ${a.label}`;
 
@@ -867,9 +875,6 @@ function renderQuestionWithCategory(cat) {
   }
   current = { a, q };
 
-  if (modeLabel) {
-    modeLabel.textContent = mode === "solo" ? "Solo mode" : "Team mode";
-  }
   turnLabel.textContent =
     a.type === "player" ? `Aan de beurt: ${a.name}` : `Team aan de beurt: ${a.label}`;
 
@@ -1055,7 +1060,7 @@ function openScoreboard(returnTo) {
         <tbody>
           ${rows.map(r => `
             <tr>
-              <td style="padding:10px;border-bottom:1px solid rgba(255,255,255,.08)">${r.name}</td>
+              <td style="padding:10px;border-bottom:1px solid rgba(255,255,255,.08)">${escapeHtml(r.name)}</td>
               <td style="padding:10px;border-bottom:1px solid rgba(255,255,255,.08);text-align:right">${r.correct}</td>
               <td style="padding:10px;border-bottom:1px solid rgba(255,255,255,.08);text-align:right">${r.wrong}</td>
               <td style="padding:10px;border-bottom:1px solid rgba(255,255,255,.08);text-align:right">${r.sips}</td>
@@ -1095,16 +1100,16 @@ function renderEndHighlights() {
   const mostWrong = topBy(stats, "wrong", "max");
 
   const lines = [];
-  if (mostSips) lines.push(`🍺 <b>${mostSips.name}</b> heeft de meeste slokken: <b>${mostSips.sips}</b>`);
-  if (mostCorrect) lines.push(`✅ <b>${mostCorrect.name}</b> had de meeste goed: <b>${mostCorrect.correct}</b>`);
-  if (mostWrong) lines.push(`❌ <b>${mostWrong.name}</b> had de meeste fout: <b>${mostWrong.wrong}</b>`);
+  if (mostSips) lines.push(`🍺 <b>${escapeHtml(mostSips.name)}</b> heeft de meeste slokken: <b>${mostSips.sips}</b>`);
+  if (mostCorrect) lines.push(`✅ <b>${escapeHtml(mostCorrect.name)}</b> had de meeste goed: <b>${mostCorrect.correct}</b>`);
+  if (mostWrong) lines.push(`❌ <b>${escapeHtml(mostWrong.name)}</b> had de meeste fout: <b>${mostWrong.wrong}</b>`);
 
   // Team highlight (alleen in team mode)
   if (mode === "team" && teamStats && Object.keys(teamStats).length) {
     const bestTeam = topBy(teamStats, "correct", "max");
     const mostTeamSips = topBy(teamStats, "sips", "max");
-    if (bestTeam) lines.push(`🏆 Beste team (meeste goed): <b>${bestTeam.name}</b> met <b>${bestTeam.correct}</b>`);
-    if (mostTeamSips) lines.push(`🥴 Team met meeste slokken: <b>${mostTeamSips.name}</b> met <b>${mostTeamSips.sips}</b>`);
+    if (bestTeam) lines.push(`🏆 Beste team (meeste goed): <b>${escapeHtml(bestTeam.name)}</b> met <b>${bestTeam.correct}</b>`);
+    if (mostTeamSips) lines.push(`🥴 Team met meeste slokken: <b>${escapeHtml(mostTeamSips.name)}</b> met <b>${mostTeamSips.sips}</b>`);
   }
 
   lines.forEach(html => {
@@ -1368,6 +1373,7 @@ function addTeamCard() {
 
   // teamnaam input -> placeholder + live validate
   const teamNameEl = card.querySelector(`#teamName_${i}`);
+  teamNameEl.maxLength = 24;
   teamNameEl.addEventListener("input", validateTeamEntryLive);
 
   // UX: focus meteen op teamnaam (alleen bij nieuwe teams)
@@ -1412,6 +1418,7 @@ function addPlayerField(teamIndex, container) {
   input.type = "text";
   input.className = "input";
   input.placeholder = `Speler ${count}`;
+  input.maxLength = 18;
 
   // BELANGRIJK: expliciet attribute zetten (super betrouwbaar)
   input.setAttribute("data-team-player", "1");
@@ -1638,10 +1645,17 @@ function isGameComplete() {
 
 // initial
 (async function init() {
-  await loadQuestions();       // 👈 vragen meteen laden
-  renderCategorySelector();    // 👈 categorieën direct renderen
-
-  renderPlayers();
-  startGameBtn.disabled = true;
-  show(modeScreen);
+  try {
+    await loadQuestions();
+    renderCategorySelector();
+    renderPlayers();
+    startGameBtn.disabled = true;
+    show(modeScreen);
+  } catch (error) {
+    console.error(error);
+    show(modeScreen);
+    modeNextBtn.disabled = true;
+    categoryWrap.classList.add("help");
+    categoryWrap.textContent = "De vragen konden niet worden geladen. Vernieuw de pagina en probeer het opnieuw.";
+  }
 })();

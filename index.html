@@ -4,6 +4,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0f1220" />
+  <meta name="description" content="SipArena: de quizbattle voor spelers en teams." />
   <title>SipArena</title>
   <link rel="stylesheet" href="style.css" />
 
@@ -57,6 +59,17 @@
         <div id="categoryWrap" class="category-pills"></div>
       </div>
 
+      <div class="game-settings" aria-label="Spelopties">
+        <label class="toggle">
+          <input type="checkbox" id="enableChaos" />
+          <span>Chaos-events</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="enableAdult" />
+          <span>18+ vragen</span>
+        </label>
+      </div>
+
       <div class="row" style="margin-top:20px; justify-content:center;">
         <button id="modeNextBtn" class="primary" style="padding:14px 28px; font-size:16px;">
           Volgende →
@@ -73,6 +86,7 @@
       </div>
 
       <div class="row">
+        <label class="sr-only" for="playerNameInput">Naam speler</label>
         <input id="playerNameInput" type="text" placeholder="Naam speler…" maxlength="18" />
         <button id="addPlayerBtn">Toevoegen</button>
       </div>
@@ -80,16 +94,6 @@
       <ul id="playersList" class="list"></ul>
 
       <div class="row row-between">
-        <label class="toggle">
-          <input type="checkbox" id="enableChaos" />
-          <span>Chaos events</span>
-        </label>
-
-        <label class="toggle">
-          <input type="checkbox" id="enableAdult" />
-          <span>18+ vragen</span>
-        </label>
-
         <button id="startGameBtn" class="primary" disabled>Start spel</button>
       </div>
     </section>
@@ -124,7 +128,7 @@
         <button id="endGameBtn" class="ghost">Stop</button>
       </div>
 
-      <div id="helpBanner" class="help hidden"></div>
+      <div id="helpBanner" class="help hidden" role="status" aria-live="polite"></div>
 
       <!-- Timer UI -->
       <div id="timerWrap" class="timer-wrap hidden">
@@ -155,7 +159,7 @@
         <div id="options" class="options"></div>
       </div>
 
-      <div id="resultBox" class="result hidden"></div>
+      <div id="resultBox" class="result hidden" role="status" aria-live="polite"></div>
 
       <div class="row row-between">
         <button id="nextBtn" class="primary" disabled>Volgende</button>

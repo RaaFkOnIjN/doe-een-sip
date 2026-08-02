@@ -97,6 +97,12 @@ button:hover {
   background: rgba(255, 255, 255, .09)
 }
 
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid rgba(251, 191, 36, .85);
+  outline-offset: 3px;
+}
+
 button:disabled {
   opacity: .45;
   cursor: not-allowed
@@ -259,6 +265,25 @@ button:disabled {
   align-items: center;
   color: var(--muted);
   font-size: 14px
+}
+
+.game-settings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .comeback {
@@ -571,6 +596,12 @@ button:disabled {
 
 /* mobiele sizing iets strakker */
 @media (max-width: 600px) {
+  .container { padding: 12px; }
+  .row { flex-wrap: wrap; }
+  .row > input { min-width: 0; }
+  .mode-buttons > button,
+  .timer-pills > button { flex: 1 1 140px; }
+  .options .opt { min-height: 48px; }
   .badge-row { gap: 6px; }
 
   .badge-row .pill {
@@ -586,4 +617,13 @@ button:disabled {
 .meta{
   align-items: center;
   flex-wrap: wrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
 }
