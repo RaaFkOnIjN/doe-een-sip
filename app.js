@@ -10,7 +10,6 @@ const addPlayerBtn = document.getElementById("addPlayerBtn");
 const playersList = document.getElementById("playersList");
 const startGameBtn = document.getElementById("startGameBtn");
 const enableChaos = document.getElementById("enableChaos");
-const enableAdult = document.getElementById("enableAdult");
 
 const turnLabel = document.getElementById("turnLabel");
 const helpBanner = document.getElementById("helpBanner");
@@ -56,13 +55,11 @@ const confirmMessage = document.getElementById("confirmMessage");
 const confirmAcceptBtn = document.getElementById("confirmAcceptBtn");
 
 const QUESTIONS_PER_ACTOR = 10;
-const ADULT_CATEGORY = "18+";
 
 const SIP_BY_DIFFICULTY = { Easy: 4, Medium: 3, Hard: 2, Brutal: 1 };
 
 let questions = [];
 let activeQuestions = [];
-let adultEnabled = false;
 
 let players = []; // [{name}]
 let mode = "solo"; // solo | team
@@ -153,7 +150,6 @@ function questionKey(q) {
 }
 
 function isCategoryEnabled(category) {
-  if (category === ADULT_CATEGORY) return adultEnabled;
   return selectedCategories.size === 0 || selectedCategories.has(category);
 }
 
@@ -195,7 +191,6 @@ function renderCategorySelector() {
   const uniqueCategories = [...new Set(
     questions
       .map(q => q.category)
-      .filter(cat => cat !== ADULT_CATEGORY)
   )];
 
   categoryWrap.innerHTML = "";
@@ -444,10 +439,7 @@ async function loadQuestions() {
 }
 
 function rebuildActiveQuestions() {
-  adultEnabled = !!enableAdult?.checked;
-  activeQuestions = adultEnabled
-    ? questions
-    : questions.filter(q => q.category !== ADULT_CATEGORY);
+  activeQuestions = questions;
 }
 
 function renderPlayers() {
