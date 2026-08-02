@@ -208,6 +208,11 @@ button:disabled {
   border-top: 1px solid var(--line);
 }
 
+/* Geef de eerste scheidingslijn na de spelmodusknoppen voldoende lucht. */
+.mode-buttons + .setting-block {
+  margin-top: 24px;
+}
+
 .setting-title {
   margin: 0;
   font-size: 16px;
