@@ -50,6 +50,10 @@ const endHighlights = document.getElementById("endHighlights");
 const endScoreBtn = document.getElementById("endScoreBtn");
 const endRematchBtn = document.getElementById("endRematchBtn");
 const endBackBtn = document.getElementById("endBackBtn");
+const confirmDialog = document.getElementById("confirmDialog");
+const confirmTitle = document.getElementById("confirmTitle");
+const confirmMessage = document.getElementById("confirmMessage");
+const confirmAcceptBtn = document.getElementById("confirmAcceptBtn");
 
 const QUESTIONS_PER_ACTOR = 10;
 const ADULT_CATEGORY = "18+";
@@ -153,6 +157,24 @@ function isCategoryEnabled(category) {
   return selectedCategories.size === 0 || selectedCategories.has(category);
 }
 
+function confirmAction({ title, message, confirmLabel }) {
+  if (!confirmDialog || typeof confirmDialog.showModal !== "function") {
+    return Promise.resolve(window.confirm(`${title}\n\n${message}`));
+  }
+
+  confirmTitle.textContent = title;
+  confirmMessage.textContent = message;
+  confirmAcceptBtn.textContent = confirmLabel;
+  confirmDialog.returnValue = "cancel";
+  confirmDialog.showModal();
+
+  return new Promise(resolve => {
+    confirmDialog.addEventListener("close", () => {
+      resolve(confirmDialog.returnValue === "confirm");
+    }, { once: true });
+  });
+}
+
 const timerLabel = document.getElementById("timerLabel");
 
 function requireTimerSelection() {
@@ -191,9 +213,11 @@ function renderCategorySelector() {
       btn.classList.add("active");
       selectedCategories.add(cat);
     }
+    btn.setAttribute("aria-pressed", String(isActive));
 
     btn.onclick = () => {
       btn.classList.toggle("active");
+      btn.setAttribute("aria-pressed", String(btn.classList.contains("active")));
 
       if (selectedCategories.has(cat)) {
         selectedCategories.delete(cat);
@@ -1187,7 +1211,14 @@ backToGameBtn.onclick = () => {
 };
 
 // ------- reset / end -------
-resetBtn.onclick = () => {
+resetBtn.onclick = async () => {
+  const confirmed = await confirmAction({
+    title: "Nieuw spel starten?",
+    message: "Alle spelers, teams, scores en de huidige voortgang worden definitief gewist.",
+    confirmLabel: "Ja, nieuw spel"
+  });
+  if (!confirmed) return;
+
   stopConfetti();
   stopTimer();
   players = [];
@@ -1205,7 +1236,19 @@ resetBtn.onclick = () => {
   show(modeScreen);
 };
 
-endGameBtn.onclick = () => {
+endGameBtn.onclick = async () => {
+  pauseTimer();
+  const confirmed = await confirmAction({
+    title: "Spel beëindigen?",
+    message: "De huidige ronde en scores worden niet bewaard. Je gaat terug naar het beginscherm.",
+    confirmLabel: "Ja, beëindigen"
+  });
+
+  if (!confirmed) {
+    resumeTimer();
+    return;
+  }
+
   stopTimer();
   show(modeScreen);
 };
@@ -1299,11 +1342,18 @@ modeNextBtn.onclick = () => {
 [modePvpBtn, modeTvTBtn].forEach(btn => {
   btn.onclick = () => {
     selectedMode = btn.getAttribute("data-mode");
+    modeNextBtn.textContent = selectedMode === "solo"
+      ? "Spelers instellen →"
+      : "Teams instellen →";
 
     document.querySelectorAll(".mode-btn")
-      .forEach(b => b.classList.remove("active"));
+      .forEach(b => {
+        b.classList.remove("active");
+        b.setAttribute("aria-pressed", "false");
+      });
 
     btn.classList.add("active");
+    btn.setAttribute("aria-pressed", "true");
   };
 });
 
@@ -1628,8 +1678,12 @@ if (timerPills) {
     setTimerSeconds(Number.isNaN(sec) ? 10 : sec);
 
     Array.from(timerPills.querySelectorAll("button[data-timer]"))
-      .forEach(b => b.classList.remove("active"));
+      .forEach(b => {
+        b.classList.remove("active");
+        b.setAttribute("aria-pressed", "false");
+      });
     btn.classList.add("active");
+    btn.setAttribute("aria-pressed", "true");
   });
 }
 

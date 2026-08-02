@@ -22,44 +22,50 @@
   <div class="container">
     <canvas id="confettiCanvas" class="confetti hidden"></canvas>
 
-    <header>
-      <h1>SipArena</h1>
-      <p class="subtitle">Eén telefoon bestuurt. Fout = drinken.</p>
+    <header class="site-header">
+      <div class="brand">SipArena</div>
+      <p class="subtitle">Eén telefoon bestuurt. Fout antwoord? Neem een slok.</p>
     </header>
 
     <!-- ================= MODE SCREEN ================= -->
     <section id="screen-mode" class="card">
-      <h2 id="modeTitle" style="margin:0px 0 6px;">Kies een mode</h2>
-
-      <div class="mode-buttons">
-        <button id="modePvpBtn" class="mode-btn" data-mode="solo">
-          Speler vs Speler
-        </button>
-        <button id="modeTvTBtn" class="mode-btn" data-mode="team">
-          Team vs Team
-        </button>
+      <div class="page-heading">
+        <span class="eyebrow">Spel instellen</span>
+        <h1 id="modeTitle">Kies hoe jullie spelen</h1>
+        <p>Selecteer een spelmodus, timer en de categorieën die jullie leuk vinden.</p>
       </div>
 
-      <div class="help" style="margin-top:12px;">
-        Speler vs Speler: tot 5 spelers • Team vs Team: tot 5 teams
+      <div class="mode-buttons">
+        <button id="modePvpBtn" class="mode-btn" data-mode="solo" aria-pressed="false">
+          <strong>Speler vs speler</strong>
+          <span>Iedereen speelt voor zichzelf</span>
+        </button>
+        <button id="modeTvTBtn" class="mode-btn" data-mode="team" aria-pressed="false">
+          <strong>Team vs team</strong>
+          <span>Werk samen voor de hoogste score</span>
+        </button>
       </div>
 
       <!-- Timer keuze -->
-      <div class="timer-setting" style="margin-top:14px;">
-        <h2 id="timerLabel" class="timer-setting-title">⏱️ Timer</h2>
+      <div class="setting-block">
+        <h2 id="timerLabel" class="setting-title">Timer per vraag</h2>
+        <p class="setting-description">Kies hoeveel bedenktijd iedere speler of ieder team krijgt.</p>
         <div class="timer-pills" id="timerPills">
-          <button type="button" class="pillbtn" data-timer="10">Snel (10s)</button>
-          <button type="button" class="pillbtn" data-timer="20">Rustig (20s)</button>
-          <button type="button" class="pillbtn" data-timer="0">Geen timer</button>
+          <button type="button" class="pillbtn" data-timer="10" aria-pressed="false">Snel (10s)</button>
+          <button type="button" class="pillbtn" data-timer="20" aria-pressed="false">Rustig (20s)</button>
+          <button type="button" class="pillbtn" data-timer="0" aria-pressed="false">Geen timer</button>
         </div>
       </div>
 
-      <div class="category-setting" style="margin-top:18px;">
-        <div class="timer-setting-title">📚 Categorieën</div>
+      <div class="setting-block">
+        <h2 class="setting-title">Categorieën</h2>
+        <p class="setting-description">Tik op een categorie om deze aan of uit te zetten.</p>
         <div id="categoryWrap" class="category-pills"></div>
       </div>
 
-      <div class="game-settings" aria-label="Spelopties">
+      <div class="setting-block">
+        <h2 class="setting-title">Extra spelopties</h2>
+        <div class="game-settings" aria-label="Spelopties">
         <label class="toggle">
           <input type="checkbox" id="enableChaos" />
           <span>Chaos-events</span>
@@ -68,11 +74,12 @@
           <input type="checkbox" id="enableAdult" />
           <span>18+ vragen</span>
         </label>
+        </div>
       </div>
 
-      <div class="row" style="margin-top:20px; justify-content:center;">
-        <button id="modeNextBtn" class="primary" style="padding:14px 28px; font-size:16px;">
-          Volgende →
+      <div class="action-bar action-bar-end">
+        <button id="modeNextBtn" class="primary">
+          Spelers instellen →
         </button>
       </div>
     </section>
@@ -80,12 +87,16 @@
 
     <!-- ================= PVP SETUP ================= -->
     <section id="screen-setup" class="card hidden">
-      <div class="row row-between">
-        <h2 style="margin:0;">Spelers (max 5)</h2>
-        <button id="backToModeBtnPvp" class="ghost">Terug</button>
+      <div class="page-heading page-heading-with-action">
+        <div>
+          <span class="eyebrow">Speler vs speler</span>
+          <h1>Wie spelen er mee?</h1>
+          <p>Voeg 2 tot 5 spelers toe. Iedereen krijgt 10 vragen.</p>
+        </div>
+        <button id="backToModeBtnPvp" class="ghost">← Instellingen</button>
       </div>
 
-      <div class="row">
+      <div class="input-action">
         <label class="sr-only" for="playerNameInput">Naam speler</label>
         <input id="playerNameInput" type="text" placeholder="Naam speler…" maxlength="18" />
         <button id="addPlayerBtn">Toevoegen</button>
@@ -93,26 +104,28 @@
 
       <ul id="playersList" class="list"></ul>
 
-      <div class="row row-between">
-        <button id="startGameBtn" class="primary" disabled>Start spel</button>
+      <div class="action-bar action-bar-end">
+        <button id="startGameBtn" class="primary" disabled>Start spel →</button>
       </div>
     </section>
 
 
     <!-- ================= TEAM ENTRY ================= -->
     <section id="screen-teamentry" class="card hidden">
-      <div class="row row-between">
+      <div class="page-heading page-heading-with-action">
         <div>
-          <div class="turn">Vul teams in (max 5)</div>
+          <span class="eyebrow">Team vs team</span>
+          <h1>Stel de teams samen</h1>
+          <p>Maak 2 tot 5 teams met minimaal 2 spelers per team.</p>
         </div>
-        <button id="backToModeBtn" class="ghost">Terug</button>
+        <button id="backToModeBtn" class="ghost">← Instellingen</button>
       </div>
 
       <div id="teamsWrap" style="margin-top:12px;"></div>
 
-      <div class="row row-between" style="margin-top:14px; gap:10px; flex-wrap:wrap;">
-        <button id="addTeamBtn" class="ghost">+ Team</button>
-        <button id="startTeamGameBtn" class="primary">Start</button>
+      <div class="action-bar">
+        <button id="addTeamBtn" class="ghost">+ Team toevoegen</button>
+        <button id="startTeamGameBtn" class="primary">Start teamspel →</button>
       </div>
 
       <div id="teamEntryError" class="help hidden" style="margin-top:12px;"></div>
@@ -121,11 +134,11 @@
 
     <!-- ================= GAME ================= -->
     <section id="screen-game" class="card hidden">
-      <div class="row row-between">
+      <div class="game-toolbar">
         <div>
           <div id="turnLabel" class="turn"></div>
         </div>
-        <button id="endGameBtn" class="ghost">Stop</button>
+        <button id="endGameBtn" class="danger-outline">Spel beëindigen</button>
       </div>
 
       <div id="helpBanner" class="help hidden" role="status" aria-live="polite"></div>
@@ -161,39 +174,61 @@
 
       <div id="resultBox" class="result hidden" role="status" aria-live="polite"></div>
 
-      <div class="row row-between">
-        <button id="nextBtn" class="primary" disabled>Volgende</button>
-        <button id="scoreBtn">Scorebord</button>
+      <div class="action-bar game-actions">
+        <button id="scoreBtn" class="ghost">Bekijk score</button>
+        <button id="nextBtn" class="primary" disabled>Volgende vraag →</button>
       </div>
     </section>
 
 
     <!-- ================= SCORE ================= -->
     <section id="screen-score" class="card hidden">
-      <div class="row row-between">
-        <h2>Scorebord</h2>
-        <button id="backToGameBtn" class="ghost">Terug</button>
+      <div class="page-heading page-heading-with-action">
+        <div>
+          <span class="eyebrow">Tussenstand</span>
+          <h1>Scorebord</h1>
+          <p>Bekijk hoe iedereen ervoor staat.</p>
+        </div>
+        <button id="backToGameBtn" class="ghost">← Terug</button>
       </div>
       <div id="scoreTable"></div>
-      <div class="row">
-        <button id="resetBtn" class="danger">Reset spel</button>
+      <div class="danger-zone">
+        <div>
+          <strong>Opnieuw beginnen</strong>
+          <p>Alle spelers, teams en scores worden gewist.</p>
+        </div>
+        <button id="resetBtn" class="danger">Nieuw spel starten</button>
       </div>
     </section>
 
     <!-- ================= END SCREEN ================= -->
     <section id="screen-end" class="card hidden">
-      <div class="badge">Game over</div>
-      <h2 style="margin:10px 0 6px;">Eindresultaat</h2>
-      <p style="opacity:.85;margin:0 0 14px;">Highlights van deze pot:</p>
+      <div class="page-heading">
+        <span class="eyebrow">Game over</span>
+        <h1>Eindresultaat</h1>
+        <p>Dit zijn de highlights van deze pot.</p>
+      </div>
 
       <div id="endHighlights" style="display:grid; gap:10px;"></div>
 
-      <div class="row" style="gap:10px; flex-wrap:wrap; margin-top:14px;">
-        <button id="endScoreBtn" class="ghost">📊 Scoreboard</button>
-        <button id="endRematchBtn" class="primary">🔁 Nog een potje (10 rondes)</button>
-        <button id="endBackBtn" class="ghost">⬅️ Terug naar begin</button>
+      <div class="action-bar end-actions">
+        <button id="endBackBtn" class="ghost">← Naar beginscherm</button>
+        <button id="endScoreBtn" class="ghost">Bekijk alle scores</button>
+        <button id="endRematchBtn" class="primary">Nog een potje →</button>
       </div>
     </section>
+
+    <dialog id="confirmDialog" class="confirm-dialog" aria-labelledby="confirmTitle" aria-describedby="confirmMessage">
+      <form method="dialog">
+        <div class="confirm-icon" aria-hidden="true">!</div>
+        <h2 id="confirmTitle">Weet je het zeker?</h2>
+        <p id="confirmMessage"></p>
+        <div class="confirm-actions">
+          <button id="confirmCancelBtn" value="cancel" class="ghost">Annuleren</button>
+          <button id="confirmAcceptBtn" value="confirm" class="danger">Bevestigen</button>
+        </div>
+      </form>
+    </dialog>
 
     <footer class="footer">
       <small>⚠️ Drink met mate. 18+.</small>

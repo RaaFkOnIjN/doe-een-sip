@@ -8,6 +8,8 @@
   --good: #22c55e;
   --warn: #fbbf24;
   --line: rgba(255, 255, 255, .08);
+  --line-strong: rgba(255, 255, 255, .16);
+  --surface: rgba(255, 255, 255, .035);
 }
 
 * {
@@ -36,13 +38,27 @@ body {
   padding: 18px
 }
 
-header {
+.site-header {
   padding: 10px 6px 18px
+}
+
+.brand {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -.04em;
+}
+
+h1, h2, p {
+  overflow-wrap: anywhere;
 }
 
 h1 {
   margin: 0;
-  font-size: 28px
+  font-size: clamp(24px, 5vw, 34px);
+  line-height: 1.15;
+  letter-spacing: -.025em;
 }
 
 .subtitle {
@@ -54,7 +70,7 @@ h1 {
   background: rgba(23, 26, 43, .86);
   border: 1px solid var(--line);
   border-radius: 18px;
-  padding: 16px;
+  padding: clamp(18px, 4vw, 28px);
   box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
   backdrop-filter: blur(8px);
 }
@@ -91,10 +107,15 @@ button {
   background: rgba(255, 255, 255, .06);
   color: var(--text);
   cursor: pointer;
+  font: inherit;
+  font-weight: 650;
+  min-height: 44px;
+  transition: background .15s ease, border-color .15s ease, transform .15s ease;
 }
 
 button:hover {
-  background: rgba(255, 255, 255, .09)
+  background: rgba(255, 255, 255, .09);
+  border-color: var(--line-strong);
 }
 
 button:focus-visible,
@@ -109,12 +130,14 @@ button:disabled {
 }
 
 .primary {
-  background: rgba(124, 92, 255, .25);
-  border-color: rgba(124, 92, 255, .35)
+  background: #7257ed;
+  border-color: #8c75f5;
+  padding-inline: 20px;
 }
 
 .primary:hover {
-  background: rgba(124, 92, 255, .35)
+  background: #8168ef;
+  transform: translateY(-1px);
 }
 
 .ghost {
@@ -128,6 +151,126 @@ button:disabled {
 
 .danger:hover {
   background: rgba(255, 77, 109, .28)
+}
+
+.danger-outline {
+  color: #ff9bad;
+  background: transparent;
+  border-color: rgba(255, 77, 109, .38);
+}
+
+.danger-outline:hover {
+  background: rgba(255, 77, 109, .12);
+  border-color: rgba(255, 77, 109, .65);
+}
+
+.page-heading {
+  margin-bottom: 22px;
+}
+
+.page-heading h1 {
+  margin-top: 5px;
+}
+
+.page-heading p,
+.setting-description,
+.danger-zone p {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.page-heading p {
+  margin: 8px 0 0;
+  max-width: 58ch;
+}
+
+.page-heading-with-action {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.page-heading-with-action > button {
+  flex: 0 0 auto;
+}
+
+.eyebrow {
+  color: #a997ff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.setting-block {
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+}
+
+.setting-title {
+  margin: 0;
+  font-size: 16px;
+}
+
+.setting-description {
+  margin: 5px 0 12px;
+  font-size: 14px;
+}
+
+.input-action {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.action-bar-end {
+  justify-content: flex-end;
+}
+
+.game-actions {
+  align-items: stretch;
+}
+
+.game-actions .primary {
+  min-width: 180px;
+}
+
+.game-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.danger-zone {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-top: 24px;
+  padding: 16px;
+  border: 1px solid rgba(255, 77, 109, .24);
+  border-radius: 14px;
+  background: rgba(255, 77, 109, .06);
+}
+
+.danger-zone p {
+  margin: 4px 0 0;
+  font-size: 13px;
 }
 
 .list {
@@ -271,7 +414,24 @@ button:disabled {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  margin-top: 18px;
+  margin-top: 12px;
+}
+
+.game-settings .toggle {
+  flex: 1 1 200px;
+  min-height: 52px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.game-settings input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--accent);
 }
 
 .sr-only {
@@ -487,7 +647,7 @@ button:disabled {
 
 .mode-btn {
   padding: 10px 16px;
-  border-radius: 999px;
+  border-radius: 14px;
   border: 1px solid var(--line);
   background: rgba(255,255,255,.06);
   color: var(--text);
@@ -495,7 +655,17 @@ button:disabled {
   font-weight: 600;
   cursor: pointer;
   transition: all .15s ease;
+  flex: 1 1 240px;
+  min-height: 78px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
 }
+
+.mode-btn strong { font-size: 16px; }
+.mode-btn span { color: var(--muted); font-weight: 450; }
 
 /* hover */
 .mode-btn:hover {
@@ -506,6 +676,58 @@ button:disabled {
 .mode-btn.active {
   border-color: rgba(124,92,255,.55);
   background: rgba(124,92,255,.22);
+  box-shadow: inset 0 0 0 1px rgba(124,92,255,.25);
+}
+
+.mode-btn.active span { color: #d7d0ff; }
+
+.confirm-dialog {
+  width: min(440px, calc(100vw - 28px));
+  padding: 0;
+  color: var(--text);
+  background: #1a1d30;
+  border: 1px solid var(--line-strong);
+  border-radius: 18px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .55);
+}
+
+.confirm-dialog::backdrop {
+  background: rgba(5, 7, 14, .76);
+  backdrop-filter: blur(4px);
+}
+
+.confirm-dialog form {
+  padding: 24px;
+}
+
+.confirm-dialog h2 {
+  margin: 14px 0 6px;
+}
+
+.confirm-dialog p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.confirm-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  color: #ffd6dd;
+  background: rgba(255, 77, 109, .18);
+  border: 1px solid rgba(255, 77, 109, .35);
+  font-size: 22px;
+  font-weight: 850;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
 }
 
 .mode-next-row {
@@ -602,6 +824,17 @@ button:disabled {
   .mode-buttons > button,
   .timer-pills > button { flex: 1 1 140px; }
   .options .opt { min-height: 48px; }
+  .page-heading-with-action,
+  .danger-zone { align-items: stretch; flex-direction: column; }
+  .page-heading-with-action > button { align-self: flex-start; }
+  .action-bar { align-items: stretch; flex-direction: column; }
+  .action-bar > button { width: 100%; }
+  .game-actions .primary { min-width: 0; order: -1; }
+  .end-actions .primary { order: -1; }
+  .input-action { grid-template-columns: 1fr; }
+  .input-action button { width: 100%; }
+  .confirm-actions { flex-direction: column-reverse; }
+  .confirm-actions button { width: 100%; }
   .badge-row { gap: 6px; }
 
   .badge-row .pill {
