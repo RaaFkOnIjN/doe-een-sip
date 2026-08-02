@@ -1,0 +1,10 @@
+{
+  "name": "SipArena",
+  "short_name": "SipArena",
+  "description": "De quizbattle voor spelers en teams.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f1220",
+  "theme_color": "#0f1220",
+  "icons": [{ "src": "/assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}

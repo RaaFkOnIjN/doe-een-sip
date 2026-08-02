@@ -1,6 +1,8 @@
 const setupScreen = document.getElementById("screen-setup");
 const gameScreen = document.getElementById("screen-game");
 const scoreScreen = document.getElementById("screen-score");
+const homeScreen = document.getElementById("screen-home");
+const rulesScreen = document.getElementById("screen-rules");
 
 const categoryChooser = document.getElementById("categoryChooser");
 const categoryButtons = document.getElementById("categoryButtons");
@@ -10,6 +12,7 @@ const addPlayerBtn = document.getElementById("addPlayerBtn");
 const playersList = document.getElementById("playersList");
 const startGameBtn = document.getElementById("startGameBtn");
 const enableChaos = document.getElementById("enableChaos");
+const enableSound = document.getElementById("enableSound");
 
 const turnLabel = document.getElementById("turnLabel");
 const helpBanner = document.getElementById("helpBanner");
@@ -53,13 +56,37 @@ const confirmDialog = document.getElementById("confirmDialog");
 const confirmTitle = document.getElementById("confirmTitle");
 const confirmMessage = document.getElementById("confirmMessage");
 const confirmAcceptBtn = document.getElementById("confirmAcceptBtn");
+const homeStartBtn = document.getElementById("homeStartBtn");
+const resumeGameBtn = document.getElementById("resumeGameBtn");
+const homeRulesBtn = document.getElementById("homeRulesBtn");
+const rulesBackBtn = document.getElementById("rulesBackBtn");
+const footerRulesBtn = document.getElementById("footerRulesBtn");
+const privacyBtn = document.getElementById("privacyBtn");
+const privacyDialog = document.getElementById("privacyDialog");
+const lengthPills = document.getElementById("lengthPills");
+const penaltyPills = document.getElementById("penaltyPills");
+const customPenaltyWrap = document.getElementById("customPenaltyWrap");
+const customPenaltyInput = document.getElementById("customPenaltyInput");
+const progressText = document.getElementById("progressText");
+const progressPercent = document.getElementById("progressPercent");
+const progressFill = document.getElementById("progressFill");
+const shareResultBtn = document.getElementById("shareResultBtn");
+const toast = document.getElementById("toast");
 
-const QUESTIONS_PER_ACTOR = 10;
+const SAVE_KEY = "siparena-game-v2";
 
-const SIP_BY_DIFFICULTY = { Easy: 4, Medium: 3, Hard: 2, Brutal: 1 };
+const POINTS_BY_DIFFICULTY = { Easy: 1, Medium: 2, Hard: 3, Brutal: 4 };
 
 let questions = [];
 let activeQuestions = [];
+let totalQuestions = 20;
+let selectedGameLength = 20;
+let penaltyMode = "sips";
+let customPenalty = "";
+let soundEnabled = false;
+let answeredTotal = 0;
+let tieBreakerQueue = [];
+let tieBreakerOffset = 0;
 
 let players = []; // [{name}]
 let mode = "solo"; // solo | team
@@ -86,6 +113,8 @@ let awaitingChaosConfirm = false;
 let activeChaosBadge = null; // bv. "Double Sips"
 
 let scoreReturnScreen = null;
+let currentScreen = null;
+let rulesReturnScreen = null;
 
 let selectedCategories = new Set();
 const categoryWrap = document.getElementById("categoryWrap");
@@ -114,6 +143,8 @@ const chaosBadge = document.getElementById("chaosBadge");
 function show(screen) {
   const all = [
     modeScreen,
+    homeScreen,
+    rulesScreen,
     setupScreen,
     teamEntryScreen,
     gameScreen,
@@ -127,6 +158,7 @@ function show(screen) {
   if (!screen) return;
 
   screen.classList.remove("hidden");
+  currentScreen = screen;
 }
 
 function shuffle(arr) {
@@ -150,7 +182,7 @@ function questionKey(q) {
 }
 
 function isCategoryEnabled(category) {
-  return selectedCategories.size === 0 || selectedCategories.has(category);
+  return selectedCategories.has(category);
 }
 
 function confirmAction({ title, message, confirmLabel }) {
@@ -169,6 +201,83 @@ function confirmAction({ title, message, confirmLabel }) {
       resolve(confirmDialog.returnValue === "confirm");
     }, { once: true });
   });
+}
+
+let toastTimer = null;
+function showToast(message) {
+  if (!toast) return;
+  toast.textContent = message;
+  toast.classList.remove("hidden");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.add("hidden"), 3200);
+}
+
+function playTone(kind) {
+  if (!soundEnabled || !window.AudioContext) return;
+  const ctx = new AudioContext();
+  const oscillator = ctx.createOscillator();
+  const gain = ctx.createGain();
+  oscillator.connect(gain);
+  gain.connect(ctx.destination);
+  oscillator.frequency.value = kind === "correct" ? 660 : 180;
+  oscillator.type = kind === "correct" ? "sine" : "triangle";
+  gain.gain.setValueAtTime(.08, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .25);
+  oscillator.start();
+  oscillator.stop(ctx.currentTime + .25);
+}
+
+function updateProgress() {
+  const currentNumber = Math.min(answeredTotal + 1, totalQuestions);
+  const pct = Math.round((answeredTotal / totalQuestions) * 100);
+  progressText.textContent = `Vraag ${currentNumber} van ${totalQuestions}`;
+  progressPercent.textContent = `${pct}%`;
+  progressFill.style.width = `${pct}%`;
+}
+
+function saveGame() {
+  if (!players.length || !Object.keys(stats).length) return;
+  const snapshot = {
+    version: 2, savedAt: Date.now(), players, mode, teams, teamNames, turnIndex,
+    stats, teamStats, askedCountPlayer, askedCountTeam, answeredTotal, totalQuestions, selectedGameLength,
+    timerSeconds, penaltyMode, customPenalty, soundEnabled, chaosEnabled,
+    selectedCategories: [...selectedCategories], tieBreakerQueue, tieBreakerOffset
+  };
+  localStorage.setItem(SAVE_KEY, JSON.stringify(snapshot));
+  resumeGameBtn?.classList.remove("hidden");
+}
+
+function clearSavedGame() {
+  localStorage.removeItem(SAVE_KEY);
+  resumeGameBtn?.classList.add("hidden");
+}
+
+function getSavedGame() {
+  try {
+    const data = JSON.parse(localStorage.getItem(SAVE_KEY));
+    return data?.version === 2 && Array.isArray(data.players) && data.players.length ? data : null;
+  } catch {
+    clearSavedGame();
+    return null;
+  }
+}
+
+function restoreGame() {
+  const data = getSavedGame();
+  if (!data) return showToast("Er is geen opgeslagen spel gevonden.");
+  ({ players, mode, teams, teamNames, turnIndex, stats, teamStats,
+    askedCountPlayer, askedCountTeam, answeredTotal, totalQuestions, selectedGameLength = 20,
+    timerSeconds, penaltyMode, customPenalty, soundEnabled, chaosEnabled,
+    tieBreakerQueue = [], tieBreakerOffset = 0 } = data);
+  selectedCategories = new Set(data.selectedCategories || []);
+  timerTotalMs = (timerSeconds || 0) * 1000;
+  timerRemainingMs = timerTotalMs;
+  rebuildActiveQuestions();
+  usedQuestionIds.clear();
+  show(gameScreen);
+  updateProgress();
+  startNextTurnFlow();
+  showToast("Spel hervat");
 }
 
 const timerLabel = document.getElementById("timerLabel");
@@ -469,7 +578,7 @@ function renderPlayers() {
 function initStats() {
   stats = {};
   players.forEach(p => {
-    stats[p.name] = { correct: 0, wrong: 0, sips: 0, wrongStreak: 0 };
+    stats[p.name] = { points: 0, correct: 0, wrong: 0, sips: 0, wrongStreak: 0 };
   });
 }
 
@@ -483,7 +592,7 @@ function teamLabel(team) {
 function initTeamStats() {
   teamStats = {};
   teams.forEach(t => {
-    teamStats[teamLabel(t)] = { correct: 0, wrong: 0, sips: 0, wrongStreak: 0 };
+    teamStats[teamLabel(t)] = { points: 0, correct: 0, wrong: 0, sips: 0, wrongStreak: 0 };
   });
 }
 
@@ -499,15 +608,23 @@ function pickQuestion(category) {
   poolBase = poolBase.filter(q => isCategoryEnabled(q.category));
 
   // Daarna eventueel specifieke categorie (comeback keuze)
-  const poolAll = category
-    ? poolBase.filter(q => q.category === category)
-    : poolBase;
+  const enabledCategories = [...new Set(poolBase.map(q => q.category))];
+  const selectedCategory = category || enabledCategories[Math.floor(Math.random() * enabledCategories.length)];
+  const poolAll = poolBase.filter(q => q.category === selectedCategory);
 
-  let pool = poolAll.filter(q => !usedQuestionIds.has(questionKey(q)));
+  const progress = answeredTotal / Math.max(1, totalQuestions);
+  const allowedDifficulties = progress < .25
+    ? ["Easy", "Medium"]
+    : progress < .65
+      ? ["Medium", "Hard"]
+      : ["Hard", "Brutal"];
+  const leveledPool = poolAll.filter(q => allowedDifficulties.includes(q.difficulty));
+  const sourcePool = leveledPool.length ? leveledPool : poolAll;
+  let pool = sourcePool.filter(q => !usedQuestionIds.has(questionKey(q)));
 
   if (pool.length === 0) {
     usedQuestionIds.clear();
-    pool = poolAll;
+    pool = sourcePool;
   }
 
   if (!pool.length) return null;
@@ -517,6 +634,12 @@ function pickQuestion(category) {
 }
 
 function actor() {
+  if (tieBreakerQueue.length) {
+    const label = tieBreakerQueue[(answeredTotal - tieBreakerOffset) % tieBreakerQueue.length];
+    if (mode === "solo") return { type: "player", name: label };
+    const team = teams.find(candidate => teamLabel(candidate) === label) || teams[0];
+    return { type: "team", team, label: teamLabel(team) };
+  }
   if (mode === "solo") {
     return { type: "player", name: players[turnIndex % players.length].name };
   }
@@ -534,7 +657,7 @@ function maybeChaos() {
   if (!chaosEnabled) return null;
   if (Math.random() > 0.1) return null;
 
-  return { text: "⚡ Chaos: Double Sips! Volgende straf telt dubbel.", badge: "Double Sips", mult: 2 };
+  return { text: "⚡ Chaos! De volgende straf telt dubbel.", badge: "Dubbele straf", mult: 2 };
 }
 
 function applyChaos(evt) {
@@ -624,10 +747,10 @@ function renderQuestion() {
     a.type === "player" ? `Aan de beurt: ${a.name}` : `Team aan de beurt: ${a.label}`;
 
   categoryLabel.textContent = `📚 ${q.category}`;
-  const baseSips = SIP_BY_DIFFICULTY[q.difficulty] ?? 1;
+  const questionPoints = POINTS_BY_DIFFICULTY[q.difficulty] ?? 1;
   const mult = pending.sipMultiplier ?? 1;
 
-  const diffText = `${q.difficulty} • ${baseSips} slok(ken)${mult > 1 ? " ✖︎2" : ""}`;
+  const diffText = `${q.difficulty} • ${questionPoints} punt${questionPoints === 1 ? "" : "en"}${mult > 1 ? " • dubbele straf" : ""}`;
 
   difficultyLabel.textContent = diffText;
 
@@ -730,10 +853,10 @@ function renderQuestionNoChaos() {
 
   categoryLabel.textContent = `📚 ${q.category}`;
 
-  const baseSips = SIP_BY_DIFFICULTY[q.difficulty] ?? 1;
+  const questionPoints = POINTS_BY_DIFFICULTY[q.difficulty] ?? 1;
   const mult = pending.sipMultiplier ?? 1;
 
-  const diffText = `${q.difficulty} • ${baseSips} slok(ken)${mult > 1 ? " ✖︎2" : ""}`;
+  const diffText = `${q.difficulty} • ${questionPoints} punt${questionPoints === 1 ? "" : "en"}${mult > 1 ? " • dubbele straf" : ""}`;
   const chaosHtml = activeChaosBadge ? ` <span class="pill chaos-pill">⚡ ${activeChaosBadge}</span>` : "";
 
   difficultyLabel.textContent = diffText;
@@ -790,10 +913,10 @@ function renderQuestionWithCategoryNoChaos(cat) {
 
   categoryLabel.textContent = `📚 ${q.category}`;
 
-  const baseSips = SIP_BY_DIFFICULTY[q.difficulty] ?? 1;
+  const questionPoints = POINTS_BY_DIFFICULTY[q.difficulty] ?? 1;
   const mult = pending.sipMultiplier ?? 1;
 
-  const diffText = `${q.difficulty} • ${baseSips} slok(ken)${mult > 1 ? " ✖︎2" : ""}`;
+  const diffText = `${q.difficulty} • ${questionPoints} punt${questionPoints === 1 ? "" : "en"}${mult > 1 ? " • dubbele straf" : ""}`;
   const chaosHtml = activeChaosBadge ? ` <span class="pill chaos-pill">⚡ ${activeChaosBadge}</span>` : "";
 
   difficultyLabel.textContent = diffText;
@@ -895,10 +1018,10 @@ function renderQuestionWithCategory(cat) {
     a.type === "player" ? `Aan de beurt: ${a.name}` : `Team aan de beurt: ${a.label}`;
 
   categoryLabel.textContent = `📚 ${q.category}`;
-  const baseSips = SIP_BY_DIFFICULTY[q.difficulty] ?? 1;
+  const questionPoints = POINTS_BY_DIFFICULTY[q.difficulty] ?? 1;
   const mult = pending.sipMultiplier ?? 1;
 
-  const diffText = `${q.difficulty} • ${baseSips} slok(ken)${mult > 1 ? " ✖︎2" : ""}`;
+  const diffText = `${q.difficulty} • ${questionPoints} punt${questionPoints === 1 ? "" : "en"}${mult > 1 ? " • dubbele straf" : ""}`;
   const chaosHtml = activeChaosBadge ? ` <span class="pill chaos-pill">⚡ ${activeChaosBadge}</span>` : "";
 
   difficultyLabel.textContent = diffText;
@@ -947,8 +1070,7 @@ function renderQuestionWithCategory(cat) {
 }
 
 function applyWrongForActor(a, q, isTimeout = false) {
-  const base = SIP_BY_DIFFICULTY[q.difficulty] ?? 1;
-  const penalty = base * (pending.sipMultiplier ?? 1);
+  const penalty = pending.sipMultiplier ?? 1;
 
   // reset na gebruik
   pending.sipMultiplier = 1;
@@ -957,22 +1079,30 @@ function applyWrongForActor(a, q, isTimeout = false) {
   if (a.type === "player") {
     stats[a.name].wrong++;
     stats[a.name].wrongStreak++;
-    stats[a.name].sips += penalty;
+    if (penaltyMode === "sips") stats[a.name].sips += penalty;
+    if (penaltyMode === "points") stats[a.name].points -= penalty;
   } else {
     teamStats[a.label].wrong++;
     teamStats[a.label].wrongStreak++;
-    teamStats[a.label].sips += penalty;
-    a.team.forEach(n => stats[n].sips += penalty);
+    if (penaltyMode === "sips") {
+      teamStats[a.label].sips += penalty;
+      a.team.forEach(n => stats[n].sips += penalty);
+    }
+    if (penaltyMode === "points") teamStats[a.label].points -= penalty;
   }
 
   resultBox.classList.remove("hidden");
   resultBox.classList.remove("good");
   resultBox.classList.add("bad");
-  resultBox.textContent = isTimeout
-    ? `⏱️ Tijd op! ${a.type === "player" ? a.name : `Team ${a.label}`} drinkt ${penalty} slok(ken).`
-    : (a.type === "player"
-      ? `❌ Fout! ${a.name} drinkt ${penalty} slok(ken).`
-      : `❌ Fout! Team drinkt ${penalty} slok(ken).`);
+  const actorName = a.type === "player" ? a.name : `Team ${a.label}`;
+  const consequence = penaltyMode === "sips"
+    ? `${penalty} slok${penalty === 1 ? "" : "ken"}`
+    : penaltyMode === "points"
+      ? `${penalty} strafpunt${penalty === 1 ? "" : "en"}`
+      : `${customPenalty}${penalty > 1 ? " (2×)" : ""}`;
+  const correctAnswer = q.options[q.correctIndex];
+  resultBox.textContent = `${isTimeout ? "⏱️ Tijd op!" : "❌ Fout!"} ${actorName}: ${consequence}. Het juiste antwoord was: ${correctAnswer}.`;
+  playTone("wrong");
 }
 
 function answer(choiceIdx) {
@@ -991,19 +1121,23 @@ function answer(choiceIdx) {
   });
 
   if (correct) {
+    const earned = POINTS_BY_DIFFICULTY[q.difficulty] ?? 1;
 
     if (a.type === "player") {
       stats[a.name].correct++;
+      stats[a.name].points += earned;
       stats[a.name].wrongStreak = 0;
     } else {
       teamStats[a.label].correct++;
+      teamStats[a.label].points += earned;
       teamStats[a.label].wrongStreak = 0;
     }
 
     resultBox.classList.remove("hidden");
     resultBox.classList.add("good");
     resultBox.classList.remove("bad");
-    resultBox.textContent = `✅ Correct! Safe.`;
+    resultBox.textContent = `✅ Correct! +${earned} punt${earned === 1 ? "" : "en"}.${q.explanation ? ` ${q.explanation}` : ""}`;
+    playTone("correct");
 
     nextBtn.disabled = false;
     return;
@@ -1036,15 +1170,21 @@ nextBtn.onclick = () => {
     } else {
       askedCountTeam[current.a.label] = (askedCountTeam[current.a.label] ?? 0) + 1;
     }
+    answeredTotal++;
+    updateProgress();
+    saveGame();
   }
 
   if (isGameComplete()) {
-    stopTimer();
-    showEndScreen();
-    return;
+    if (!prepareTieBreaker()) {
+      stopTimer();
+      showEndScreen();
+      return;
+    }
   }
 
   turnIndex++;
+  saveGame();
 
   // 👇 Eerst chaos aankondigen (zonder timer), anders direct vraag
   const announced = announceChaosThenWait();
@@ -1058,29 +1198,26 @@ function openScoreboard(returnTo) {
   scoreReturnScreen = returnTo || gameScreen; // fallback
   pauseTimer();
 
-  const rows = Object.entries(stats).map(([name, s]) => ({ name, ...s }))
-    .sort((a, b) => b.sips - a.sips);
+  const ranking = mode === "team" ? teamStats : stats;
+  const rows = Object.entries(ranking).map(([name, s]) => ({ name, ...s }))
+    .sort((a, b) => b.points - a.points || b.correct - a.correct);
 
   scoreTable.innerHTML = `
     <div style="overflow:auto">
-      <table style="width:100%;border-collapse:collapse">
+      <table class="score-table">
         <thead>
           <tr>
-            <th style="text-align:left;padding:10px;border-bottom:1px solid rgba(255,255,255,.08)">Speler</th>
-            <th style="text-align:right;padding:10px;border-bottom:1px solid rgba(255,255,255,.08)">✅</th>
-            <th style="text-align:right;padding:10px;border-bottom:1px solid rgba(255,255,255,.08)">❌</th>
-            <th style="text-align:right;padding:10px;border-bottom:1px solid rgba(255,255,255,.08)">🍺</th>
-            <th style="text-align:right;padding:10px;border-bottom:1px solid rgba(255,255,255,.08)">streak</th>
+            <th>${mode === "team" ? "Team" : "Speler"}</th>
+            <th>Punten</th><th>Goed</th><th>Fout</th>
+            ${penaltyMode === "sips" ? "<th>Slokken</th>" : ""}
           </tr>
         </thead>
         <tbody>
-          ${rows.map(r => `
+          ${rows.map((r, index) => `
             <tr>
-              <td style="padding:10px;border-bottom:1px solid rgba(255,255,255,.08)">${escapeHtml(r.name)}</td>
-              <td style="padding:10px;border-bottom:1px solid rgba(255,255,255,.08);text-align:right">${r.correct}</td>
-              <td style="padding:10px;border-bottom:1px solid rgba(255,255,255,.08);text-align:right">${r.wrong}</td>
-              <td style="padding:10px;border-bottom:1px solid rgba(255,255,255,.08);text-align:right">${r.sips}</td>
-              <td style="padding:10px;border-bottom:1px solid rgba(255,255,255,.08);text-align:right">${r.wrongStreak}</td>
+              <td><span class="rank">${index + 1}</span>${escapeHtml(r.name)}</td>
+              <td><strong>${r.points}</strong></td><td>${r.correct}</td><td>${r.wrong}</td>
+              ${penaltyMode === "sips" ? `<td>${r.sips}</td>` : ""}
             </tr>
           `).join("")}
         </tbody>
@@ -1111,22 +1248,21 @@ function renderEndHighlights() {
 
   endHighlights.innerHTML = "";
 
-  const mostSips = topBy(stats, "sips", "max");
-  const mostCorrect = topBy(stats, "correct", "max");
-  const mostWrong = topBy(stats, "wrong", "max");
+  const ranking = mode === "team" ? teamStats : stats;
+  const mostSips = topBy(ranking, "sips", "max");
+  const mostCorrect = topBy(ranking, "correct", "max");
+  const mostWrong = topBy(ranking, "wrong", "max");
+  const winner = topBy(ranking, "points", "max");
+  const winners = winner
+    ? Object.entries(ranking).filter(([, value]) => value.points === winner.points).map(([name]) => name)
+    : [];
 
   const lines = [];
-  if (mostSips) lines.push(`🍺 <b>${escapeHtml(mostSips.name)}</b> heeft de meeste slokken: <b>${mostSips.sips}</b>`);
+  if (winners.length === 1) lines.push(`🏆 <b>${escapeHtml(winners[0])}</b> wint met <b>${winner.points} punten</b>`);
+  else if (winners.length > 1) lines.push(`🤝 Gedeelde winst voor <b>${winners.map(escapeHtml).join(" en ")}</b> met <b>${winner.points} punten</b>`);
+  if (penaltyMode === "sips" && mostSips) lines.push(`🍺 <b>${escapeHtml(mostSips.name)}</b> heeft de meeste slokken: <b>${mostSips.sips}</b>`);
   if (mostCorrect) lines.push(`✅ <b>${escapeHtml(mostCorrect.name)}</b> had de meeste goed: <b>${mostCorrect.correct}</b>`);
   if (mostWrong) lines.push(`❌ <b>${escapeHtml(mostWrong.name)}</b> had de meeste fout: <b>${mostWrong.wrong}</b>`);
-
-  // Team highlight (alleen in team mode)
-  if (mode === "team" && teamStats && Object.keys(teamStats).length) {
-    const bestTeam = topBy(teamStats, "correct", "max");
-    const mostTeamSips = topBy(teamStats, "sips", "max");
-    if (bestTeam) lines.push(`🏆 Beste team (meeste goed): <b>${escapeHtml(bestTeam.name)}</b> met <b>${bestTeam.correct}</b>`);
-    if (mostTeamSips) lines.push(`🥴 Team met meeste slokken: <b>${escapeHtml(mostTeamSips.name)}</b> met <b>${mostTeamSips.sips}</b>`);
-  }
 
   lines.forEach(html => {
     const div = document.createElement("div");
@@ -1138,10 +1274,11 @@ function renderEndHighlights() {
 
 function showEndScreen() {
   renderEndHighlights();
+  clearSavedGame();
 
   if (!endScreen) {
     console.error('End screen ontbreekt: id="screen-end" niet gevonden in index.html');
-    show(modeScreen);
+    show(homeScreen);
     return;
   }
 
@@ -1157,7 +1294,7 @@ if (endBackBtn) {
   endBackBtn.onclick = () => {
     stopConfetti();
     stopTimer();
-    show(modeScreen);
+    show(homeScreen);
   };
 };
 
@@ -1171,12 +1308,15 @@ if (endRematchBtn) {
 
     if (!questions.length) await loadQuestions();
     rebuildActiveQuestions();
-    renderCategorySelector();
 
     initStats();
     if (mode === "team") initTeamStats();
 
     turnIndex = 0;
+    answeredTotal = 0;
+    totalQuestions = selectedGameLength;
+    tieBreakerQueue = [];
+    tieBreakerOffset = 0;
 
     askedCountPlayer = {};
     Object.keys(stats).forEach(name => askedCountPlayer[name] = 0);
@@ -1185,6 +1325,8 @@ if (endRematchBtn) {
     if (mode === "team") Object.keys(teamStats).forEach(label => askedCountTeam[label] = 0);
 
     show(gameScreen);
+    updateProgress();
+    saveGame();
     startNextTurnFlow();
   };
 };
@@ -1219,6 +1361,11 @@ resetBtn.onclick = async () => {
   stats = {};
   teamStats = {};
   turnIndex = 0;
+  answeredTotal = 0;
+  totalQuestions = selectedGameLength;
+  tieBreakerQueue = [];
+  tieBreakerOffset = 0;
+  clearSavedGame();
 
   playerNameInput.value = "";
   renderPlayers();
@@ -1242,7 +1389,8 @@ endGameBtn.onclick = async () => {
   }
 
   stopTimer();
-  show(modeScreen);
+  clearSavedGame();
+  show(homeScreen);
 };
 
 // ------- setup: add players (PvP) -------
@@ -1251,12 +1399,12 @@ addPlayerBtn.onclick = () => {
   if (!name) return;
 
   if (players.length >= MAX_PLAYERS_PVP) {
-    alert(`Maximaal ${MAX_PLAYERS_PVP} spelers in Speler vs Speler.`);
+    showToast(`Je kunt maximaal ${MAX_PLAYERS_PVP} spelers toevoegen.`);
     return;
   }
 
   if (players.some(p => p.name.toLowerCase() === name.toLowerCase())) {
-    alert("Die naam bestaat al 🙂");
+    showToast("Deze naam is al toegevoegd.");
     return;
   }
 
@@ -1282,21 +1430,28 @@ function startNextTurnFlow() {
 startGameBtn.onclick = async () => {
   usedQuestionIds.clear();
   chaosEnabled = !!enableChaos?.checked;
+  soundEnabled = !!enableSound?.checked;
+  customPenalty = customPenaltyInput?.value.trim() || "Voer de afgesproken opdracht uit";
 
   if (!questions.length) await loadQuestions();
   rebuildActiveQuestions();
-  renderCategorySelector();
 
   initStats();
   teams = [];
   teamNames = {};
   mode = "solo";
   turnIndex = 0;
+  answeredTotal = 0;
+  totalQuestions = selectedGameLength;
+  tieBreakerQueue = [];
+  tieBreakerOffset = 0;
   askedCountPlayer = {};
   players.forEach(p => askedCountPlayer[p.name] = 0);
   askedCountTeam = {};
 
   show(gameScreen);
+  updateProgress();
+  saveGame();
   startNextTurnFlow();
 };
 
@@ -1317,6 +1472,17 @@ modeNextBtn.onclick = () => {
       requireTimerSelection();
     }
 
+    return;
+  }
+
+  if (selectedCategories.size === 0) {
+    showToast("Kies minimaal één categorie.");
+    return;
+  }
+
+  if (penaltyMode === "custom" && !customPenaltyInput.value.trim()) {
+    customPenaltyInput.focus();
+    showToast("Vul eerst jullie eigen opdracht in.");
     return;
   }
 
@@ -1583,10 +1749,11 @@ startTeamGameBtn.onclick = async () => {
 
   usedQuestionIds.clear();
   chaosEnabled = !!enableChaos?.checked;
+  soundEnabled = !!enableSound?.checked;
+  customPenalty = customPenaltyInput?.value.trim() || "Voer de afgesproken opdracht uit";
 
   if (!questions.length) await loadQuestions();
   rebuildActiveQuestions();
-  renderCategorySelector();
 
   const teamCards = Array.from(teamsWrap.querySelectorAll("[data-team-card]"));
 
@@ -1652,11 +1819,17 @@ startTeamGameBtn.onclick = async () => {
   initTeamStats();
 
   turnIndex = 0;
+  answeredTotal = 0;
+  totalQuestions = selectedGameLength;
+  tieBreakerQueue = [];
+  tieBreakerOffset = 0;
 
   askedCountTeam = {};
   Object.keys(teamStats).forEach(label => askedCountTeam[label] = 0); // teamStats bestaat na initTeamStats()
   askedCountPlayer = {}; // mag leeg, of ook initialiseren als je wilt
   show(gameScreen);
+  updateProgress();
+  saveGame();
   startNextTurnFlow();
 };
 
@@ -1680,14 +1853,95 @@ if (timerPills) {
 }
 
 function isGameComplete() {
-  if (mode === "solo") {
-    const names = Object.keys(stats);
-    return names.length > 0 && names.every(n => (askedCountPlayer[n] ?? 0) >= QUESTIONS_PER_ACTOR);
-  }
-  // team mode
-  const labels = Object.keys(teamStats);
-  return labels.length > 0 && labels.every(l => (askedCountTeam[l] ?? 0) >= QUESTIONS_PER_ACTOR);
+  return answeredTotal >= totalQuestions;
 }
+
+function prepareTieBreaker() {
+  const ranking = mode === "team" ? teamStats : stats;
+  const entries = Object.entries(ranking);
+  const best = Math.max(...entries.map(([, value]) => value.points));
+  const leaders = entries.filter(([, value]) => value.points === best).map(([name]) => name);
+  if (leaders.length < 2) {
+    tieBreakerQueue = [];
+    return false;
+  }
+  tieBreakerQueue = leaders;
+  tieBreakerOffset = answeredTotal;
+  totalQuestions += leaders.length;
+  updateProgress();
+  showToast(`Gelijke stand! ${leaders.length} beslissingsvragen.`);
+  return true;
+}
+
+function activatePillGroup(container, activeButton) {
+  container.querySelectorAll("button").forEach(button => {
+    const active = button === activeButton;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+}
+
+lengthPills?.addEventListener("click", event => {
+  const button = event.target.closest("button[data-length]");
+  if (!button) return;
+  selectedGameLength = Number(button.dataset.length) || 20;
+  totalQuestions = selectedGameLength;
+  activatePillGroup(lengthPills, button);
+});
+
+penaltyPills?.addEventListener("click", event => {
+  const button = event.target.closest("button[data-penalty]");
+  if (!button) return;
+  penaltyMode = button.dataset.penalty;
+  activatePillGroup(penaltyPills, button);
+  customPenaltyWrap.classList.toggle("hidden", penaltyMode !== "custom");
+  if (penaltyMode === "custom") customPenaltyInput.focus();
+});
+
+function openRules(returnScreen = homeScreen) {
+  rulesReturnScreen = returnScreen;
+  if (returnScreen === gameScreen) pauseTimer();
+  show(rulesScreen);
+}
+
+homeStartBtn?.addEventListener("click", async () => {
+  if (getSavedGame()) {
+    const confirmed = await confirmAction({
+      title: "Nieuw spel starten?",
+      message: "Je opgeslagen spel wordt vervangen zodra het nieuwe spel begint.",
+      confirmLabel: "Nieuw spel"
+    });
+    if (!confirmed) return;
+    clearSavedGame();
+  }
+  show(modeScreen);
+});
+resumeGameBtn?.addEventListener("click", restoreGame);
+homeRulesBtn?.addEventListener("click", () => openRules(homeScreen));
+footerRulesBtn?.addEventListener("click", () => openRules(currentScreen || homeScreen));
+rulesBackBtn?.addEventListener("click", () => {
+  const target = rulesReturnScreen || homeScreen;
+  show(target);
+  if (target === gameScreen) resumeTimer();
+});
+privacyBtn?.addEventListener("click", () => privacyDialog?.showModal());
+
+shareResultBtn?.addEventListener("click", async () => {
+  const ranking = mode === "team" ? teamStats : stats;
+  const winner = topBy(ranking, "points", "max");
+  const text = winner
+    ? `${winner.name} won SipArena met ${winner.points} punten! Speel mee op https://siparena.io/`
+    : "Speel SipArena op https://siparena.io/";
+  try {
+    if (navigator.share) await navigator.share({ title: "SipArena", text, url: "https://siparena.io/" });
+    else {
+      await navigator.clipboard.writeText(text);
+      showToast("Resultaat gekopieerd");
+    }
+  } catch (error) {
+    if (error.name !== "AbortError") showToast("Delen is niet gelukt.");
+  }
+});
 
 // initial
 (async function init() {
@@ -1696,12 +1950,17 @@ function isGameComplete() {
     renderCategorySelector();
     renderPlayers();
     startGameBtn.disabled = true;
-    show(modeScreen);
+    show(homeScreen);
+    resumeGameBtn?.classList.toggle("hidden", !getSavedGame());
   } catch (error) {
     console.error(error);
-    show(modeScreen);
+    show(homeScreen);
     modeNextBtn.disabled = true;
     categoryWrap.classList.add("help");
     categoryWrap.textContent = "De vragen konden niet worden geladen. Vernieuw de pagina en probeer het opnieuw.";
   }
 })();
+
+if ("serviceWorker" in navigator && location.protocol === "https:") {
+  window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(console.error));
+}

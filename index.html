@@ -8,10 +8,12 @@
   <meta name="description" content="SipArena: de quizbattle voor spelers en teams." />
   <title>SipArena</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="manifest.webmanifest" />
 
   <!-- Open Graph -->
   <meta property="og:title" content="SipArena">
-  <meta property="og:description" content="De ultieme quiz battle waar gedronken wordt">
+  <meta property="og:description" content="De quizbattle voor spelers en teams. Speel op jullie manier.">
   <meta property="og:url" content="https://siparena.io">
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://siparena.io/assets/og.png" />
@@ -23,12 +25,41 @@
     <canvas id="confettiCanvas" class="confetti hidden"></canvas>
 
     <header class="site-header">
-      <div class="brand">SipArena</div>
-      <p class="subtitle">Eén telefoon bestuurt. Fout antwoord? Neem een slok.</p>
+      <div class="brand"><span class="brand-mark" aria-hidden="true">S</span> SipArena</div>
+      <p class="subtitle">Eén telefoon bestuurt. Iedereen speelt mee.</p>
     </header>
 
+    <section id="screen-home" class="card hero-card">
+      <div class="hero-content">
+        <span class="eyebrow">Quizbattle voor groepen</span>
+        <h1>Samen strijden.<br><span>Fout is feest.</span></h1>
+        <p>Speel individueel of in teams, kies jullie categorieën en bepaal zelf wat een fout antwoord betekent.</p>
+        <div class="hero-facts" aria-label="Spelkenmerken">
+          <span>2–25 spelers</span><span>5–30 minuten</span><span>1 telefoon</span>
+        </div>
+        <div class="hero-actions">
+          <button id="homeStartBtn" class="primary">Nieuw spel starten →</button>
+          <button id="resumeGameBtn" class="ghost hidden">Spel hervatten</button>
+          <button id="homeRulesBtn" class="ghost">Hoe werkt het?</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-rules" class="card hidden">
+      <div class="page-heading page-heading-with-action">
+        <div><span class="eyebrow">Spelregels</span><h1>Zo speel je SipArena</h1></div>
+        <button id="rulesBackBtn" class="ghost">← Terug</button>
+      </div>
+      <div class="rules-grid">
+        <article><span>1</span><h2>Stel het spel in</h2><p>Kies solo of teams, de spelduur en jullie favoriete categorieën.</p></article>
+        <article><span>2</span><h2>Geef antwoord</h2><p>Geef de telefoon door. Een goed antwoord levert punten op; een fout antwoord geeft de gekozen consequentie.</p></article>
+        <article><span>3</span><h2>Win de Arena</h2><p>Na de laatste vraag wint de speler of het team met de meeste punten.</p></article>
+      </div>
+      <div class="rules-note"><strong>Speel op jullie manier.</strong><p>Kies slokken, strafpunten of een eigen opdracht. Alcohol is nooit verplicht. Drink met mate.</p></div>
+    </section>
+
     <!-- ================= MODE SCREEN ================= -->
-    <section id="screen-mode" class="card">
+    <section id="screen-mode" class="card hidden">
       <div class="page-heading">
         <span class="eyebrow">Spel instellen</span>
         <h1 id="modeTitle">Kies hoe jullie spelen</h1>
@@ -64,11 +95,39 @@
       </div>
 
       <div class="setting-block">
+        <h2 class="setting-title">Spelduur</h2>
+        <p class="setting-description">Het aantal vragen geldt voor het hele spel.</p>
+        <div class="timer-pills" id="lengthPills">
+          <button type="button" class="pillbtn" data-length="10" aria-pressed="false">Kort · 10 vragen</button>
+          <button type="button" class="pillbtn active" data-length="20" aria-pressed="true">Normaal · 20</button>
+          <button type="button" class="pillbtn" data-length="30" aria-pressed="false">Lang · 30</button>
+        </div>
+      </div>
+
+      <div class="setting-block">
+        <h2 class="setting-title">Bij een fout antwoord</h2>
+        <p class="setting-description">SipArena werkt ook volledig zonder alcohol.</p>
+        <div class="timer-pills" id="penaltyPills">
+          <button type="button" class="pillbtn active" data-penalty="sips" aria-pressed="true">Slokken</button>
+          <button type="button" class="pillbtn" data-penalty="points" aria-pressed="false">Strafpunten</button>
+          <button type="button" class="pillbtn" data-penalty="custom" aria-pressed="false">Eigen opdracht</button>
+        </div>
+        <div id="customPenaltyWrap" class="custom-penalty hidden">
+          <label for="customPenaltyInput">Eigen opdracht bij een fout antwoord</label>
+          <input id="customPenaltyInput" maxlength="60" placeholder="Bijvoorbeeld: doe 10 seconden een imitatie" />
+        </div>
+      </div>
+
+      <div class="setting-block">
         <h2 class="setting-title">Extra spelopties</h2>
         <div class="game-settings" aria-label="Spelopties">
         <label class="toggle">
           <input type="checkbox" id="enableChaos" />
           <span>Chaos-events</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="enableSound" />
+          <span>Geluidseffecten</span>
         </label>
         </div>
       </div>
@@ -87,7 +146,7 @@
         <div>
           <span class="eyebrow">Speler vs speler</span>
           <h1>Wie spelen er mee?</h1>
-          <p>Voeg 2 tot 5 spelers toe. Iedereen krijgt 10 vragen.</p>
+          <p>Voeg 2 tot 5 spelers toe. De beurten worden eerlijk verdeeld.</p>
         </div>
         <button id="backToModeBtnPvp" class="ghost">← Instellingen</button>
       </div>
@@ -135,6 +194,11 @@
           <div id="turnLabel" class="turn"></div>
         </div>
         <button id="endGameBtn" class="danger-outline">Spel beëindigen</button>
+      </div>
+
+      <div class="game-progress" aria-label="Spelvoortgang">
+        <div class="progress-copy"><span id="progressText">Vraag 1 van 20</span><span id="progressPercent">0%</span></div>
+        <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
       </div>
 
       <div id="helpBanner" class="help hidden" role="status" aria-live="polite"></div>
@@ -211,6 +275,7 @@
         <button id="endBackBtn" class="ghost">← Naar beginscherm</button>
         <button id="endScoreBtn" class="ghost">Bekijk alle scores</button>
         <button id="endRematchBtn" class="primary">Nog een potje →</button>
+        <button id="shareResultBtn" class="ghost">Deel resultaat</button>
       </div>
     </section>
 
@@ -226,9 +291,20 @@
       </form>
     </dialog>
 
+    <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
     <footer class="footer">
-      <small>⚠️ Drink met mate.</small>
+      <small>Drink met mate. Alcohol is nooit verplicht.</small>
+      <div><button id="footerRulesBtn" class="link-button">Spelregels</button><span>·</span><button id="privacyBtn" class="link-button">Privacy</button><span>·</span><a href="https://github.com/RaaFkOnIjN/doe-een-sip/issues" target="_blank" rel="noreferrer">Feedback</a></div>
     </footer>
+
+    <dialog id="privacyDialog" class="confirm-dialog" aria-labelledby="privacyTitle">
+      <form method="dialog">
+        <h2 id="privacyTitle">Privacy</h2>
+        <p>SipArena gebruikt geen advertentietrackers en verstuurt geen spelersnamen of scores. Een lopend spel wordt alleen lokaal in jouw browser bewaard, zodat je het na verversen kunt hervatten.</p>
+        <div class="confirm-actions"><button value="close" class="primary">Sluiten</button></div>
+      </form>
+    </dialog>
 
   </div>
 
